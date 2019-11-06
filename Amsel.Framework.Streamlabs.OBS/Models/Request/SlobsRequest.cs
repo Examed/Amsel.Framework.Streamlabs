@@ -34,9 +34,7 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Request
 
         public string ToJson()
         {
-            var a =JsonConvert.SerializeObject(this);
-            
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this)?.Replace("\n", "");
         }
     }
 }
