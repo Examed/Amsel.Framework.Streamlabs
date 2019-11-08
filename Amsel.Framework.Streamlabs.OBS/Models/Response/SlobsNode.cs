@@ -6,52 +6,24 @@ using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
-    public class SLOBSNode : ISLOBSSceneFolder, ISLOBSSceneItem
+    public class SLOBSNode
     {
-        [JsonProperty("childrenIds")]
-        public List<string> ChildrenIds { get; set; }
-
         [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("locked")]
-        public bool? Locked { get; set; }
+        public string Id { get; protected set; }
 
         [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("obsSceneItemId")]
-        public long? ObsSceneItemId { get; set; }
+        public string Name { get; protected set; }
 
         [JsonProperty("parentId")]
-        public string ParentId { get; set; }
-
-        private string resourceId;
-
-        [JsonProperty("resourceId")]
-        public string ResourceId
-        {
-            get => string.IsNullOrEmpty(resourceId) ? $"SceneItem[\"{SceneId}\",\"{SceneItemId}\",\"{SourceId}\"]" : resourceId;
-            set => resourceId = value;
-        }
+        public string ParentId { get; protected set; }
 
         [JsonProperty("sceneId")]
-        public string SceneId { get; set; }
-
-        [JsonProperty("sceneItemId")]
-        public string SceneItemId { get; set; }
+        public string SceneId { get; protected set; }
 
         [JsonProperty("sceneNodeType")]
         [JsonConverter(typeof(SceneNodeTypeConverter))]
-        public ESLOBSSceneNodeType SceneNodeType { get; set; }
+        public ESLOBSSceneNodeType SceneNodeType { get; protected set; }
 
-        [JsonProperty("sourceId")]
-        public string SourceId { get; set; }
 
-        [JsonProperty("transform")]
-        public SLOBSTransform Transform { get; set; }
-
-        [JsonProperty("visible")]
-        public bool? Visible { get; set; }
     }
 }

@@ -14,10 +14,10 @@ namespace Amsel.Clients.Sample.SLOBS.Converter
             switch (serializer.Deserialize<string>(reader))
             {
                 case "folder":
-                    return ESLOBSSceneNodeType.Folder;
+                    return ESLOBSSceneNodeType.FOLDER;
 
                 case "item":
-                    return ESLOBSSceneNodeType.Item;
+                    return ESLOBSSceneNodeType.ITEM;
             }
 
             throw new Exception("Cannot unmarshal type SceneNodeType");
@@ -29,11 +29,11 @@ namespace Amsel.Clients.Sample.SLOBS.Converter
 
             switch ((ESLOBSSceneNodeType)value)
             {
-                case ESLOBSSceneNodeType.Folder:
+                case ESLOBSSceneNodeType.FOLDER:
                     serializer.Serialize(writer, "folder");
                     return;
 
-                case ESLOBSSceneNodeType.Item:
+                case ESLOBSSceneNodeType.ITEM:
                     serializer.Serialize(writer, "item");
                     return;
             }

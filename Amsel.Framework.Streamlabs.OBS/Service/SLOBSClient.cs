@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Amsel.Clients.Sample.SLOBS.Models.Request;
 using Amsel.Clients.Sample.SLOBS.Models.Response;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Service
@@ -20,22 +21,37 @@ namespace Amsel.Clients.Sample.SLOBS.Service
             this.pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
         }
 
-        public async Task<List<SLOBSRpcResponse>> SendRequest(IEnumerable<SlobsRequest> requests)
+        public SLOBSRpcResponse SendRequest(SLOBSRequest requests)
         {
-            return await SendRequest(requests?.ToArray()).ConfigureAwait(false);
+            return SendRequest(new List<SLOBSRequest>() { requests }).Result?.FirstOrDefault();
         }
 
-        public async Task<List<SLOBSRpcResponse>> SendRequest(params SlobsRequest[] requests)
+        public IEnumerable<TResult> SendRequest<TResult>(SLOBSRequest requests)
         {
+            return SendRequest(requests).GetResult<TResult>();
+        }
+
+        public async Task<IEnumerable<SLOBSRpcResponse>> SendRequest(SLOBSRequest first, SLOBSRequest second,
+            params SLOBSRequest[] rest)
+        {
+            var requests = new List<SLOBSRequest>() { first, second };
+            if (rest != null)
+                requests.AddRange(rest);
+
+            return await SendRequest(requests);
+        }
+
+        public async Task<IEnumerable<SLOBSRpcResponse>> SendRequest(IEnumerable<SLOBSRequest> requests)
+        {
+            var requestBatch = GetBatch(requests?.ToArray());
+            var slobsRpcResponses = new List<SLOBSRpcResponse>();
+
             using (var pipe = new NamedPipeClientStream(pipeName))
             using (var reader = new StreamReader(pipe))
             using (var writer = new StreamWriter(pipe) { NewLine = "\n" })
             {
                 await pipe.ConnectAsync(5000).ConfigureAwait(false);
-
-                var requestBatch = GetBatch(requests?.ToArray());
-                var slobsRpcResponses = new List<SLOBSRpcResponse>();
-                foreach (List<SlobsRequest> batch in requestBatch)
+                foreach (List<SLOBSRequest> batch in requestBatch)
                 {
                     foreach (var request in batch)
                         writer.WriteLine(request.ToJson());
@@ -55,29 +71,7 @@ namespace Amsel.Clients.Sample.SLOBS.Service
             }
         }
 
-        public async Task<List<SLOBSRpcResponse>> SubscribeEvent(SlobsRequest requests)
-        {
-            var responses = await SendRequest(requests);
-            var resourceId = responses.FirstOrDefault()?.Result?.FirstOrDefault()?.ResourceId;
 
-            using (var pipe = new NamedPipeClientStream(resourceId))
-            using (var reader = new StreamReader(pipe))
-            {
-                await pipe.ConnectAsync(5000).ConfigureAwait(false);
-
-                var slobsRpcResponses = new List<SLOBSRpcResponse>();
-
-                for (int i = 0; i < 10; i++)
-                {
-                    string responseJson = reader.ReadLine();
-                    var response = JsonConvert.DeserializeObject<SLOBSRpcResponse>(responseJson);
-                    response.JsonResponse = responseJson;
-                    slobsRpcResponses.Add(response);
-                }
-
-                return slobsRpcResponses;
-            }
-        }
 
 
 
@@ -86,10 +80,11 @@ namespace Amsel.Clients.Sample.SLOBS.Service
         /// </summary>
         /// <param name="requests"></param>
         /// <returns></returns>
-        private static List<List<SlobsRequest>> GetBatch(SlobsRequest[] requests)
+        [NotNull]
+        private static List<List<SLOBSRequest>> GetBatch(SLOBSRequest[] requests)
         {
-            List<List<SlobsRequest>> result = new List<List<SlobsRequest>>();
-            List<SlobsRequest> current = new List<SlobsRequest>();
+            List<List<SLOBSRequest>> result = new List<List<SLOBSRequest>>();
+            List<SLOBSRequest> current = new List<SLOBSRequest>();
 
             for (int i = 0; i < requests.Length; i++)
             {
@@ -97,7 +92,7 @@ namespace Amsel.Clients.Sample.SLOBS.Service
                 {
                     if (current.Any())
                         result.Add(current);
-                    current = new List<SlobsRequest>();
+                    current = new List<SLOBSRequest>();
                 }
                 current.Add(requests[i]);
             }

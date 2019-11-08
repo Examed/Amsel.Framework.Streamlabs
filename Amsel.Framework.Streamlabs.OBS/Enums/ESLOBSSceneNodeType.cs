@@ -1,8 +1,12 @@
-﻿namespace Amsel.Clients.Sample.SLOBS.Enums
+﻿using Newtonsoft.Json;
+
+namespace Amsel.Clients.Sample.SLOBS.Enums
 {
     public enum ESLOBSSceneNodeType
     {
-        Folder, 
-        Item
+        [JsonProperty("folder")]
+        FOLDER, 
+        [JsonProperty("item")]
+        ITEM
     };
 }

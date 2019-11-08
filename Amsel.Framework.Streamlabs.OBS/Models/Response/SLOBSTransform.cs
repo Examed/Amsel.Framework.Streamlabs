@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
     [Serializable]
-    public class SLOBSTransform : ISLOBSTransform
+    public class SLOBSTransform
     {
         public SLOBSTransform(SLOBSCrop crop, SLOBSPosition position, long rotation, SLOBSPosition scale)
         {
@@ -14,12 +14,7 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Response
             Rotation = rotation;
             Scale = scale;
         }
-        public SLOBSTransform(SLOBSPosition position)
-        {
-            Position = position;
-        }
-
-        public SLOBSTransform()
+        protected SLOBSTransform()
         {
         }
 

@@ -5,12 +5,12 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Response
     public class SLOBSFader
     {
         [JsonProperty("db")]
-        public double DB { get; set; }
+        public double DB { get;protected set; }
 
         [JsonProperty("deflection")]
-        public double Deflection { get; set; }
+        public double Deflection { get; protected set; }
 
         [JsonProperty("mul")]
-        public double Mul { get; set; }
+        public double Mul { get; protected set; }
     }
 }
