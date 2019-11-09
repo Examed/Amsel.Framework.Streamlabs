@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsError
     {

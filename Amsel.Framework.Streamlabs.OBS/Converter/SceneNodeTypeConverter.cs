@@ -1,8 +1,8 @@
 ﻿using System;
-using Amsel.Clients.Sample.SLOBS.Enums;
+using Amsel.Framework.Streamlabs.OBS.Enums;
 using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Converter
+namespace Amsel.Framework.Streamlabs.OBS.Converter
 {
     public class SceneNodeTypeConverter : JsonConverter
     {

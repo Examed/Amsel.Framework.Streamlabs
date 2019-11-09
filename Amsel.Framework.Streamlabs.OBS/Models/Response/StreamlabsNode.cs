@@ -1,8 +1,8 @@
-﻿using Amsel.Clients.Sample.SLOBS.Converter;
-using Amsel.Clients.Sample.SLOBS.Enums;
+﻿using Amsel.Framework.Streamlabs.OBS.Converter;
+using Amsel.Framework.Streamlabs.OBS.Enums;
 using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsNode
     {

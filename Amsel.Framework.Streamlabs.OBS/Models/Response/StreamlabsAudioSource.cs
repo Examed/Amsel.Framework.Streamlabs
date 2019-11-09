@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsAudioSource 
     {
@@ -8,7 +8,7 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Response
         public double AudioMixers { get; protected set; }
 
         [JsonProperty("fader")]
-        public Fader Fader { get; protected set; }
+        public StreamlabsFader Fader { get; protected set; }
 
         [JsonProperty("forceMono")]
         public bool ForceMono { get; protected set; }

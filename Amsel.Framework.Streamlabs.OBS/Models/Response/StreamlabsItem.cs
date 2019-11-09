@@ -1,7 +1,6 @@
-﻿using Amsel.Clients.Sample.SLOBS.Models.Response;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsItem : StreamlabsNode
     {

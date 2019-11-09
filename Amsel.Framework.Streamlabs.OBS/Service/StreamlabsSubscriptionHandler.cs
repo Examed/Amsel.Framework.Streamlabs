@@ -3,53 +3,36 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
-using Amsel.Clients.Sample.SLOBS.Models.Request;
-using Amsel.Clients.Sample.SLOBS.Models.Response;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Models.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Service
 {
-    public class StreamlabsPromiseHandler<TResponse> : StreamlabsSubscriptionHandler<TResponse>
-    {
-        /// <inheritdoc />
-        public StreamlabsPromiseHandler(StreamlabsRequest request, CancellationToken cancellationToken = default) : base(request, cancellationToken)
-        {
-        }
-
-        public override void Subscribe(EventHandler<TResponse> value)
-        {
-            base.Subscribe(value);
-        }
-        public override void UnSubscribe(EventHandler<TResponse> value)
-        {
-            base.UnSubscribe(value);
-        }
-
-    }
-
-
     public class StreamlabsSubscriptionHandler<TResponse> : IDisposable
     {
         private readonly StreamlabsRequest request;
+        private readonly string pipeName;
         public event EventHandler<TResponse> OnSubscriptionEvent;
         public event EventHandler<string> OnUnsuportetEvent;
         public event EventHandler<StreamlabsResponse> OnBeginSubscription;
         private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
-        private readonly CancellationToken externCancellationToken  = new CancellationToken();
+        private readonly CancellationToken externCancellationToken = new CancellationToken();
 
-        public StreamlabsSubscriptionHandler(StreamlabsRequest request, CancellationToken cancellationToken = default)
+        public StreamlabsSubscriptionHandler(StreamlabsRequest request, CancellationToken cancellationToken = default, string pipeName = "slobs")
         {
             this.request = request;
+            this.pipeName = pipeName;
             if (cancellationToken != default)
                 externCancellationToken = cancellationToken;
         }
 
-        public virtual void Subscribe(EventHandler<TResponse> value)
+        public void Subscribe(EventHandler<TResponse> value)
         {
             OnSubscriptionEvent += value;
             Task.Factory.StartNew(async () =>
             {
-                await using var stream = new NamedPipeClientStream("slobs");
+                await using var stream = new NamedPipeClientStream(pipeName);
                 using var reader = new StreamReader(stream);
                 using (var writer = new StreamWriter(stream))
                 {
@@ -77,7 +60,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
         }
 
 
-        public virtual void UnSubscribe(EventHandler<TResponse> eventHandler)
+        public void UnSubscribe(EventHandler<TResponse> eventHandler)
         {
             OnSubscriptionEvent -= eventHandler;
             unsubscribeToken.Cancel();

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Amsel.Clients.Sample.SLOBS.Models.Request;
-using Amsel.Clients.Sample.SLOBS.Models.Response;
-using Amsel.Clients.Sample.SLOBS.Service;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Service;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsFolder : StreamlabsNode
     {

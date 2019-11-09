@@ -3,16 +3,16 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
-using Amsel.Clients.Sample.SLOBS.Models.Request;
-using Amsel.Clients.Sample.SLOBS.Models.Response;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Models.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Service
 {
     public class SceneCollectionsService
     {
-        private readonly StreamlabsSubscription<StreamlabsResponse> collectionAdded
-            = new StreamlabsSubscription<StreamlabsResponse>(new StreamlabsRequest("collectionAdded", "SceneCollectionsService"));
+        private readonly StreamlabsSubscriptionHandler<StreamlabsResponse> collectionAdded
+            = new StreamlabsSubscriptionHandler<StreamlabsResponse>(new StreamlabsRequest("collectionAdded", "SceneCollectionsService"));
 
         public event EventHandler<StreamlabsResponse> OnCollectionAdded
         {
@@ -20,8 +20,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
             remove => collectionSwitched.UnSubscribe(value);
         }
 
-        private readonly StreamlabsSubscription<StreamlabsResponse> collectionRemoved
-            = new StreamlabsSubscription<StreamlabsResponse>(new StreamlabsRequest("collectionRemoved", "SceneCollectionsService"));
+        private readonly StreamlabsSubscriptionHandler<StreamlabsResponse> collectionRemoved
+            = new StreamlabsSubscriptionHandler<StreamlabsResponse>(new StreamlabsRequest("collectionRemoved", "SceneCollectionsService"));
 
         public event EventHandler<StreamlabsResponse> OnCollectionRemoved
         {
@@ -29,8 +29,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
             remove => collectionSwitched.UnSubscribe(value);
         }
         
-        private readonly StreamlabsSubscription<StreamlabsResponse> collectionSwitched
-            = new StreamlabsSubscription<StreamlabsResponse>(new StreamlabsRequest("collectionSwitched", "SceneCollectionsService"));
+        private readonly StreamlabsSubscriptionHandler<StreamlabsResponse> collectionSwitched
+            = new StreamlabsSubscriptionHandler<StreamlabsResponse>(new StreamlabsRequest("collectionSwitched", "SceneCollectionsService"));
 
         public event EventHandler<StreamlabsResponse> OnCollectionSwitched
         {
@@ -38,8 +38,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
             remove => collectionSwitched.UnSubscribe(value);
         }
 
-        private readonly StreamlabsSubscription<StreamlabsResponse> collectionUpdated
-            = new StreamlabsSubscription<StreamlabsResponse>(new StreamlabsRequest("collectionUpdated", "SceneCollectionsService"));
+        private readonly StreamlabsSubscriptionHandler<StreamlabsResponse> collectionUpdated
+            = new StreamlabsSubscriptionHandler<StreamlabsResponse>(new StreamlabsRequest("collectionUpdated", "SceneCollectionsService"));
 
         public event EventHandler<StreamlabsResponse> OnCollectionUpdated
         {
@@ -47,8 +47,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
             remove => collectionSwitched.UnSubscribe(value);
         }
 
-        private readonly StreamlabsSubscription<StreamlabsResponse> collectionWillSwitch
-            = new StreamlabsSubscription<StreamlabsResponse>(new StreamlabsRequest("collectionWillSwitch", "SceneCollectionsService"));
+        private readonly StreamlabsSubscriptionHandler<StreamlabsResponse> collectionWillSwitch
+            = new StreamlabsSubscriptionHandler<StreamlabsResponse>(new StreamlabsRequest("collectionWillSwitch", "SceneCollectionsService"));
 
         public event EventHandler<StreamlabsResponse> OnCollectionWillSwitch
         {
