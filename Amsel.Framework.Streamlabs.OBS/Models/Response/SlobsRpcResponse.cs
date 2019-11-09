@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
-    public class SLOBSRpcResponse
+    public class StreamlabsResponse
     {
         [JsonProperty("error")]
-        public SLOBSError Error { get; protected set; }
+        public StreamlabsError Error { get; protected set; }
 
         [JsonProperty("id")]
         public string Id { get;protected set; }

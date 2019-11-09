@@ -1,10 +1,10 @@
 ﻿using System;
-using Amsel.Clients.Sample.SLOBS.Interfaces.Request;
+using Amsel.Clients.Sample.SLOBS.Models.Request;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Request
 {
-    public class SLOBSRequest : ISlobsRequest
+    public class StreamlabsRequest 
     {
         [JsonProperty("id")]
         public string Id { get; internal set; }
@@ -16,16 +16,17 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Request
         public string Method { get; internal set; }
 
         [JsonProperty("params")]
-        public SlobsParameters Parameters { get; internal set; }
+        public StreamlabsParameters Parameters { get; internal set; }
 
-        public SLOBSRequest(string method, string resource, params object[] args)
+
+        public StreamlabsRequest(string method, string resource, params object[] args)
         {
             Id = Guid.NewGuid().ToString();
             Method = method;
-            Parameters = new SlobsParameters(resource, args);
+            Parameters = new StreamlabsParameters(resource, args);
         }
 
-        public SLOBSRequest(string method, SlobsParameters parameters)
+        public StreamlabsRequest(string method, StreamlabsParameters parameters)
         {
             Id = Guid.NewGuid().ToString();
             Method = method;

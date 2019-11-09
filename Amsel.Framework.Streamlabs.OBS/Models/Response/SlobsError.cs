@@ -2,7 +2,7 @@
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
-    public class SLOBSError
+    public class StreamlabsError
     {
         [JsonProperty("code")]
         public long Code { get; protected set; }

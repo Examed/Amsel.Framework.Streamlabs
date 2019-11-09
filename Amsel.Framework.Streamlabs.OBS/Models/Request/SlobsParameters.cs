@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Request
 {
-    public class SlobsParameters : IEquatable<SlobsParameters>
+    public class StreamlabsParameters : IEquatable<StreamlabsParameters>
     {
         [JsonProperty("args")]
         public List<object> Args { get; set; }
@@ -13,13 +13,13 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Request
         [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
         public string Resource { get; set; }
 
-        public SlobsParameters(string resource, params object[] args)
+        public StreamlabsParameters(string resource, params object[] args)
         {
             Resource = resource;
             Args = args?.ToList();
         }
 
-        public bool Equals(SlobsParameters other)
+        public bool Equals(StreamlabsParameters other)
         {
             var equal = this.Resource == other.Resource && this.Args.Count == other.Args.Count;
 

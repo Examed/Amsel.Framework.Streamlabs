@@ -1,33 +1,32 @@
 ﻿using System;
-using Amsel.Clients.Sample.SLOBS.Interfaces.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
     [Serializable]
-    public class SLOBSTransform
+    public class StreamlabsTransform
     {
-        public SLOBSTransform(SLOBSCrop crop, SLOBSPosition position, long rotation, SLOBSPosition scale)
+        public StreamlabsTransform(StreamlabsCrop crop, StreamlabsPosition position, long rotation, StreamlabsPosition scale)
         {
             Crop = crop;
             Position = position;
             Rotation = rotation;
             Scale = scale;
         }
-        protected SLOBSTransform()
+        protected StreamlabsTransform()
         {
         }
 
         [JsonProperty("crop")]
-        public SLOBSCrop Crop { get; set; }
+        public StreamlabsCrop Crop { get; set; }
 
         [JsonProperty("position")]
-        public SLOBSPosition Position { get; set; }
+        public StreamlabsPosition Position { get; set; }
 
         [JsonProperty("rotation")]
         public long Rotation { get; set; }
 
         [JsonProperty("scale")]
-        public SLOBSPosition Scale { get; set; }
+        public StreamlabsPosition Scale { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Amsel.Clients.Sample.SLOBS.Converter
 {
     public class SceneNodeTypeConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType) => objectType == typeof(ESLOBSSceneNodeType) || objectType == typeof(ESLOBSSceneNodeType?);
+        public override bool CanConvert(Type objectType) => objectType == typeof(ESceneNodeType) || objectType == typeof(ESceneNodeType?);
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -14,10 +14,10 @@ namespace Amsel.Clients.Sample.SLOBS.Converter
             switch (serializer.Deserialize<string>(reader))
             {
                 case "folder":
-                    return ESLOBSSceneNodeType.FOLDER;
+                    return ESceneNodeType.FOLDER;
 
                 case "item":
-                    return ESLOBSSceneNodeType.ITEM;
+                    return ESceneNodeType.ITEM;
             }
 
             throw new Exception("Cannot unmarshal type SceneNodeType");
@@ -27,13 +27,13 @@ namespace Amsel.Clients.Sample.SLOBS.Converter
         {
             if (value == null) serializer.Serialize(writer, null);
 
-            switch ((ESLOBSSceneNodeType)value)
+            switch ((ESceneNodeType)value)
             {
-                case ESLOBSSceneNodeType.FOLDER:
+                case ESceneNodeType.FOLDER:
                     serializer.Serialize(writer, "folder");
                     return;
 
-                case ESLOBSSceneNodeType.ITEM:
+                case ESceneNodeType.ITEM:
                     serializer.Serialize(writer, "item");
                     return;
             }

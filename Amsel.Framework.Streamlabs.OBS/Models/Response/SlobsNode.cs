@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using Amsel.Clients.Sample.SLOBS.Converter;
+﻿using Amsel.Clients.Sample.SLOBS.Converter;
 using Amsel.Clients.Sample.SLOBS.Enums;
-using Amsel.Clients.Sample.SLOBS.Interfaces.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
-    public class SLOBSNode
+    public class StreamlabsNode
     {
         [JsonProperty("id")]
         public string Id { get; protected set; }
@@ -22,7 +20,7 @@ namespace Amsel.Clients.Sample.SLOBS.Models.Response
 
         [JsonProperty("sceneNodeType")]
         [JsonConverter(typeof(SceneNodeTypeConverter))]
-        public ESLOBSSceneNodeType SceneNodeType { get; protected set; }
+        public ESceneNodeType SceneNodeType { get; protected set; }
 
 
     }

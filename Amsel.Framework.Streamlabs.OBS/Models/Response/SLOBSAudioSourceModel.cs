@@ -2,13 +2,13 @@
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
-    public class SLOBSAudioSourceModel 
+    public class StreamlabsAudioSource 
     {
         [JsonProperty("audioMixers")]
         public double AudioMixers { get; protected set; }
 
         [JsonProperty("fader")]
-        public SLOBSFader Fader { get; protected set; }
+        public Fader Fader { get; protected set; }
 
         [JsonProperty("forceMono")]
         public bool ForceMono { get; protected set; }

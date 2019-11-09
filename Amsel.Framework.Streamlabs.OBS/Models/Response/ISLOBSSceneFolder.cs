@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Amsel.Clients.Sample.SLOBS.Converter;
-using Amsel.Clients.Sample.SLOBS.Enums;
 using Amsel.Clients.Sample.SLOBS.Models.Request;
 using Amsel.Clients.Sample.SLOBS.Models.Response;
 using Amsel.Clients.Sample.SLOBS.Service;
@@ -9,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
 {
-    public class SLOBSFolder : SLOBSNode
+    public class StreamlabsFolder : StreamlabsNode
     {
         [JsonProperty("childrenIds")] public List<string> ChildrenIds { get; protected set; }
 
@@ -22,14 +20,14 @@ namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
         }
 
 
-        public IEnumerable<SLOBSFolder> GetFolders(SLOBSClient client)
+        public IEnumerable<StreamlabsFolder> GetFolders(StreamlabsClient client)
         {
-            return client.SendRequest<SLOBSFolder>(new SLOBSRequest("getFolders", ResourceId));
+            return client.SendRequest<StreamlabsFolder>(new StreamlabsRequest("getFolders", ResourceId));
         }
         [NotNull]
-        public IEnumerable<SLOBSFolder> GetNestedFolders(SLOBSClient client)
+        public IEnumerable<StreamlabsFolder> GetNestedFolders(StreamlabsClient client)
         {
-            var result = new List<SLOBSFolder>();
+            var result = new List<StreamlabsFolder>();
             var folders = GetFolders(client);
             var a = Name;
             foreach (var node in folders)
@@ -40,14 +38,14 @@ namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
             return result;
         }
 
-        public IEnumerable<SLOBSItem> GetItems(SLOBSClient client)
+        public IEnumerable<StreamlabsItem> GetItems(StreamlabsClient client)
         {
-            return client.SendRequest<SLOBSItem>(new SLOBSRequest("getItems", ResourceId));
+            return client.SendRequest<StreamlabsItem>(new StreamlabsRequest("getItems", ResourceId));
         }
         [NotNull]
-        public IEnumerable<SLOBSItem> GetNestedItems(SLOBSClient client)
+        public IEnumerable<StreamlabsItem> GetNestedItems(StreamlabsClient client)
         {
-            var result = new List<SLOBSItem>();
+            var result = new List<StreamlabsItem>();
             var currentItems = GetItems(client);
             if (currentItems != null)
                 result.AddRange(currentItems);

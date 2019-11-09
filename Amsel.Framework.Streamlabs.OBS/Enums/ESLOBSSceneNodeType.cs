@@ -2,7 +2,7 @@
 
 namespace Amsel.Clients.Sample.SLOBS.Enums
 {
-    public enum ESLOBSSceneNodeType
+    public enum ESceneNodeType
     {
         [JsonProperty("folder")]
         FOLDER, 

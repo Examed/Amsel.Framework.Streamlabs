@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Amsel.Clients.Sample.SLOBS.Enums;
-using Amsel.Clients.Sample.SLOBS.Models.Request;
-using Amsel.Clients.Sample.SLOBS.Models.Response;
 using Amsel.Clients.Sample.SLOBS.Service;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -12,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
 {
-    public class SLOBSScene
+    public class StreamlabsScene
     {
         [JsonProperty("id")] public string Id { get; protected set; }
         [JsonProperty("name")] public string Name { get; protected set; }
@@ -24,20 +19,20 @@ namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
         [JsonProperty("type")] public string ResultType { get; protected set; }
 
         [NotNull]
-        public IEnumerable<SLOBSItem> GetSceneItems(SLOBSClient client = null)
+        public IEnumerable<StreamlabsItem> GetSceneItems(StreamlabsClient client = null)
         {
-            List<SLOBSItem> result = new List<SLOBSItem>();
+            List<StreamlabsItem> result = new List<StreamlabsItem>();
             foreach (var item in Nodes)
             {
-                var type = item["sceneNodeType"].ToObject<ESLOBSSceneNodeType>();
-                if (type == ESLOBSSceneNodeType.FOLDER && client != null)
+                var type = item["sceneNodeType"].ToObject<ESceneNodeType>();
+                if (type == ESceneNodeType.FOLDER && client != null)
                 {
-                    SLOBSFolder folder = item.ToObject<SLOBSFolder>();
+                    StreamlabsFolder folder = item.ToObject<StreamlabsFolder>();
                     result.AddRange(folder.GetNestedItems(client));
                 }
-                else if (type == ESLOBSSceneNodeType.ITEM)
+                else if (type == ESceneNodeType.ITEM)
                 {
-                    result.Add(item.ToObject<SLOBSItem>());
+                    result.Add(item.ToObject<StreamlabsItem>());
                 }
             }
 

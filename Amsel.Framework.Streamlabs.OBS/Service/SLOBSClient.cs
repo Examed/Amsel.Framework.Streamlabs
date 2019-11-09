@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Amsel.Clients.Sample.SLOBS.Models.Request;
 using Amsel.Clients.Sample.SLOBS.Models.Response;
@@ -12,46 +11,47 @@ using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Service
 {
-    public class SLOBSClient
+    public class StreamlabsClient
     {
         private readonly string pipeName;
 
-        public SLOBSClient(string pipe = "slobs")
+        public StreamlabsClient(string pipe = "slobs")
         {
             this.pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
         }
 
-        public SLOBSRpcResponse SendRequest(SLOBSRequest requests)
+        public StreamlabsResponse SendRequest(StreamlabsRequest requests)
         {
-            return SendRequest(new List<SLOBSRequest>() { requests }).Result?.FirstOrDefault();
+            return SendRequest(new List<StreamlabsRequest>() { requests }).Result?.FirstOrDefault();
         }
 
-        public IEnumerable<TResult> SendRequest<TResult>(SLOBSRequest requests)
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsRequest requests)
         {
             return SendRequest(requests).GetResult<TResult>();
         }
 
-        public async Task<IEnumerable<SLOBSRpcResponse>> SendRequest(SLOBSRequest first, SLOBSRequest second,
-            params SLOBSRequest[] rest)
+        public async Task<IEnumerable<StreamlabsResponse>> SendRequest(StreamlabsRequest first, StreamlabsRequest second,
+            params StreamlabsRequest[] rest)
         {
-            var requests = new List<SLOBSRequest>() { first, second };
+            var requests = new List<StreamlabsRequest>() { first, second };
             if (rest != null)
                 requests.AddRange(rest);
 
             return await SendRequest(requests);
         }
 
-        public async Task<IEnumerable<SLOBSRpcResponse>> SendRequest(IEnumerable<SLOBSRequest> requests)
+      
+        public async Task<IEnumerable<StreamlabsResponse>> SendRequest(IEnumerable<StreamlabsRequest> requests)
         {
             var requestBatch = GetBatch(requests?.ToArray());
-            var slobsRpcResponses = new List<SLOBSRpcResponse>();
+            var RpcResponses = new List<StreamlabsResponse>();
 
             using (var pipe = new NamedPipeClientStream(pipeName))
             using (var reader = new StreamReader(pipe))
             using (var writer = new StreamWriter(pipe) { NewLine = "\n" })
             {
                 await pipe.ConnectAsync(5000).ConfigureAwait(false);
-                foreach (List<SLOBSRequest> batch in requestBatch)
+                foreach (List<StreamlabsRequest> batch in requestBatch)
                 {
                     foreach (var request in batch)
                         writer.WriteLine(request.ToJson());
@@ -62,29 +62,29 @@ namespace Amsel.Clients.Sample.SLOBS.Service
                     for (int i = 0; i < batch.Count; i++)
                     {
                         string responseJson = reader.ReadLine();
-                        var response = JsonConvert.DeserializeObject<SLOBSRpcResponse>(responseJson);
+                        var response = JsonConvert.DeserializeObject<StreamlabsResponse>(responseJson);
                         response.JsonResponse = responseJson;
-                        slobsRpcResponses.Add(response);
+                        RpcResponses.Add(response);
                     }
                 }
-                return slobsRpcResponses;
+                return RpcResponses;
             }
         }
 
-
+    
 
 
 
         /// <summary>
-        /// Make sure that SLOBS only get a Batch of 5 Requests at the same time
+        /// Make sure that  only get a Batch of 5 Requests at the same time
         /// </summary>
         /// <param name="requests"></param>
         /// <returns></returns>
         [NotNull]
-        private static List<List<SLOBSRequest>> GetBatch(SLOBSRequest[] requests)
+        private static List<List<StreamlabsRequest>> GetBatch(StreamlabsRequest[] requests)
         {
-            List<List<SLOBSRequest>> result = new List<List<SLOBSRequest>>();
-            List<SLOBSRequest> current = new List<SLOBSRequest>();
+            List<List<StreamlabsRequest>> result = new List<List<StreamlabsRequest>>();
+            List<StreamlabsRequest> current = new List<StreamlabsRequest>();
 
             for (int i = 0; i < requests.Length; i++)
             {
@@ -92,7 +92,7 @@ namespace Amsel.Clients.Sample.SLOBS.Service
                 {
                     if (current.Any())
                         result.Add(current);
-                    current = new List<SLOBSRequest>();
+                    current = new List<StreamlabsRequest>();
                 }
                 current.Add(requests[i]);
             }

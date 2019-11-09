@@ -1,11 +1,10 @@
 ﻿using System;
-using Amsel.Clients.Sample.SLOBS.Interfaces.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Models.Response
 {
     [Serializable]
-    public class SLOBSCrop
+    public class StreamlabsCrop
     {
         [JsonProperty("bottom")]
         public long Bottom { get; protected set; }

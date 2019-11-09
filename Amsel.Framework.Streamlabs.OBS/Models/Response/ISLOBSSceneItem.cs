@@ -1,11 +1,9 @@
-﻿using Amsel.Clients.Sample.SLOBS.Converter;
-using Amsel.Clients.Sample.SLOBS.Enums;
-using Amsel.Clients.Sample.SLOBS.Models.Response;
+﻿using Amsel.Clients.Sample.SLOBS.Models.Response;
 using Newtonsoft.Json;
 
 namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
 {
-    public class SLOBSItem : SLOBSNode
+    public class StreamlabsItem : StreamlabsNode
     {
         [JsonProperty("sourceId")]
         public string SourceId { get;protected set; }
@@ -14,7 +12,7 @@ namespace Amsel.Clients.Sample.SLOBS.Interfaces.Response
         public string SceneItemId { get;protected set; }
 
         [JsonProperty("transform")]
-        public SLOBSTransform Transform { get;protected set; }
+        public StreamlabsTransform Transform { get;protected set; }
 
         [JsonProperty("visible")]
         public bool? Visible { get; protected set; }
