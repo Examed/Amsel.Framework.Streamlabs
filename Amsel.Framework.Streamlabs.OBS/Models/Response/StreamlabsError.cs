@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsError
+    public class StreamlabsOBSError
     {
         [JsonProperty("code")]
         public long Code { get; protected set; }

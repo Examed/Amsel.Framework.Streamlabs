@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+
+namespace Amsel.Framework.Streamlabs.OBS.Tests.Utilities
+{
+    public class TimeoutUtils
+    {
+        public static void WhileTimeout(TimeSpan timeSpan)
+        {
+            DateTime start = DateTime.UtcNow;
+            while (start.Add(timeSpan) > DateTime.UtcNow) { }
+        }
+
+        public static bool RetryUntilSuccessOrTimeout(Func<bool> task, TimeSpan timeSpan)
+        {
+            bool success = false;
+            int elapsed = 0;
+            while ((!success) && (elapsed < timeSpan.TotalMilliseconds))
+            {
+                Thread.Sleep(1000);
+                elapsed += 1000;
+                success = task();
+            }
+            return success;
+        }
+    }
+}

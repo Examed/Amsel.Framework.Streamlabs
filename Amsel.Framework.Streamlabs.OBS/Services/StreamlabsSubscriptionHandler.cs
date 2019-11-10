@@ -1,25 +1,28 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Amsel.Framework.Streamlabs.OBS.Models.Request;
-using Amsel.Framework.Streamlabs.OBS.Models.Response;
+using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
+using Amsel.Framework.StreamlabsOBS.OBS.Models.Response;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Service
+namespace Amsel.Framework.StreamlabsOBS.OBS.Service
 {
-    public class StreamlabsSubscriptionHandler<TResponse> : IDisposable
+    public class StreamlabsOBSSubscriptionHandler<TResponse> : IDisposable where TResponse : class
     {
-        private readonly StreamlabsRequest request;
+        private readonly StreamlabsOBSRequest request;
         private readonly string pipeName;
-        public event EventHandler<TResponse> OnSubscriptionEvent;
-        public event EventHandler<string> OnUnsuportetEvent;
-        public event EventHandler<StreamlabsResponse> OnBeginSubscription;
+
+        public event EventHandler<TResponse> OnData;
+        public event EventHandler<string> OnUnsupported;
+        public event EventHandler<StreamlabsOBSEvent> OnEvent;
+        public event EventHandler<StreamlabsOBSResponse> OnBegin;
         private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
         private readonly CancellationToken externCancellationToken = new CancellationToken();
 
-        public StreamlabsSubscriptionHandler(StreamlabsRequest request, CancellationToken cancellationToken = default, string pipeName = "slobs")
+        public StreamlabsOBSSubscriptionHandler(StreamlabsOBSRequest request, CancellationToken cancellationToken = default, string pipeName = "slobs")
         {
             this.request = request;
             this.pipeName = pipeName;
@@ -29,7 +32,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
 
         public void Subscribe(EventHandler<TResponse> value)
         {
-            OnSubscriptionEvent += value;
+            OnData += value;
             Task.Factory.StartNew(async () =>
             {
                 await using var stream = new NamedPipeClientStream(pipeName);
@@ -45,15 +48,24 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
                     while (!externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested)
                     {
                         string responseJson = reader.ReadLine();
-                        var response = JsonConvert.DeserializeObject<StreamlabsResponse>(responseJson);
+                        var response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
                         response.JsonResponse = responseJson;
 
                         if (response.Results.Value<string>("_type") == "SUBSCRIPTION")
-                            OnBeginSubscription?.Invoke(this, response);
+                            OnBegin?.Invoke(this, response);
                         else if (response.Results.Value<string>("_type") == "EVENT")
-                            OnSubscriptionEvent?.Invoke(this, JsonConvert.DeserializeObject<TResponse>(responseJson));
+                        {
+
+                            StreamlabsOBSEvent eventData = response.GetResultFirstOrDefault<StreamlabsOBSEvent>();
+       
+                            OnEvent?.Invoke(this, eventData);
+                            if (typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent)))
+                                OnData?.Invoke(this, eventData as TResponse);
+                            else
+                                OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
+                        }
                         else
-                            OnUnsuportetEvent?.Invoke(this, responseJson);
+                            OnUnsupported?.Invoke(this, responseJson);
                     }
                 }
             }, externCancellationToken);
@@ -62,7 +74,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
 
         public void UnSubscribe(EventHandler<TResponse> eventHandler)
         {
-            OnSubscriptionEvent -= eventHandler;
+            OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
 

@@ -1,10 +1,10 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Converter;
-using Amsel.Framework.Streamlabs.OBS.Enums;
+﻿using Amsel.Framework.StreamlabsOBS.OBS.Converter;
+using Amsel.Framework.StreamlabsOBS.OBS.Enums;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsNode
+    public class StreamlabsOBSNode
     {
         [JsonProperty("id")]
         public string Id { get; protected set; }

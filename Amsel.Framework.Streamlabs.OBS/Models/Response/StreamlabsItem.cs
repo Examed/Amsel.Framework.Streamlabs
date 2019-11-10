@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsItem : StreamlabsNode
+    public class StreamlabsOBSItem : StreamlabsOBSNode
     {
         [JsonProperty("sourceId")]
         public string SourceId { get;protected set; }
@@ -11,7 +11,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         public string SceneItemId { get;protected set; }
 
         [JsonProperty("transform")]
-        public StreamlabsTransform Transform { get;protected set; }
+        public StreamlabsOBSTransform Transform { get;protected set; }
 
         [JsonProperty("visible")]
         public bool? Visible { get; protected set; }
@@ -24,12 +24,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         [JsonProperty("recordingVisible")]
         public bool? RecordingVisible { get; protected set; }
 
-        [JsonProperty("resourceId")]
-        private string resourceId;
-        public string ResourceId
-        {
-            get => string.IsNullOrEmpty(resourceId) ? $"SceneItem[\"{SceneId}\",\"{SceneItemId}\",\"{SourceId}\"]" : resourceId;
-            set => resourceId = value;
-        }
+        public string ResourceId => $"SceneItem[\"{SceneId}\",\"{SceneItemId}\",\"{SourceId}\"]";
     }
 }

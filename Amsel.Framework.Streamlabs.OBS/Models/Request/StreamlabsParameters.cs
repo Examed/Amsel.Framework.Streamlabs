@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Request
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Request
 {
-    public class StreamlabsParameters : IEquatable<StreamlabsParameters>
+    public class StreamlabsOBSParameters : IEquatable<StreamlabsOBSParameters>
     {
         [JsonProperty("args")]
         public List<object> Args { get; set; }
@@ -13,13 +13,13 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
         [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
         public string Resource { get; set; }
 
-        public StreamlabsParameters(string resource, params object[] args)
+        public StreamlabsOBSParameters(string resource, params object[] args)
         {
             Resource = resource;
             Args = args?.ToList();
         }
 
-        public bool Equals(StreamlabsParameters other)
+        public bool Equals(StreamlabsOBSParameters other)
         {
             var equal = this.Resource == other.Resource && this.Args.Count == other.Args.Count;
 

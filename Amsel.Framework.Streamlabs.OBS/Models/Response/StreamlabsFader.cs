@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsFader
+    public class StreamlabsOBSFader
     {
         [JsonProperty("db")]
         public double DB { get; protected set; }

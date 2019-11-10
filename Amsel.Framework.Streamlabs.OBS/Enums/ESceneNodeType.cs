@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Enums
+namespace Amsel.Framework.StreamlabsOBS.OBS.Enums
 {
     public enum ESceneNodeType
     {

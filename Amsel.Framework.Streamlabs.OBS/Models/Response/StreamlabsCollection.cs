@@ -1,10 +1,10 @@
 ﻿using System;
-using Amsel.Framework.Streamlabs.OBS.Converter;
+using Amsel.Framework.StreamlabsOBS.OBS.Converter;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsCollection
+    public class StreamlabsOBSCollection
     {
         [JsonProperty("id")]
         public string Id { get; protected set; }
@@ -26,13 +26,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         [JsonProperty("serverId")]
         public bool ServerId { get; protected set; }
 
-        [JsonProperty("resourceId")] private string resourceId;
-
-        public string ResourceId
-        {
-            get => string.IsNullOrEmpty(resourceId) ? $"SceneCollection[\"{Id}\"]" : resourceId;
-            set => resourceId = value;
-        }
-
+        public string ResourceId => $"SceneCollection[\"{Id}\"]";
     }
 }

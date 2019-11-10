@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Amsel.Framework.Streamlabs.OBS.Models.Request;
-using Amsel.Framework.Streamlabs.OBS.Service;
+using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
+using Amsel.Framework.StreamlabsOBS.OBS.Service;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsFolder : StreamlabsNode
+    public class StreamlabsOBSFolder : StreamlabsOBSNode
     {
         [JsonProperty("childrenIds")] public List<string> ChildrenIds { get; protected set; }
 
@@ -19,14 +19,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         }
 
 
-        public IEnumerable<StreamlabsFolder> GetFolders(StreamlabsClient client)
+        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client)
         {
-            return client.SendRequest<StreamlabsFolder>(new StreamlabsRequest("getFolders", ResourceId));
+            return client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId));
         }
         [NotNull]
-        public IEnumerable<StreamlabsFolder> GetNestedFolders(StreamlabsClient client)
+        public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client)
         {
-            var result = new List<StreamlabsFolder>();
+            var result = new List<StreamlabsOBSFolder>();
             var folders = GetFolders(client);
             var a = Name;
             foreach (var node in folders)
@@ -37,14 +37,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
             return result;
         }
 
-        public IEnumerable<StreamlabsItem> GetItems(StreamlabsClient client)
+        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client)
         {
-            return client.SendRequest<StreamlabsItem>(new StreamlabsRequest("getItems", ResourceId));
+            return client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId));
         }
         [NotNull]
-        public IEnumerable<StreamlabsItem> GetNestedItems(StreamlabsClient client)
+        public IEnumerable<StreamlabsOBSItem> GetNestedItems(StreamlabsOBSClient client)
         {
-            var result = new List<StreamlabsItem>();
+            var result = new List<StreamlabsOBSItem>();
             var currentItems = GetItems(client);
             if (currentItems != null)
                 result.AddRange(currentItems);

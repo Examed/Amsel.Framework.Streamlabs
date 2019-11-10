@@ -4,28 +4,28 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Threading.Tasks;
-using Amsel.Framework.Streamlabs.OBS.Models.Request;
-using Amsel.Framework.Streamlabs.OBS.Models.Response;
+using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
+using Amsel.Framework.StreamlabsOBS.OBS.Models.Response;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Service
+namespace Amsel.Framework.StreamlabsOBS.OBS.Service
 {
-    public class StreamlabsClient
+    public class StreamlabsOBSClient
     {
         [NotNull] private readonly string pipeName;
 
-        public StreamlabsClient(string pipe = "slobs")
+        public StreamlabsOBSClient(string pipe = "slobs")
         {
             this.pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
         }
 
-        public StreamlabsResponse SendRequest(StreamlabsRequest request, bool servePromises = false)
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false)
         {
             return SendRequestAsync(request).Result;
         }
 
-        public async Task<StreamlabsResponse> SendRequestAsync(StreamlabsRequest request, bool loadPromises = true)
+        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true)
         {
             await using (NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName))
             using (StreamReader reader = new StreamReader(pipe))
@@ -37,14 +37,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
                 pipe?.WaitForPipeDrain();
 
                 string responseJson = reader.ReadLine();
-                StreamlabsResponse response = JsonConvert.DeserializeObject<StreamlabsResponse>(responseJson);
+                StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
                 response.JsonResponse = responseJson;
 
                 if (!loadPromises)
                     return response;
 
                 if (!response.IsEnumberabeResult() && response.Results.IsPromise())
-                    response.Results = JsonConvert.DeserializeObject<StreamlabsResponse>(reader.ReadLine()).Results;
+                    response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(reader.ReadLine()).Results;
 
                 return response;
             }
@@ -52,9 +52,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
 
 
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsRequest request, bool servePromises = false)
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false)
         {
-            return SendRequestAsync(request).Result.GetResult<TResult>();
+            return SendRequestAsync(request).Result.GetResults<TResult>();
         }
 
 
@@ -64,10 +64,10 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
         /// <param name="requests"></param>
         /// <returns></returns>
         [NotNull]
-        private static List<List<StreamlabsRequest>> GetBatch(StreamlabsRequest[] requests)
+        private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests)
         {
-            List<List<StreamlabsRequest>> result = new List<List<StreamlabsRequest>>();
-            List<StreamlabsRequest> current = new List<StreamlabsRequest>();
+            List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
+            List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
 
             for (var i = 0; i < requests.Length; i++)
             {
@@ -75,7 +75,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Service
                 {
                     if (current.Any())
                         result.Add(current);
-                    current = new List<StreamlabsRequest>();
+                    current = new List<StreamlabsOBSRequest>();
                 }
                 current.Add(requests[i]);
             }

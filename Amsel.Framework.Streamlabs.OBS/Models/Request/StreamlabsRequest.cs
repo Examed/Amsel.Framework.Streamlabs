@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Request
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Request
 {
-    public class StreamlabsRequest 
+    public class StreamlabsOBSRequest 
     {
         [JsonProperty("id")]
         public string Id { get; internal set; }
@@ -15,17 +15,17 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
         public string Method { get; internal set; }
 
         [JsonProperty("params")]
-        public StreamlabsParameters Parameters { get; internal set; }
+        public StreamlabsOBSParameters Parameters { get; internal set; }
 
 
-        public StreamlabsRequest(string method, string resource, params object[] args)
+        public StreamlabsOBSRequest(string method, string resource, params object[] args)
         {
             Id = Guid.NewGuid().ToString();
             Method = method;
-            Parameters = new StreamlabsParameters(resource, args);
+            Parameters = new StreamlabsOBSParameters(resource, args);
         }
 
-        public StreamlabsRequest(string method, StreamlabsParameters parameters)
+        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters)
         {
             Id = Guid.NewGuid().ToString();
             Method = method;

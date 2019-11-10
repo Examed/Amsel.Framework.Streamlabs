@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
     [Serializable]
-    public class StreamlabsCrop
+    public class StreamlabsOBSCrop
     {
         [JsonProperty("bottom")]
         public long Bottom { get; protected set; }
