@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.StreamlabsOBS.OBS.Service
@@ -12,8 +13,12 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
             return true;
         }
 
+        [NotNull]
         public static IEnumerable<TResult> GetData<TResult>(this JToken data)
         {
+            if (data == null)
+                return new List<TResult>();
+
             switch (data.Type)
             {
                 case JTokenType.Boolean:

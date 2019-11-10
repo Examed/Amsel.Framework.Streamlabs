@@ -27,6 +27,61 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         }
 
         [DebugOnlyFact]
+        public void ActiveCollection()
+        {
+            var result = service.ActiveCollection();
+        }
+
+        [DebugOnlyFact]
+        public void FetchSchemaCollectionByResorceId()
+        {
+            var collection = service.ActiveCollection();
+            var result = service.FetchSchema(collection.ResourceId);
+        }
+
+        [DebugOnlyFact]
+        public void FetchSchemaCollection()
+        {
+            var collection = service.ActiveCollection();
+            var result = service.FetchSchema(collection);
+        }
+
+        [DebugOnlyFact]
+        public void LoadCollectionById()
+        {
+            var collection = service.ActiveCollection();
+            service.LoadCollection(collection.Id);
+        }
+
+        [DebugOnlyFact]
+        public void LoadCollection()
+        {
+            var collection = service.ActiveCollection();
+            service.LoadCollection(collection);
+        }
+
+        [DebugOnlyFact]
+        public void RenameCollectionById()
+        {
+            var collection = service.ActiveCollection();
+            service.RenameCollection(collection.Id, collection.Name + "Test");
+        }
+
+        [DebugOnlyFact]
+        public void RenameCollection()
+        {
+            var collection = service.ActiveCollection();
+            service.RenameCollection(collection, collection.Name + "Test");
+        }
+
+        [DebugOnlyFact]
+        public void DeleteCollection()
+        {
+            var result = service.Create("test");
+            service.DeleteCollection(result.Id);
+        }
+
+        [DebugOnlyFact]
         public void CollectionAdded()
         {
             service.OnCollectionAdded += (s, e) =>

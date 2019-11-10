@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Utilities
 {
-    public class TimeoutUtils
+    public static class TimeoutUtils
     {
         public static void WhileTimeout(TimeSpan timeSpan)
         {

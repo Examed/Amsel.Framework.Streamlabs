@@ -7,16 +7,21 @@ using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
 {
-    public class StreamlabsOBSScene
+    public class StreamlabsOBSSceneBase
     {
         [JsonProperty("id")] public string Id { get; protected set; }
         [JsonProperty("name")] public string Name { get; protected set; }
 
+    }
+
+    public class StreamlabsOBSScene : StreamlabsOBSSceneBase
+    {
         [JsonProperty("nodes")] public JArray Nodes { get; protected set; }
 
         [JsonProperty("resourceId")] public string ResourceId { get; protected set; }
 
-        [JsonProperty("_type")] public string ResultType { get; protected set; }
+        // TODO _type or type
+        [JsonProperty("type")] public string ResultType { get; protected set; }
 
         [NotNull]
         public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null)

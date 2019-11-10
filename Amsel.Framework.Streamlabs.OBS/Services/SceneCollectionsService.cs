@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
 using Amsel.Framework.StreamlabsOBS.OBS.Models.Response;
@@ -76,6 +77,54 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
         {
             return client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("create", RESOURCE, options))?.FirstOrDefault().GetData<StreamlabsOBSCollection>()?.FirstOrDefault();
         }
+
+        public IEnumerable<SceneCollectionSchema> FetchSchema(StreamlabsOBSCollection collection)
+        {
+            return FetchSchema(collection.ResourceId);
+        }
+
+        public IEnumerable<SceneCollectionSchema> FetchSchema(string ressourceId)
+        {
+            return client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("fetchSceneCollectionsSchema", RESOURCE, ressourceId))?.FirstOrDefault().GetData<SceneCollectionSchema>();
+        }
+
+        public StreamlabsOBSCollection ActiveCollection()
+        {
+            return client.SendRequest<StreamlabsOBSCollection>(new StreamlabsOBSRequest("activeCollection", RESOURCE))?.FirstOrDefault();
+        }
+
+        public void LoadCollection(StreamlabsOBSCollection collection)
+        {
+            LoadCollection(collection.Id);
+        }
+
+        public void LoadCollection(string id)
+        {
+            StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault(); ;
+        }
+
+        public void DeleteCollection(StreamlabsOBSCollection collection)
+        {
+            DeleteCollection(collection.Id);
+        }
+
+        public void DeleteCollection(string id)
+        {
+            StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("delete", RESOURCE, id))?.FirstOrDefault(); ;
+        }
+
+
+        public void RenameCollection(StreamlabsOBSCollection collection, string newName)
+        {
+            RenameCollection(collection.Id, newName);
+        }
+
+        public void RenameCollection(string id, string newNamem)
+        {
+            StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("rename", RESOURCE, newNamem, id))?.FirstOrDefault(); ;
+        }
+
+
 
     }
 
