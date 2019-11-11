@@ -82,6 +82,18 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         }
 
         [DebugOnlyFact]
+        public void GetCollectionByName()
+        {
+            var result = service.GetCollectionByName("test");
+        }
+        [DebugOnlyFact]
+        public void GetCollections()
+        {
+            var result = service.GetCollections();
+        }
+        
+
+        [DebugOnlyFact]
         public void CollectionAdded()
         {
             service.OnCollectionAdded += (s, e) =>

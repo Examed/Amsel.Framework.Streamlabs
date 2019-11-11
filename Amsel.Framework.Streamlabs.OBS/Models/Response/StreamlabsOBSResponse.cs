@@ -37,7 +37,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         public bool IsEnumberabeResult()
         {
-            if (Results.Type == JTokenType.Array)
+            if (Results?.Type == JTokenType.Array)
                 return true;
             return false;
         }

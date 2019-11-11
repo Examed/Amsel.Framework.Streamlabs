@@ -8,7 +8,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities
     {
         public static bool IsPromise(this JToken token)
         {
-            if (token.Value<string>("_type") != "SUBSCRIPTION" || token.Value<string>("emitter") != "PROMISE")
+            if (token == null || !token.HasValues || token.Value<string>("_type") != "SUBSCRIPTION" || token.Value<string>("emitter") != "PROMISE")
                 return false;
             return true;
         }
@@ -21,13 +21,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities
 
             switch (data.Type)
             {
-                case JTokenType.Boolean:
-                    return new List<TResult>();
                 case JTokenType.Array:
                     return data.ToObject<List<TResult>>();
             }
 
-            return new List<TResult> {data.ToObject<TResult>()};
+            return new List<TResult> { data.ToObject<TResult>() };
         }
     }
 }
