@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Amsel.Framework.Streamlabs.OBS.Services;
 using Amsel.Framework.Streamlabs.OBS.Tests.Attribute;
 using Amsel.Framework.Streamlabs.OBS.Tests.Utilities;
-using FakeItEasy;
-using Xunit;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {

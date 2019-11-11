@@ -4,7 +4,6 @@ using System.Linq;
 using Amsel.Framework.Streamlabs.OBS.Clients;
 using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using Amsel.Framework.Streamlabs.OBS.Models.Response;
-using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Services
 {

@@ -4,7 +4,6 @@ using System.Linq;
 using Amsel.Framework.Streamlabs.OBS.Clients;
 using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using Amsel.Framework.Streamlabs.OBS.Models.Response;
-using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Services
 {
@@ -140,16 +139,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         {
             StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("rename", RESOURCE, newNamem, id))?.FirstOrDefault(); ;
         }
-    }
-
-    public class SceneCollectionCreateOptions
-    {
-        public SceneCollectionCreateOptions(string name)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
-
-        [JsonProperty("name")]
-        public string Name { get; protected set; }
     }
 }

@@ -19,13 +19,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities
             if (data == null)
                 return new List<TResult>();
 
-            switch (data.Type)
+            return data.Type switch
             {
-                case JTokenType.Array:
-                    return data.ToObject<List<TResult>>();
-            }
-
-            return new List<TResult> { data.ToObject<TResult>() };
+                JTokenType.Array => (data.ToObject<List<TResult>>() ?? new List<TResult>()),
+                _ => new List<TResult> { data.ToObject<TResult>() }
+            };
         }
     }
 }
