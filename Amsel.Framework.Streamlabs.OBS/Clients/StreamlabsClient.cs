@@ -4,12 +4,13 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Threading.Tasks;
-using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
-using Amsel.Framework.StreamlabsOBS.OBS.Models.Response;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Models.Response;
+using Amsel.Framework.Streamlabs.OBS.Utilities;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Service
+namespace Amsel.Framework.Streamlabs.OBS.Clients
 {
     public class StreamlabsOBSClient
     {

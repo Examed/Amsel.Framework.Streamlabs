@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Converters;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Converter
+namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
 {
     class DateTimeConverter : IsoDateTimeConverter
     {

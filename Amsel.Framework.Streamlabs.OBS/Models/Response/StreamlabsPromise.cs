@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
  
     public class StreamlabsOBSPromise 

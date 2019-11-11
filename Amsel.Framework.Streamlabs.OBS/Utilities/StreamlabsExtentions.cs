@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Service
+namespace Amsel.Framework.Streamlabs.OBS.Utilities
 {
     public static class StreamlabsOBSExtentions
     {

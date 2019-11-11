@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Request
+namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSRequest 
     {

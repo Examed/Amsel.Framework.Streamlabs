@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.Socket.Models.EventTypes
+namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsTwitchFollow : StreamlabsEventModel
     {

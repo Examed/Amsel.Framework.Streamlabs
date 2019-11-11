@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     [Serializable]
     public class StreamlabsOBSCrop

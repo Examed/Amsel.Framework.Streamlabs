@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Amsel.Framework.StreamlabsOBS.OBS.Service;
+using Amsel.Framework.Streamlabs.OBS.Utilities;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
 
     public class StreamlabsOBSResponse

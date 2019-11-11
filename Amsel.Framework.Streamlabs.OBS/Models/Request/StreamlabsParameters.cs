@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Request
+namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSParameters : IEquatable<StreamlabsOBSParameters>
     {

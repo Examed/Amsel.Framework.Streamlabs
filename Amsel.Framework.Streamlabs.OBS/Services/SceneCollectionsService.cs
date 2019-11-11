@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Amsel.Framework.StreamlabsOBS.OBS.Models.Request;
-using Amsel.Framework.StreamlabsOBS.OBS.Models.Response;
+using Amsel.Framework.Streamlabs.OBS.Clients;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Models.Response;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Service
+namespace Amsel.Framework.Streamlabs.OBS.Services
 {
     public class SceneCollectionsService
     {
@@ -13,22 +14,22 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
 
         private readonly StreamlabsOBSClient client;
 
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> collectionAddedHandler
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionAddedHandler
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionAdded", RESOURCE));
 
         public event EventHandler<StreamlabsOBSEvent> OnCollectionAdded
         {
-            add => collectionAddedHandler.Subscribe(value);
-            remove => collectionAddedHandler.UnSubscribe(value);
+            add => CollectionAddedHandler.Subscribe(value);
+            remove => CollectionAddedHandler.UnSubscribe(value);
         }
 
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> collectionRemovedHandler
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionRemovedHandler
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionRemoved", RESOURCE));
 
         public event EventHandler<StreamlabsOBSEvent> OnCollectionRemoved
         {
-            add => collectionRemovedHandler.Subscribe(value);
-            remove => collectionRemovedHandler.UnSubscribe(value);
+            add => CollectionRemovedHandler.Subscribe(value);
+            remove => CollectionRemovedHandler.UnSubscribe(value);
         }
 
         public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSCollection> CollectionSwitchedHandler
@@ -40,23 +41,23 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
             remove => CollectionSwitchedHandler.UnSubscribe(value);
         }
 
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> collectionUpdatedHandler
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionUpdatedHandler
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionUpdated", RESOURCE));
 
         public event EventHandler<StreamlabsOBSEvent> OnCollectionUpdated
         {
-            add => collectionUpdatedHandler.Subscribe(value);
-            remove => collectionUpdatedHandler.UnSubscribe(value);
+            add => CollectionUpdatedHandler.Subscribe(value);
+            remove => CollectionUpdatedHandler.UnSubscribe(value);
         }
 
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> collectionWillSwitchHandler
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionWillSwitchHandler
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionWillSwitch", RESOURCE));
 
 
         public event EventHandler<StreamlabsOBSEvent> OnCollectionWillSwitch
         {
-            add => collectionWillSwitchHandler.Subscribe(value);
-            remove => collectionWillSwitchHandler.UnSubscribe(value);
+            add => CollectionWillSwitchHandler.Subscribe(value);
+            remove => CollectionWillSwitchHandler.UnSubscribe(value);
         }
 
         public SceneCollectionsService()
@@ -103,6 +104,22 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
             StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault(); ;
         }
 
+        public IEnumerable<StreamlabsOBSCollection> GetCollections()
+        {
+            return client.SendRequest<StreamlabsOBSCollection>(new StreamlabsOBSRequest("collections", RESOURCE));
+        }
+
+        public StreamlabsOBSCollection GetCollectionByName(string name)
+        {
+            return GetCollections()?.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void LoadCollectionByName(string name)
+        {
+            var collection = GetCollectionByName(name);
+            LoadCollection(collection);
+        }
+
         public void DeleteCollection(StreamlabsOBSCollection collection)
         {
             DeleteCollection(collection.Id);
@@ -123,9 +140,6 @@ namespace Amsel.Framework.StreamlabsOBS.OBS.Service
         {
             StreamlabsOBSEvent result = client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("rename", RESOURCE, newNamem, id))?.FirstOrDefault(); ;
         }
-
-
-
     }
 
     public class SceneCollectionCreateOptions

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Amsel.Framework.StreamlabsOBS.OBS.Enums;
-using Amsel.Framework.StreamlabsOBS.OBS.Service;
+using Amsel.Framework.Streamlabs.OBS.Clients;
+using Amsel.Framework.Streamlabs.OBS.Enums;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSSceneBase
     {

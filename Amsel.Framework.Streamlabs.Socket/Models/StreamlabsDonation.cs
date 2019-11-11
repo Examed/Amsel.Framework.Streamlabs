@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Amsel.Framework.Streamlabs.Socket.Models.EventTypes
+namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsDonation : StreamlabsMessage
     {

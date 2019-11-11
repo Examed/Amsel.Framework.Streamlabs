@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Amsel.Framework.Streamlabs.Socket.Models.EventTypes;
+using Amsel.Framework.Streamlabs.Socket.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 
-namespace AmselEngine.Connection.Streamlabs.Methodes
+namespace Amsel.Framework.Streamlabs.Socket.Methodes
 {
     public class StreamlabsSoket
     {
@@ -31,21 +30,21 @@ namespace AmselEngine.Connection.Streamlabs.Methodes
                 Upgrade = true
             };
 
-            Socket socket = IO.Socket(url, opt);
+            Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket(url, opt);
 
-            socket.On(Socket.EVENT_CONNECT, () =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () =>
             {
                 Log?.LogDebug("Connected");
                 OnConnected?.Invoke(this, new EventArgs());
             });
 
-            socket.On(Socket.EVENT_DISCONNECT, data =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data =>
             {
                 Log?.LogDebug($"Disonnected: {data}");
                 OnDisconnected?.Invoke(this, (string)data);
             });
 
-            socket.On(Socket.EVENT_ERROR, data =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data =>
             {
                 Log?.LogDebug($"Error: {data}");
                 OnError?.Invoke(this, (string)data);

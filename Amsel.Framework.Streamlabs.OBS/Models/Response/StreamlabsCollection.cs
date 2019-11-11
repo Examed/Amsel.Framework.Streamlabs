@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Amsel.Framework.StreamlabsOBS.OBS.Converter;
+using Amsel.Framework.Streamlabs.OBS.Utilities.Converter;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.StreamlabsOBS.OBS.Models.Response
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
-
     public class SceneCollectionSchema
     {
         [JsonProperty("id")]
