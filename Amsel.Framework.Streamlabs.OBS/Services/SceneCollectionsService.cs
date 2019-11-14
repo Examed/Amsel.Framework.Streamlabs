@@ -71,9 +71,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 
         public StreamlabsOBSCollection Create(string name)
         {
-            return Create(new SceneCollectionCreateOptions(name));
+            return Create(new StreamlabsOBSSceneCollectionCreateOptions(name));
         }
-        public StreamlabsOBSCollection Create(SceneCollectionCreateOptions options)
+        public StreamlabsOBSCollection Create(StreamlabsOBSSceneCollectionCreateOptions options)
         {
             return client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("create", RESOURCE, options))?.FirstOrDefault().GetData<StreamlabsOBSCollection>()?.FirstOrDefault();
         }

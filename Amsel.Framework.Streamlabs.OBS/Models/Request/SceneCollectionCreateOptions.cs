@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Services
 {
-    public class SceneCollectionCreateOptions
+    public class StreamlabsOBSSceneCollectionCreateOptions
     {
-        public SceneCollectionCreateOptions(string name)
+        public StreamlabsOBSSceneCollectionCreateOptions(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }

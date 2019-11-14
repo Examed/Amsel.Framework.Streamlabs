@@ -19,7 +19,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         [DebugOnlyFact]
         public void CreateWithOptions()
         {
-            var result = service.Create(new SceneCollectionCreateOptions("test"));
+            var result = service.Create(new StreamlabsOBSSceneCollectionCreateOptions("test"));
         }
 
         [DebugOnlyFact]
