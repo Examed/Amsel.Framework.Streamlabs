@@ -6,13 +6,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
 {
     public class SceneNodeTypeConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType) => objectType == typeof(ESceneNodeType) || objectType == typeof(ESceneNodeType?);
+        public override bool CanConvert(Type objectType) {
+            return objectType == typeof(ESceneNodeType) || objectType == typeof(ESceneNodeType?);
+        }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+                                        JsonSerializer serializer) {
             if (reader.TokenType == JsonToken.Null) return null;
-            switch (serializer.Deserialize<string>(reader))
-            {
+            switch (serializer.Deserialize<string>(reader)) {
                 case "folder":
                     return ESceneNodeType.FOLDER;
 
@@ -23,12 +24,10 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
             throw new Exception("Cannot unmarshal type SceneNodeType");
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             if (value == null) serializer.Serialize(writer, null);
 
-            switch ((ESceneNodeType)value)
-            {
+            switch ((ESceneNodeType) value) {
                 case ESceneNodeType.FOLDER:
                     serializer.Serialize(writer, "folder");
                     return;

@@ -7,41 +7,31 @@ using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
-
     public class StreamlabsOBSResponse
     {
-        [JsonProperty("error")]
-        public StreamlabsOBSError Error { get; protected set; }
+        [JsonProperty("error")] public StreamlabsOBSError Error { get; protected set; }
 
-        [JsonProperty("id")]
-        public string Id { get; protected set; }
+        [JsonProperty("id")] public string Id { get; protected set; }
 
-        [JsonProperty("jsonrpc")]
-        public string Jsonrpc { get; protected set; }
+        [JsonProperty("jsonrpc")] public string Jsonrpc { get; protected set; }
 
         public string JsonResponse { get; set; }
 
-        [JsonProperty("result")]
-        public JToken Results { get; set; }
+        [JsonProperty("result")] public JToken Results { get; set; }
 
         [NotNull]
-        public IEnumerable<TResult> GetResults<TResult>()
-        {
+        public IEnumerable<TResult> GetResults<TResult>() {
             return Results.GetData<TResult>() ?? new List<TResult>();
         }
 
-        public TResult GetResultFirstOrDefault<TResult>()
-        {
+        public TResult GetResultFirstOrDefault<TResult>() {
             return GetResults<TResult>().FirstOrDefault();
         }
 
-        public bool IsEnumberabeResult()
-        {
+        public bool IsEnumberabeResult() {
             if (Results?.Type == JTokenType.Array)
                 return true;
             return false;
         }
-
-
     }
 }

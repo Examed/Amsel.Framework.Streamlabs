@@ -5,12 +5,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSSceneCollectionCreateOptions
     {
-        public StreamlabsOBSSceneCollectionCreateOptions(string name)
-        {
+        #region  CONSTRUCTORS
+
+        public StreamlabsOBSSceneCollectionCreateOptions(string name) {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
-        [JsonProperty("name")]
-        public string Name { get; protected set; }
+        #endregion
+
+        [JsonProperty("name")] public string Name { get; protected set; }
     }
 }

@@ -6,27 +6,26 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
     [Serializable]
     public class StreamlabsOBSTransform
     {
-        public StreamlabsOBSTransform(StreamlabsOBSCrop crop, StreamlabsOBSPosition position, long rotation, StreamlabsOBSPosition scale)
-        {
-            Crop = crop;
+        #region  CONSTRUCTORS
+
+        public StreamlabsOBSTransform(StreamlabsOBSCrop crop, StreamlabsOBSPosition position, long rotation,
+                                      StreamlabsOBSPosition scale) {
+            Crop     = crop;
             Position = position;
             Rotation = rotation;
-            Scale = scale;
-        }
-        protected StreamlabsOBSTransform()
-        {
+            Scale    = scale;
         }
 
-        [JsonProperty("crop")]
-        public StreamlabsOBSCrop Crop { get; set; }
+        protected StreamlabsOBSTransform() { }
 
-        [JsonProperty("position")]
-        public StreamlabsOBSPosition Position { get; set; }
+        #endregion
 
-        [JsonProperty("rotation")]
-        public long Rotation { get; set; }
+        [JsonProperty("crop")] public StreamlabsOBSCrop Crop { get; set; }
 
-        [JsonProperty("scale")]
-        public StreamlabsOBSPosition Scale { get; set; }
+        [JsonProperty("position")] public StreamlabsOBSPosition Position { get; set; }
+
+        [JsonProperty("rotation")] public long Rotation { get; set; }
+
+        [JsonProperty("scale")] public StreamlabsOBSPosition Scale { get; set; }
     }
 }
