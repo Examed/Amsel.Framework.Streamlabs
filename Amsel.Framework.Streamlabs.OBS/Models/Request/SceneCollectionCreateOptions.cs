@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Amsel.Framework.Streamlabs.OBS.Services
+namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSSceneCollectionCreateOptions
     {

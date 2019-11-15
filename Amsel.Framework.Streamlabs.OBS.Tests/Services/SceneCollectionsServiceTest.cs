@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using Amsel.Framework.Streamlabs.OBS.Services;
 using Amsel.Framework.Streamlabs.OBS.Tests.Attribute;
 using Amsel.Framework.Streamlabs.OBS.Tests.Utilities;
