@@ -76,6 +76,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
             return client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScenes", RESOURCE));
         }
 
+        public bool MakeSceneActiveByName(string name) {
+            var scene = GetSceneByName(name);
+            return MakeSceneActive(scene.Id);
+        }
+
         public bool MakeSceneActive(string id) {
             return client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))
                          ?.FirstOrDefault() ?? false;
