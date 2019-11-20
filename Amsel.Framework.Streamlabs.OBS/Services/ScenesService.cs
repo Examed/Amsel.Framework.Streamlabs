@@ -9,6 +9,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 {
     public class ScenesService
     {
+        #region STATICS, CONST and FIELDS
+
         private const string RESOURCE = "ScenesService";
 
         private readonly StreamlabsOBSClient client;
@@ -36,6 +38,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene> SceneSwitched
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneSwitched",
                                                                                                 RESOURCE));
+
+        #endregion
 
         #region  CONSTRUCTORS
 
@@ -77,7 +81,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         }
 
         public bool MakeSceneActiveByName(string name) {
-            var scene = GetSceneByName(name);
+            StreamlabsOBSScene scene = GetSceneByName(name);
             return MakeSceneActive(scene.Id);
         }
 

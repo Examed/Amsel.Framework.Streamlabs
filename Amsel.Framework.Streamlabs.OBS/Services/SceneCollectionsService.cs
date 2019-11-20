@@ -9,6 +9,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 {
     public class SceneCollectionsService
     {
+        #region STATICS, CONST and FIELDS
+
         private const string RESOURCE = "SceneCollectionsService";
 
         private readonly StreamlabsOBSClient client;
@@ -33,6 +35,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionWillSwitchHandler
             = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionWillSwitch",
                                                                                                 RESOURCE));
+
+        #endregion
 
         #region  CONSTRUCTORS
 

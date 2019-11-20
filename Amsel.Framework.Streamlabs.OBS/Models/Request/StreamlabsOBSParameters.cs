@@ -11,7 +11,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 
         public StreamlabsOBSParameters(string resource, params object[] args) {
             Resource = resource;
-            Args     = args?.ToList();
+            Args = args?.ToList();
         }
 
         #endregion

@@ -11,29 +11,24 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 {
     public class StreamlabsOBSSubscriptionHandler<TResponse> : IDisposable where TResponse : class
     {
+        #region STATICS, CONST and FIELDS
+
         private readonly CancellationToken externCancellationToken;
         private readonly string pipeName;
         private readonly StreamlabsOBSRequest request;
         private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
+
+        #endregion
 
         #region  CONSTRUCTORS
 
         public StreamlabsOBSSubscriptionHandler(StreamlabsOBSRequest request,
                                                 CancellationToken cancellationToken = default,
                                                 string pipeName = "slobs") {
-            this.request  = request;
+            this.request = request;
             this.pipeName = pipeName;
             if (cancellationToken != default)
                 externCancellationToken = cancellationToken;
-        }
-
-        #endregion
-
-        #region IDisposable Members
-
-        /// <inheritdoc />
-        public void Dispose() {
-            unsubscribeToken.Cancel();
         }
 
         #endregion
@@ -47,7 +42,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
             OnData += value;
             Task.Factory.StartNew(async () => {
                 await using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
-                using StreamReader                reader = new StreamReader(stream);
+                using StreamReader reader = new StreamReader(stream);
                 using (StreamWriter writer = new StreamWriter(stream)) {
                     await stream.ConnectAsync(5000, externCancellationToken);
 
@@ -87,5 +82,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
+
+        #region IDisposable Members
+
+        /// <inheritdoc />
+        public void Dispose() {
+            unsubscribeToken.Cancel();
+        }
+
+        #endregion
     }
 }

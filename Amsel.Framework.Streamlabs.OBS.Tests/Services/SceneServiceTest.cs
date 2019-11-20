@@ -10,7 +10,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
     public class SceneServiceTest
     {
+        #region STATICS, CONST and FIELDS
+
         private readonly ScenesService service = new ScenesService();
+
+        #endregion
 
         [DebugOnlyFact]
         public void CreateScene() {
@@ -24,7 +28,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 
         [DebugOnlyFact]
         public void GetScene() {
-            StreamlabsOBSScene scene  = service.ActiveScene();
+            StreamlabsOBSScene scene = service.ActiveScene();
             StreamlabsOBSScene result = service.GetScene(scene.Id);
         }
 
@@ -40,13 +44,13 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 
         [DebugOnlyFact]
         public void MakeSceneActive() {
-            StreamlabsOBSScene scene  = service.GetSceneByName("test");
-            bool               result = service.MakeSceneActive(scene.Id);
+            StreamlabsOBSScene scene = service.GetSceneByName("test");
+            bool result = service.MakeSceneActive(scene.Id);
         }
 
         [DebugOnlyFact]
         public void RemoveScene() {
-            StreamlabsOBSScene     scene  = service.GetSceneByName("test");
+            StreamlabsOBSScene scene = service.GetSceneByName("test");
             StreamlabsOBSSceneBase result = service.RemoveScene(scene.Id);
         }
 

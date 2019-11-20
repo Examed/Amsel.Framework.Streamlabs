@@ -16,7 +16,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Utilities
             while (!success && elapsed < timeSpan.TotalMilliseconds) {
                 Thread.Sleep(1000);
                 elapsed += 1000;
-                success =  task();
+                success = task();
             }
 
             return success;

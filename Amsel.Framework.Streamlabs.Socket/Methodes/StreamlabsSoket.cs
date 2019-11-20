@@ -9,7 +9,11 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 {
     public class StreamlabsSoket
     {
+        #region STATICS, CONST and FIELDS
+
         private readonly ILogger Log;
+
+        #endregion
 
         #region  CONSTRUCTORS
 
@@ -22,13 +26,13 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
         public void Connect(string socketToken) {
             var url = "https://sockets.streamlabs.com";
             IO.Options opt = new IO.Options {
-                QueryString       = "token=" + socketToken,
-                Reconnection      = true,
+                QueryString = "token=" + socketToken,
+                Reconnection = true,
                 ReconnectionDelay = 500,
-                Port              = 433,
-                Secure            = true,
-                AutoConnect       = false,
-                Upgrade           = true
+                Port = 433,
+                Secure = true,
+                AutoConnect = false,
+                Upgrade = true
             };
 
             Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket(url, opt);

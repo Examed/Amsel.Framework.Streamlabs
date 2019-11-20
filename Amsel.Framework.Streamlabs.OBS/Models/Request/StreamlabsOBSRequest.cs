@@ -8,14 +8,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
         #region  CONSTRUCTORS
 
         public StreamlabsOBSRequest(string method, string resource, params object[] args) {
-            Id         = Guid.NewGuid().ToString();
-            Method     = method;
+            Id = Guid.NewGuid().ToString();
+            Method = method;
             Parameters = new StreamlabsOBSParameters(resource, args);
         }
 
         public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters) {
-            Id         = Guid.NewGuid().ToString();
-            Method     = method;
+            Id = Guid.NewGuid().ToString();
+            Method = method;
             Parameters = parameters;
         }
 

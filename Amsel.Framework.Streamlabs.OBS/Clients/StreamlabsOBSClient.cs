@@ -14,7 +14,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 {
     public class StreamlabsOBSClient
     {
+        #region STATICS, CONST and FIELDS
+
         [NotNull] private readonly string pipeName;
+
+        #endregion
 
         #region  CONSTRUCTORS
 
@@ -38,8 +42,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                 await writer.FlushAsync();
                 pipe?.WaitForPipeDrain();
 
-                string                responseJson = reader.ReadLine();
-                StreamlabsOBSResponse response     = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
+                string responseJson = reader.ReadLine();
+                StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
                 response.JsonResponse = responseJson;
 
                 if (!loadPromises)
@@ -65,8 +69,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
         /// <returns></returns>
         [NotNull]
         private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests) {
-            List<List<StreamlabsOBSRequest>> result  = new List<List<StreamlabsOBSRequest>>();
-            List<StreamlabsOBSRequest>       current = new List<StreamlabsOBSRequest>();
+            List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
+            List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
 
             for (var i = 0; i < requests.Length; i++) {
                 if (i % 5 == 0) {

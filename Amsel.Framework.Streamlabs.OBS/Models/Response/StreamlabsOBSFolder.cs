@@ -8,7 +8,12 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSFolder : StreamlabsOBSNode
     {
+        #region STATICS, CONST and FIELDS
+
         [JsonProperty("resourceId")] private string resourceId;
+
+        #endregion
+
         [JsonProperty("childrenIds")] public List<string> ChildrenIds { get; protected set; }
 
         public string ResourceId {
@@ -23,9 +28,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [NotNull]
         public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client) {
-            List<StreamlabsOBSFolder>        result  = new List<StreamlabsOBSFolder>();
+            List<StreamlabsOBSFolder> result = new List<StreamlabsOBSFolder>();
             IEnumerable<StreamlabsOBSFolder> folders = GetFolders(client);
-            string                           a       = Name;
+            string a = Name;
             foreach (StreamlabsOBSFolder node in folders) {
                 result.Add(node);
                 result.AddRange(node.GetNestedFolders(client));
@@ -40,7 +45,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [NotNull]
         public IEnumerable<StreamlabsOBSItem> GetNestedItems(StreamlabsOBSClient client) {
-            List<StreamlabsOBSItem>        result       = new List<StreamlabsOBSItem>();
+            List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
             IEnumerable<StreamlabsOBSItem> currentItems = GetItems(client);
             if (currentItems != null)
                 result.AddRange(currentItems);

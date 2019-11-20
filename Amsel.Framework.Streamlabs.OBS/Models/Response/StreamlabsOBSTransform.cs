@@ -10,10 +10,10 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         public StreamlabsOBSTransform(StreamlabsOBSCrop crop, StreamlabsOBSPosition position, long rotation,
                                       StreamlabsOBSPosition scale) {
-            Crop     = crop;
+            Crop = crop;
             Position = position;
             Rotation = rotation;
-            Scale    = scale;
+            Scale = scale;
         }
 
         protected StreamlabsOBSTransform() { }

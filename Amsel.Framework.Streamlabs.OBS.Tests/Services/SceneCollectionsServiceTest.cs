@@ -11,7 +11,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
     public class SceneCollectionsServiceTest
     {
+        #region STATICS, CONST and FIELDS
+
         private readonly SceneCollectionsService service = new SceneCollectionsService();
+
+        #endregion
 
         [DebugOnlyFact]
         public void CreateWithName() {
@@ -30,14 +34,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 
         [DebugOnlyFact]
         public void FetchSchemaCollectionByResorceId() {
-            StreamlabsOBSCollection            collection = service.ActiveCollection();
-            IEnumerable<SceneCollectionSchema> result     = service.FetchSchema(collection.ResourceId);
+            StreamlabsOBSCollection collection = service.ActiveCollection();
+            IEnumerable<SceneCollectionSchema> result = service.FetchSchema(collection.ResourceId);
         }
 
         [DebugOnlyFact]
         public void FetchSchemaCollection() {
-            StreamlabsOBSCollection            collection = service.ActiveCollection();
-            IEnumerable<SceneCollectionSchema> result     = service.FetchSchema(collection);
+            StreamlabsOBSCollection collection = service.ActiveCollection();
+            IEnumerable<SceneCollectionSchema> result = service.FetchSchema(collection);
         }
 
         [DebugOnlyFact]
