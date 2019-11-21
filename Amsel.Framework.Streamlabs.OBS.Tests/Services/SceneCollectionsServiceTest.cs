@@ -18,102 +18,124 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         #endregion
 
         [DebugOnlyFact]
-        public void CreateWithName() {
+        public void CreateWithName()
+        {
             StreamlabsOBSCollection result = service.Create("test");
         }
 
         [DebugOnlyFact]
-        public void CreateWithOptions() {
+        public void CreateWithOptions()
+        {
             StreamlabsOBSCollection result = service.Create(new StreamlabsOBSSceneCollectionCreateOptions("test"));
         }
 
         [DebugOnlyFact]
-        public void ActiveCollection() {
+        public void ActiveCollection()
+        {
             StreamlabsOBSCollection result = service.ActiveCollection();
         }
 
         [DebugOnlyFact]
-        public void FetchSchemaCollectionByResorceId() {
+        public void FetchSchemaCollectionByResourceId()
+        {
             StreamlabsOBSCollection collection = service.ActiveCollection();
-            IEnumerable<SceneCollectionSchema> result = service.FetchSchema(collection.ResourceId);
+            SceneCollectionSchema result = service.FetchSchemaForCollectionById(collection.ResourceId);
         }
 
         [DebugOnlyFact]
-        public void FetchSchemaCollection() {
+        public void FetchSchemaCollectionByName()
+        {
             StreamlabsOBSCollection collection = service.ActiveCollection();
-            IEnumerable<SceneCollectionSchema> result = service.FetchSchema(collection);
+            SceneCollectionSchema result = service.FetchSchemaForCollectionByName(collection.Name);
+        }
+        [DebugOnlyFact]
+        public void FetchSchemaCollection()
+        {
+            IEnumerable<SceneCollectionSchema> result = service.FetchSchema();
         }
 
         [DebugOnlyFact]
-        public void LoadCollectionById() {
-            StreamlabsOBSCollection collection = service.ActiveCollection();
+        public void LoadCollectionById()
+        {
+            StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection.Id);
         }
 
         [DebugOnlyFact]
-        public void LoadCollection() {
-            StreamlabsOBSCollection collection = service.ActiveCollection();
+        public void LoadCollection()
+        {
+            StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection);
         }
 
         [DebugOnlyFact]
-        public void RenameCollectionById() {
+        public void RenameCollectionById()
+        {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection.Id, collection.Name + "Test");
         }
 
         [DebugOnlyFact]
-        public void RenameCollection() {
+        public void RenameCollection()
+        {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection, collection.Name + "Test");
         }
 
         [DebugOnlyFact]
-        public void DeleteCollection() {
+        public void DeleteCollection()
+        {
             StreamlabsOBSCollection result = service.Create("test");
             service.DeleteCollection(result.Id);
         }
 
         [DebugOnlyFact]
-        public void GetCollectionByName() {
+        public void GetCollectionByName()
+        {
             StreamlabsOBSCollection result = service.GetCollectionByName("test");
         }
 
         [DebugOnlyFact]
-        public void GetCollections() {
+        public void GetCollections()
+        {
             IEnumerable<StreamlabsOBSCollection> result = service.GetCollections();
         }
 
 
         [DebugOnlyFact]
-        public void CollectionAdded() {
+        public void CollectionAdded()
+        {
             service.OnCollectionAdded += (s, e) => { Debug.Write(nameof(service.OnCollectionAdded)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionRemoved() {
+        public void CollectionRemoved()
+        {
             service.OnCollectionRemoved += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionSwitched() {
+        public void CollectionSwitched()
+        {
             service.OnCollectionSwitched += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionUpdated() {
+        public void CollectionUpdated()
+        {
             service.OnCollectionUpdated += (s, e) => { Debug.Write(nameof(service.OnCollectionUpdated)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionWillSwitch() {
+        public void CollectionWillSwitch()
+        {
             service.OnCollectionWillSwitch += (s, e) => { Debug.Write(nameof(service.OnCollectionWillSwitch)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
