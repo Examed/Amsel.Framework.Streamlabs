@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Amsel.Framework.Streamlabs.OBS.Models.Response;
 using Amsel.Framework.Streamlabs.OBS.Services;
@@ -17,41 +16,33 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         #endregion
 
         [DebugOnlyFact]
-        public void CreateScene() {
-            StreamlabsOBSScene result = service.CreateScene("test");
-        }
+        public void CreateScene() { _ = service.CreateScene("test"); }
 
         [DebugOnlyFact]
-        public void ActiveScene() {
-            StreamlabsOBSScene result = service.ActiveScene();
-        }
+        public void ActiveScene() { _ = service.ActiveScene(); }
 
         [DebugOnlyFact]
         public void GetScene() {
             StreamlabsOBSScene scene = service.ActiveScene();
-            StreamlabsOBSScene result = service.GetScene(scene.Id);
+            _ = service.GetScene(scene.Id);
         }
 
         [DebugOnlyFact]
-        public void GetScenes() {
-            IEnumerable<StreamlabsOBSScene> result = service.GetScenes();
-        }
+        public void GetScenes() { _ = service.GetScenes(); }
 
         [DebugOnlyFact]
-        public void GetSceneByName() {
-            StreamlabsOBSScene result = service.GetSceneByName("test");
-        }
+        public void GetSceneByName() { _ = service.GetSceneByName("test"); }
 
         [DebugOnlyFact]
         public void MakeSceneActive() {
             StreamlabsOBSScene scene = service.GetSceneByName("test");
-            bool result = service.MakeSceneActive(scene.Id);
+            _ = service.MakeSceneActive(scene.Id);
         }
 
         [DebugOnlyFact]
         public void RemoveScene() {
             StreamlabsOBSScene scene = service.GetSceneByName("test");
-            StreamlabsOBSSceneBase result = service.RemoveScene(scene.Id);
+            _ = service.RemoveScene(scene.Id);
         }
 
 

@@ -11,15 +11,13 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
     {
         #region STATICS, CONST and FIELDS
 
-        private readonly ILogger Log;
+        private readonly ILogger log;
 
         #endregion
 
         #region  CONSTRUCTORS
 
-        public StreamlabsSoket(ILogger logger = null) {
-            Log = logger;
-        }
+        public StreamlabsSoket(ILogger logger = null) { log = logger; }
 
         #endregion
 
@@ -38,22 +36,22 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
             Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket(url, opt);
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () => {
-                Log?.LogDebug("Connected");
+                log?.LogDebug("Connected");
                 OnConnected?.Invoke(this, new EventArgs());
             });
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data => {
-                Log?.LogDebug($"Disonnected: {data}");
+                log?.LogDebug($"Disonnected: {data}");
                 OnDisconnected?.Invoke(this, (string) data);
             });
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data => {
-                Log?.LogDebug($"Error: {data}");
+                log?.LogDebug($"Error: {data}");
                 OnError?.Invoke(this, (string) data);
             });
 
             socket.On("event", data => {
-                Log?.LogTrace($"EventData: {data}");
+                log?.LogTrace($"EventData: {data}");
                 Console.WriteLine(data);
 
                 StreamlabsEvent streamlabsEvent = JsonConvert.DeserializeObject<StreamlabsEvent>(data.ToString());

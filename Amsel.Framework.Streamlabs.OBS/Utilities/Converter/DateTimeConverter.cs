@@ -6,9 +6,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
     {
         #region  CONSTRUCTORS
 
-        public DateTimeConverter() {
-            DateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
-        }
+        public DateTimeConverter() { DateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fffZ"; }
 
         #endregion
     }

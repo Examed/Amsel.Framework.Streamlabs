@@ -22,15 +22,12 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         }
 
 
-        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) {
-            return client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId));
-        }
+        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) { return client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId)); }
 
         [NotNull]
         public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client) {
             List<StreamlabsOBSFolder> result = new List<StreamlabsOBSFolder>();
             IEnumerable<StreamlabsOBSFolder> folders = GetFolders(client);
-            string a = Name;
             foreach (StreamlabsOBSFolder node in folders) {
                 result.Add(node);
                 result.AddRange(node.GetNestedFolders(client));
@@ -39,9 +36,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
             return result;
         }
 
-        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) {
-            return client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId));
-        }
+        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) { return client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId)); }
 
         [NotNull]
         public IEnumerable<StreamlabsOBSItem> GetNestedItems(StreamlabsOBSClient client) {

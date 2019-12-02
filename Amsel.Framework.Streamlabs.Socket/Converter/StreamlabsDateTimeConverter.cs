@@ -6,9 +6,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Converter
     {
         #region  CONSTRUCTORS
 
-        public StreamlabsDateTimeConverter() {
-            DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-        }
+        public StreamlabsDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd HH:mm:ss"; }
 
         #endregion
     }

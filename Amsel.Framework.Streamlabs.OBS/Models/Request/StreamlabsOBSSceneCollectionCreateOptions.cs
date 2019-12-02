@@ -7,9 +7,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
     {
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSSceneCollectionCreateOptions(string name) {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
+        public StreamlabsOBSSceneCollectionCreateOptions(string name) { Name = name ?? throw new ArgumentNullException(nameof(name)); }
 
         #endregion
 

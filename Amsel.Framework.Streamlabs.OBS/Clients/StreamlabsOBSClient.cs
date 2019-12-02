@@ -22,27 +22,22 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSClient(string pipe = "slobs") {
-            pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
-        }
+        public StreamlabsOBSClient(string pipe = "slobs") { pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe)); }
 
         #endregion
 
-        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) {
-            return SendRequestAsync(request).Result;
-        }
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) { return SendRequestAsync(request).Result; }
 
-        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request,
-                                                                  bool loadPromises = true) {
+        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true) {
             await using (NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName))
             using (StreamReader reader = new StreamReader(pipe))
             await using (StreamWriter writer = new StreamWriter(pipe) {NewLine = "\n"}) {
-                await pipe.ConnectAsync(5000);
-                await writer.WriteLineAsync(request.ToJson());
-                await writer.FlushAsync();
-                pipe?.WaitForPipeDrain();
+                await pipe.ConnectAsync(5000).ConfigureAwait(false);
+                await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
+                pipe.WaitForPipeDrain();
 
-                string responseJson = reader.ReadLine();
+                string responseJson = await reader.ReadLineAsync().ConfigureAwait(false);
                 StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
                 response.JsonResponse = responseJson;
 
@@ -50,16 +45,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                     return response;
 
                 if (!response.IsEnumberabeResult() && response.Results.IsPromise())
-                    response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(reader.ReadLine()).Results;
+                    response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync().ConfigureAwait(false)).Results;
 
                 return response;
             }
         }
 
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) {
-            return SendRequestAsync(request).Result.GetResults<TResult>();
-        }
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) { return SendRequestAsync(request).Result.GetResults<TResult>(); }
 
 
         /// <summary>

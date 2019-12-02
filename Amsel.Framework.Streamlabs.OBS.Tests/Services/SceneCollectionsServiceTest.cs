@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using Amsel.Framework.Streamlabs.OBS.Models.Response;
@@ -18,124 +17,95 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         #endregion
 
         [DebugOnlyFact]
-        public void CreateWithName()
-        {
-            StreamlabsOBSCollection result = service.Create("test");
+        public void CreateWithName() { _ = service.Create("test"); }
+
+        [DebugOnlyFact]
+        public void CreateWithOptions() { _ = service.Create(new StreamlabsOBSSceneCollectionCreateOptions("test")); }
+
+        [DebugOnlyFact]
+        public void ActiveCollection() { _ = service.ActiveCollection(); }
+
+        [DebugOnlyFact]
+        public void FetchSchemaCollectionByResourceId() {
+            StreamlabsOBSCollection collection = service.ActiveCollection() ?? throw new ArgumentNullException($"service.ActiveCollection()");
+            _ = service.FetchSchemaForCollectionById(collection.ResourceId ?? throw new InvalidOperationException());
         }
 
         [DebugOnlyFact]
-        public void CreateWithOptions()
-        {
-            StreamlabsOBSCollection result = service.Create(new StreamlabsOBSSceneCollectionCreateOptions("test"));
-        }
-
-        [DebugOnlyFact]
-        public void ActiveCollection()
-        {
-            StreamlabsOBSCollection result = service.ActiveCollection();
-        }
-
-        [DebugOnlyFact]
-        public void FetchSchemaCollectionByResourceId()
-        {
+        public void FetchSchemaCollectionByName() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
-            SceneCollectionSchema result = service.FetchSchemaForCollectionById(collection.ResourceId);
+            _ = service.FetchSchemaForCollectionByName(collection.Name);
         }
 
         [DebugOnlyFact]
-        public void FetchSchemaCollectionByName()
-        {
-            StreamlabsOBSCollection collection = service.ActiveCollection();
-            SceneCollectionSchema result = service.FetchSchemaForCollectionByName(collection.Name);
-        }
-        [DebugOnlyFact]
-        public void FetchSchemaCollection()
-        {
-            IEnumerable<SceneCollectionSchema> result = service.FetchSchema();
-        }
+        public void FetchSchemaCollection() { _ = service.FetchSchema(); }
 
         [DebugOnlyFact]
-        public void LoadCollectionById()
-        {
+        public void LoadCollectionById() {
             StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection.Id);
         }
 
         [DebugOnlyFact]
-        public void LoadCollection()
-        {
+        public void LoadCollection() {
             StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection);
         }
 
         [DebugOnlyFact]
-        public void RenameCollectionById()
-        {
+        public void RenameCollectionById() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection.Id, collection.Name + "Test");
         }
 
         [DebugOnlyFact]
-        public void RenameCollection()
-        {
+        public void RenameCollection() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection, collection.Name + "Test");
         }
 
         [DebugOnlyFact]
-        public void DeleteCollection()
-        {
+        public void DeleteCollection() {
             StreamlabsOBSCollection result = service.Create("test");
             service.DeleteCollection(result.Id);
         }
 
         [DebugOnlyFact]
-        public void GetCollectionByName()
-        {
-            StreamlabsOBSCollection result = service.GetCollectionByName("test");
-        }
+        public void GetCollectionByName() { _ = service.GetCollectionByName("test"); }
 
         [DebugOnlyFact]
-        public void GetCollections()
-        {
-            IEnumerable<StreamlabsOBSCollection> result = service.GetCollections();
-        }
+        public void GetCollections() { _ = service.GetCollections(); }
 
 
         [DebugOnlyFact]
-        public void CollectionAdded()
-        {
+        public void CollectionAdded() {
             service.OnCollectionAdded += (s, e) => { Debug.Write(nameof(service.OnCollectionAdded)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionRemoved()
-        {
+        public void CollectionRemoved() {
             service.OnCollectionRemoved += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionSwitched()
-        {
+        public void CollectionSwitched() {
             service.OnCollectionSwitched += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionUpdated()
-        {
+        public void CollectionUpdated() {
             service.OnCollectionUpdated += (s, e) => { Debug.Write(nameof(service.OnCollectionUpdated)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionWillSwitch()
-        {
+        public void CollectionWillSwitch() {
             service.OnCollectionWillSwitch += (s, e) => { Debug.Write(nameof(service.OnCollectionWillSwitch)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }

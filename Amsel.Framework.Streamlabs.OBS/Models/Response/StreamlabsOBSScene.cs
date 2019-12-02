@@ -24,8 +24,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
                 if (type == ESceneNodeType.FOLDER && client != null) {
                     StreamlabsOBSFolder folder = item.ToObject<StreamlabsOBSFolder>();
                     result.AddRange(folder.GetNestedItems(client));
-                }
-                else if (type == ESceneNodeType.ITEM) {
+                } else if (type == ESceneNodeType.ITEM) {
                     result.Add(item.ToObject<StreamlabsOBSItem>());
                 }
             }
