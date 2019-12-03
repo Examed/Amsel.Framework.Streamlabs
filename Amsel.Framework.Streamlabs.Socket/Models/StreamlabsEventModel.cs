@@ -21,8 +21,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("repeat")] public bool Repeat { get; protected set; }
 
-        [JsonProperty("createdAt")]
-        [JsonConverter(typeof(StreamlabsDateTimeConverter))]
+        [JsonProperty("createdAt"), JsonConverter(typeof(StreamlabsDateTimeConverter))]
         public DateTime CreatTime { get; protected set; }
 
         [JsonProperty("platform")] public string Platform { get; protected set; }

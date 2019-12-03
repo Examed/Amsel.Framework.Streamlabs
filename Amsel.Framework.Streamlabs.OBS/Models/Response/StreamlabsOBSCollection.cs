@@ -12,8 +12,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("deleted")] public bool Deleted { get; protected set; }
 
-        [JsonProperty("modified")]
-        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonProperty("modified"), JsonConverter(typeof(DateTimeConverter))]
         public DateTime Modified { get; protected set; }
 
         [JsonProperty("needsRename")] public bool NeedsRename { get; protected set; }
