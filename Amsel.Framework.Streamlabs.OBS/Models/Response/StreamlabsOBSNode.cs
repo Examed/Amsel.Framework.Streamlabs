@@ -14,7 +14,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("sceneId")] public string SceneId { get; protected set; }
 
-        [JsonProperty("sceneNodeType"), JsonConverter(typeof(SceneNodeTypeConverter))]
+        [JsonProperty("sceneNodeType")] [JsonConverter(typeof(SceneNodeTypeConverter))]
         public ESceneNodeType SceneNodeType { get; protected set; }
     }
 }

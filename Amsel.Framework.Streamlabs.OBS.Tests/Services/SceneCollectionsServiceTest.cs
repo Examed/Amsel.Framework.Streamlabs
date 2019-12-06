@@ -27,7 +27,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 
         [DebugOnlyFact]
         public void FetchSchemaCollectionByResourceId() {
-            StreamlabsOBSCollection collection = service.ActiveCollection() ?? throw new ArgumentNullException($"service.ActiveCollection()");
+            StreamlabsOBSCollection collection = service.ActiveCollection() ?? throw new ArgumentNullException("service.ActiveCollection()");
             _ = service.FetchSchemaForCollectionById(collection.ResourceId ?? throw new InvalidOperationException());
         }
 

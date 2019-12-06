@@ -26,7 +26,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         public bool MakeSceneActiveByName([NotNull] string name) {
             if (name == null) throw new ArgumentNullException(nameof(name));
 
-            StreamlabsOBSScene scene = GetSceneByName(name) ?? throw new ArgumentNullException($"GetSceneByName(name)");
+            StreamlabsOBSScene scene = GetSceneByName(name) ?? throw new ArgumentNullException("GetSceneByName(name)");
             return MakeSceneActive(scene.Id);
         }
 
