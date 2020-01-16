@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.OBS.Utilities
 {
-    public static class StreamlabsOBSExtentions
+    public static class StreamlabsOBSExtensions
     {
         public static bool IsPromise(this JToken token) {
             if (token == null || !token.HasValues || token.Value<string>("_type") != "SUBSCRIPTION" || token.Value<string>("emitter") != "PROMISE")

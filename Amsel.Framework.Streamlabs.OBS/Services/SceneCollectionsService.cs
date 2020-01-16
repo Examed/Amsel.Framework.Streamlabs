@@ -4,7 +4,7 @@ using System.Linq;
 using Amsel.Framework.Streamlabs.OBS.Clients;
 using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using Amsel.Framework.Streamlabs.OBS.Models.Response;
-using Amsel.Framework.Utilities.Extentions.Types;
+using Amsel.Framework.Utilities.Extensions.Types;
 using JetBrains.Annotations;
 
 namespace Amsel.Framework.Streamlabs.OBS.Services
