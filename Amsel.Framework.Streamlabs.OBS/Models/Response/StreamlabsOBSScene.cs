@@ -17,15 +17,19 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         [JsonProperty("type")] public string ResultType { get; protected set; }
 
         [NotNull]
-        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null) {
+        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null)
+        {
             List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
-            foreach (JToken item in Nodes) {
+            foreach (JToken item in Nodes)
+            {
                 ESceneNodeType type = item["sceneNodeType"].ToObject<ESceneNodeType>();
-                if (type == ESceneNodeType.FOLDER && client != null) {
+                if (type == ESceneNodeType.FOLDER && client != null)
+                {
                     StreamlabsOBSFolder folder = item.ToObject<StreamlabsOBSFolder>();
                     result.AddRange(folder.GetNestedItems(client));
-                } else if (type == ESceneNodeType.ITEM) {
-                    result.Add(item.ToObject<StreamlabsOBSItem>());
+                } else
+                {
+                    if (type == ESceneNodeType.ITEM) result.Add(item.ToObject<StreamlabsOBSItem>());
                 }
             }
 

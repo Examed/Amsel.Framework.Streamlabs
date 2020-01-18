@@ -9,7 +9,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
     {
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSParameters(string resource, params object[] args) {
+        public StreamlabsOBSParameters(string resource, params object[] args)
+        {
             Resource = resource;
             Args = args?.ToList();
         }
@@ -23,7 +24,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 
         #region IEquatable<StreamlabsOBSParameters> Members
 
-        public bool Equals(StreamlabsOBSParameters other) {
+        public bool Equals(StreamlabsOBSParameters other)
+        {
             bool equal = Resource == other.Resource && Args.Count == other.Args.Count;
 
             for (var i = 0; i < Args.Count; i++) equal = equal && Args[i].Equals(other.Args[i]);

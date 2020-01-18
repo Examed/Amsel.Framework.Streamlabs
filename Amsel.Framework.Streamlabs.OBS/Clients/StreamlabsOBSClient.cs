@@ -22,16 +22,24 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSClient(string pipe = "slobs") { pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe)); }
+        public StreamlabsOBSClient(string pipe = "slobs")
+        {
+            pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
+        }
 
         #endregion
 
-        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) { return SendRequestAsync(request).Result; }
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false)
+        {
+            return SendRequestAsync(request).Result;
+        }
 
-        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true) {
+        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true)
+        {
             await using (NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName))
             using (StreamReader reader = new StreamReader(pipe))
-            await using (StreamWriter writer = new StreamWriter(pipe) {NewLine = "\n"}) {
+            await using (StreamWriter writer = new StreamWriter(pipe) {NewLine = "\n"})
+            {
                 await pipe.ConnectAsync(5000).ConfigureAwait(false);
                 await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
                 await writer.FlushAsync().ConfigureAwait(false);
@@ -52,7 +60,10 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
         }
 
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) { return SendRequestAsync(request).Result.GetResults<TResult>(); }
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false)
+        {
+            return SendRequestAsync(request).Result.GetResults<TResult>();
+        }
 
 
         /// <summary>
@@ -61,12 +72,15 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
         /// <param name="requests"></param>
         /// <returns></returns>
         [NotNull]
-        private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests) {
+        private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests)
+        {
             List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
             List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
 
-            for (var i = 0; i < requests.Length; i++) {
-                if (i % 5 == 0) {
+            for (var i = 0; i < requests.Length; i++)
+            {
+                if (i % 5 == 0)
+                {
                     if (current.Any())
                         result.Add(current);
                     current = new List<StreamlabsOBSRequest>();

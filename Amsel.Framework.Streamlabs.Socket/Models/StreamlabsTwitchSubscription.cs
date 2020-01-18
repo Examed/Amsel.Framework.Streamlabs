@@ -21,8 +21,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("planName")] public string PlanName { get; protected set; }
 
-        [JsonProperty("massSubGiftChildAlerts")]
-        public JArray ChildAlterts { get; protected set; }
+        [JsonProperty("massSubGiftChildAlerts")] public JArray ChildAlterts { get; protected set; }
 
         [JsonProperty("isSubgiftExpanded")] public bool IsExpandedGift { get; protected set; }
 

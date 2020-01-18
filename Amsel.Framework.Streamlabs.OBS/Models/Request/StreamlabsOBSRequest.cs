@@ -13,17 +13,22 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 
         [JsonProperty("params")] public StreamlabsOBSParameters Parameters { get; internal set; }
 
-        public string ToJson() { return JsonConvert.SerializeObject(this)?.Replace("\n", ""); }
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this)?.Replace("\n", "");
+        }
 
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSRequest(string method, string resource, params object[] args) {
+        public StreamlabsOBSRequest(string method, string resource, params object[] args)
+        {
             Id = Guid.NewGuid().ToString();
             Method = method;
             Parameters = new StreamlabsOBSParameters(resource, args);
         }
 
-        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters) {
+        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters)
+        {
             Id = Guid.NewGuid().ToString();
             Method = method;
             Parameters = parameters;

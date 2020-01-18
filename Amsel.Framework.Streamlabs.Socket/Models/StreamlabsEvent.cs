@@ -13,7 +13,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
         public string EventId { get; protected set; }
 
 
-        [JsonProperty(PropertyName = "message")]
-        public JToken Message { get; set; }
+        [JsonProperty(PropertyName = "message")] public JToken Message { get; set; }
     }
 }
