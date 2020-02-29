@@ -26,12 +26,12 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
         public void Connect(string socketToken)
         {
-            var url = "https://sockets.streamlabs.com";
+            var url = $"https://sockets.streamlabs.com";
             IO.Options opt = new IO.Options
             {
                 QueryString = "token=" + socketToken,
                 Reconnection = true,
-                ReconnectionDelay = 500,
+                ReconnectionDelay = 500,             
                 Port = 433,
                 Secure = true,
                 AutoConnect = false,
