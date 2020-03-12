@@ -1,22 +1,28 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     [Serializable]
     public class StreamlabsOBSPosition
     {
-        protected bool Equals(StreamlabsOBSPosition other)
-        {
-            return X.Equals(other.X) && Y.Equals(other.Y);
-        }
+        [JsonProperty("x")] public double X { get; protected set; }
 
-        /// <inheritdoc />
+        [JsonProperty("y")] public double Y { get; protected set; }
+
+        protected bool Equals(StreamlabsOBSPosition other) => X.Equals(other.X) && Y.Equals(other.Y);
+
+        #region PUBLIC METHODES
+        public double Distance() => Math.Abs(X + Y);
+
+        /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((StreamlabsOBSPosition) obj);
+            if(ReferenceEquals(null, obj))
+                return false;
+            if(ReferenceEquals(this, obj))
+                return true;
+            return (obj.GetType() == GetType()) && Equals((StreamlabsOBSPosition)obj);
         }
 
         // ReSharper disable NonReadonlyMemberInGetHashCode
@@ -27,6 +33,21 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
                 return (X.GetHashCode() * 397) ^ Y.GetHashCode();
             }
         }
+        #endregion
+
+        public static StreamlabsOBSPosition operator -(StreamlabsOBSPosition a, StreamlabsOBSPosition b) => a -
+            (b.X, b.Y);
+        public static StreamlabsOBSPosition operator -(StreamlabsOBSPosition a, (double X, double Y) b) => new StreamlabsOBSPosition
+        { X = a.X - b.X, Y = a.Y - b.Y };
+        public static bool operator !=(StreamlabsOBSPosition a, StreamlabsOBSPosition b) => !(a == b);
+        public static StreamlabsOBSPosition operator /(StreamlabsOBSPosition a, double b) => new StreamlabsOBSPosition
+        { X = a.X / b, Y = a.Y / b };
+        public static StreamlabsOBSPosition operator +(StreamlabsOBSPosition a, StreamlabsOBSPosition b) => a +
+            (b.X, b.Y);
+        public static StreamlabsOBSPosition operator +(StreamlabsOBSPosition a, (double X, double Y) b) => new StreamlabsOBSPosition
+        { X = a.X + b.X, Y = a.Y + b.Y };
+        public static bool operator ==(StreamlabsOBSPosition a, StreamlabsOBSPosition b) => ((int)a.X == (int)b.X) &&
+            ((int)a.Y == (int)b.Y);
 
         #region  CONSTRUCTORS
 
@@ -37,51 +58,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
             X = x;
             Y = y;
         }
-
         #endregion
-
-        [JsonProperty("x")] public double X { get; protected set; }
-
-        [JsonProperty("y")] public double Y { get; protected set; }
-
-        public static StreamlabsOBSPosition operator +(StreamlabsOBSPosition a, StreamlabsOBSPosition b)
-        {
-            return a + (b.X, b.Y);
-        }
-
-        public static StreamlabsOBSPosition operator +(StreamlabsOBSPosition a, (double X, double Y) b)
-        {
-            return new StreamlabsOBSPosition {X = a.X + b.X, Y = a.Y + b.Y};
-        }
-
-        public static StreamlabsOBSPosition operator -(StreamlabsOBSPosition a, StreamlabsOBSPosition b)
-        {
-            return a - (b.X, b.Y);
-        }
-
-        public static StreamlabsOBSPosition operator -(StreamlabsOBSPosition a, (double X, double Y) b)
-        {
-            return new StreamlabsOBSPosition {X = a.X - b.X, Y = a.Y - b.Y};
-        }
-
-        public static StreamlabsOBSPosition operator /(StreamlabsOBSPosition a, double b)
-        {
-            return new StreamlabsOBSPosition {X = a.X / b, Y = a.Y / b};
-        }
-
-        public static bool operator ==(StreamlabsOBSPosition a, StreamlabsOBSPosition b)
-        {
-            return (int) a.X == (int) b.X && (int) a.Y == (int) b.Y;
-        }
-
-        public static bool operator !=(StreamlabsOBSPosition a, StreamlabsOBSPosition b)
-        {
-            return !(a == b);
-        }
-
-        public double Distance()
-        {
-            return Math.Abs(X + Y);
-        }
     }
 }

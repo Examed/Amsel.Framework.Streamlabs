@@ -9,9 +9,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Attribute
 
         public DebugOnlyFact()
         {
-            if (!Debugger.IsAttached) Skip = "Only running in interactive mode.";
+            if(!Debugger.IsAttached)
+                Skip = "Only running in interactive mode.";
         }
-
         #endregion
     }
 }

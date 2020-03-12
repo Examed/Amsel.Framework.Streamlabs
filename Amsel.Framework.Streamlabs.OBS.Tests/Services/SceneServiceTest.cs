@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Amsel.Framework.Streamlabs.OBS.Models.Response;
+﻿using Amsel.Framework.Streamlabs.OBS.Models.Response;
 using Amsel.Framework.Streamlabs.OBS.Services;
 using Amsel.Framework.Streamlabs.OBS.Tests.Attribute;
 using Amsel.Framework.Streamlabs.OBS.Tests.Utilities;
+using System;
+using System.Diagnostics;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
@@ -12,20 +12,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         #region STATICS, CONST and FIELDS
 
         private readonly ScenesService service = new ScenesService();
-
         #endregion
 
+        #region PUBLIC METHODES
         [DebugOnlyFact]
-        public void CreateScene()
-        {
-            _ = service.CreateScene("test");
-        }
+        public void ActiveScene() => _ = service.ActiveScene();
 
         [DebugOnlyFact]
-        public void ActiveScene()
-        {
-            _ = service.ActiveScene();
-        }
+        public void CreateScene() => _ = service.CreateScene("test");
 
         [DebugOnlyFact]
         public void GetScene()
@@ -35,15 +29,42 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         }
 
         [DebugOnlyFact]
-        public void GetScenes()
+        public void GetSceneByName() => _ = service.GetSceneByName("test");
+
+        [DebugOnlyFact]
+        public void GetScenes() => _ = service.GetScenes();
+
+        [DebugOnlyFact]
+        public void ItemAdded()
         {
-            _ = service.GetScenes();
+            service.OnItemAdded += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnItemAdded));
+            };
+
+            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void GetSceneByName()
+        public void ItemRemoved()
         {
-            _ = service.GetSceneByName("test");
+            service.OnItemRemoved += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnItemRemoved));
+            };
+
+            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
+        }
+
+        [DebugOnlyFact]
+        public void ItemUpdated()
+        {
+            service.OnItemUpdated += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnItemUpdated));
+            };
+
+            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
@@ -60,50 +81,35 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
             _ = service.RemoveScene(scene.Id);
         }
 
-
-        [DebugOnlyFact]
-        public void ItemAdded()
-        {
-            service.OnItemAdded += (s, e) => { Debug.Write(nameof(service.OnItemAdded)); };
-
-            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
-        }
-
-        [DebugOnlyFact]
-        public void ItemRemoved()
-        {
-            service.OnItemRemoved += (s, e) => { Debug.Write(nameof(service.OnItemRemoved)); };
-
-            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
-        }
-
-        [DebugOnlyFact]
-        public void ItemUpdated()
-        {
-            service.OnItemUpdated += (s, e) => { Debug.Write(nameof(service.OnItemUpdated)); };
-
-            TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
-        }
-
         [DebugOnlyFact]
         public void SceneAdded()
         {
-            service.OnSceneAdded += (s, e) => { Debug.Write(nameof(service.OnSceneAdded)); };
+            service.OnSceneAdded += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnSceneAdded));
+            };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
         public void SceneRemoved()
         {
-            service.OnSceneRemoved += (s, e) => { Debug.Write(nameof(service.OnSceneRemoved)); };
+            service.OnSceneRemoved += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnSceneRemoved));
+            };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
         public void SceneSwitched()
         {
-            service.OnSceneSwitched += (s, e) => { Debug.Write(nameof(service.OnSceneSwitched)); };
+            service.OnSceneSwitched += (s, e) =>
+            {
+                Debug.Write(nameof(service.OnSceneSwitched));
+            };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
@@ -24,8 +24,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
             Scale = scale;
         }
 
-        protected StreamlabsOBSTransform() { }
-
+        protected StreamlabsOBSTransform()
+        {
+        }
         #endregion
     }
 }

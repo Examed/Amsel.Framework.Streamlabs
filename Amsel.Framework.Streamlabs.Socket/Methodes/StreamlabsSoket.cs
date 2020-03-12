@@ -1,9 +1,9 @@
-﻿using System;
-using Amsel.Framework.Streamlabs.Socket.Models;
+﻿using Amsel.Framework.Streamlabs.Socket.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
+using System;
 
 namespace Amsel.Framework.Streamlabs.Socket.Methodes
 {
@@ -17,21 +17,40 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
         #region  CONSTRUCTORS
 
-        public StreamlabsSoket(ILogger logger = null)
-        {
-            log = logger;
-        }
-
+        public StreamlabsSoket(ILogger logger = null) => log = logger;
         #endregion
 
+        public event EventHandler OnConnected;
+
+        public event EventHandler<string> OnDisconnected;
+
+        public event EventHandler<StreamlabsDonation> OnDonation;
+
+        public event EventHandler<string> OnError;
+
+        public event EventHandler<StreamlabsLabels> OnStreamlabels;
+
+        public event EventHandler<StreamlabsTwitchCheer> OnTwitchCheer;
+
+        public event EventHandler<StreamlabsTwitchFollow> OnTwitchFollow;
+
+        public event EventHandler<StreamlabsTwitchHost> OnTwitchHost;
+
+        public event EventHandler<StreamlabsTwitchRaid> OnTwitchRaid;
+
+        public event EventHandler<StreamlabsTwitchSubscription> OnTwitchSubscription;
+
+        public event EventHandler<JToken> OnUndocumented;
+
+        #region PUBLIC METHODES
         public void Connect(string socketToken)
         {
-            var url = $"https://sockets.streamlabs.com";
+            string url = $"https://sockets.streamlabs.com";
             IO.Options opt = new IO.Options
             {
-                QueryString = "token=" + socketToken,
+                QueryString = $"token={socketToken}",
                 Reconnection = true,
-                ReconnectionDelay = 500,             
+                ReconnectionDelay = 500,
                 Port = 433,
                 Secure = true,
                 AutoConnect = false,
@@ -49,13 +68,13 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data =>
             {
                 log?.LogDebug($"Disonnected: {data}");
-                OnDisconnected?.Invoke(this, (string) data);
+                OnDisconnected?.Invoke(this, (string)data);
             });
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data =>
             {
                 log?.LogDebug($"Error: {data}");
-                OnError?.Invoke(this, (string) data);
+                OnError?.Invoke(this, (string)data);
             });
 
             socket.On("event", data =>
@@ -67,10 +86,10 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
                 Console.WriteLine(data);
 
                 JToken token = streamlabsEvent.Message;
-                if (token.Type == JTokenType.Array)
+                if(token.Type == JTokenType.Array)
                     token = token.First;
 
-                switch (streamlabsEvent.Type)
+                switch(streamlabsEvent.Type)
                 {
                     case "streamlabels.underlying":
                         OnStreamlabels?.Invoke(this, token.ToObject<StreamlabsLabels>());
@@ -81,7 +100,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
                     case "redemption":
                         break;
                     case "subscription":
-                        switch (token["platform"].Value<string>())
+                        switch(token["platform"].Value<string>())
                         {
                             case "twitch_account":
                                 OnTwitchSubscription?.Invoke(this, token.ToObject<StreamlabsTwitchSubscription>());
@@ -90,7 +109,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
                         break;
                     case "follow":
-                        switch (token["platform"].Value<string>())
+                        switch(token["platform"].Value<string>())
                         {
                             case "twitch_account":
                                 OnTwitchFollow?.Invoke(this, token.ToObject<StreamlabsTwitchFollow>());
@@ -99,7 +118,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
                         break;
                     case "host":
-                        switch (token["platform"].Value<string>())
+                        switch(token["platform"].Value<string>())
                         {
                             case "twitch_account":
                                 OnTwitchHost?.Invoke(this, token.ToObject<StreamlabsTwitchHost>());
@@ -108,7 +127,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
                         break;
                     case "bits":
-                        switch (token["platform"].Value<string>())
+                        switch(token["platform"].Value<string>())
                         {
                             case "twitch_account":
                                 OnTwitchCheer?.Invoke(this, token.ToObject<StreamlabsTwitchCheer>());
@@ -117,7 +136,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
                         break;
                     case "raid":
-                        switch (token["platform"].Value<string>())
+                        switch(token["platform"].Value<string>())
                         {
                             case "twitch_account":
                                 OnTwitchRaid?.Invoke(this, token.ToObject<StreamlabsTwitchRaid>());
@@ -153,22 +172,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
             socket.Open();
         }
-
-        public event EventHandler OnConnected;
-
-        public event EventHandler<string> OnDisconnected;
-
-        public event EventHandler<string> OnError;
-
-        public event EventHandler<JToken> OnUndocumented;
-
-        public event EventHandler<StreamlabsLabels> OnStreamlabels;
-
-        public event EventHandler<StreamlabsDonation> OnDonation;
-        public event EventHandler<StreamlabsTwitchFollow> OnTwitchFollow;
-        public event EventHandler<StreamlabsTwitchSubscription> OnTwitchSubscription;
-        public event EventHandler<StreamlabsTwitchRaid> OnTwitchRaid;
-        public event EventHandler<StreamlabsTwitchHost> OnTwitchHost;
-        public event EventHandler<StreamlabsTwitchCheer> OnTwitchCheer;
+        #endregion
     }
 }

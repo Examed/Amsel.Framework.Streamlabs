@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
@@ -13,10 +13,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 
         [JsonProperty("params")] public StreamlabsOBSParameters Parameters { get; internal set; }
 
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this)?.Replace("\n", "");
-        }
+        #region PUBLIC METHODES
+        public string ToJson() => JsonConvert.SerializeObject(this)?.Replace("\n", string.Empty);
+        #endregion
 
         #region  CONSTRUCTORS
 
@@ -33,7 +32,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
             Method = method;
             Parameters = parameters;
         }
-
         #endregion
     }
 }

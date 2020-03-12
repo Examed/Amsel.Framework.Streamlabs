@@ -1,19 +1,16 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSSceneCollectionCreateOptions
     {
+        [JsonProperty("name")] public string Name { get; protected set; }
+
         #region  CONSTRUCTORS
 
-        public StreamlabsOBSSceneCollectionCreateOptions(string name)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-        }
-
-        #endregion
-
-        [JsonProperty("name")] public string Name { get; protected set; }
+        public StreamlabsOBSSceneCollectionCreateOptions(string name) => Name =
+            name ?? throw new ArgumentNullException(nameof(name));
+    #endregion
     }
 }
