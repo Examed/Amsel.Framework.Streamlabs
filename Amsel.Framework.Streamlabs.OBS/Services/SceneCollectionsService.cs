@@ -11,6 +11,30 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 {
     public class SceneCollectionsService
     {
+        const string RESOURCE = "SceneCollectionsService";
+
+        readonly StreamlabsOBSClient client;
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionAddedHandler =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionAdded", RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionRemovedHandler =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionRemoved", RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSCollection> CollectionSwitchedHandler =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSCollection>(new StreamlabsOBSRequest("collectionSwitched", RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionUpdatedHandler =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionUpdated", RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionWillSwitchHandler =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionWillSwitch", RESOURCE));
+
+
+        public SceneCollectionsService() => client = new StreamlabsOBSClient();
+
+        public SceneCollectionsService(StreamlabsOBSClient client) => this.client = client;
+
         public event EventHandler<StreamlabsOBSEvent> OnCollectionAdded
         {
             add => CollectionAddedHandler.Subscribe(value);
@@ -41,21 +65,23 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
             remove => CollectionWillSwitchHandler.UnSubscribe(value);
         }
 
-        #region PUBLIC METHODES
         public StreamlabsOBSCollection ActiveCollection() => client.SendRequest<StreamlabsOBSCollection>(new StreamlabsOBSRequest("activeCollection", RESOURCE))?.FirstOrDefault();
 
         public StreamlabsOBSCollection Create(string name) => Create(new StreamlabsOBSSceneCollectionCreateOptions(name));
 
-        public StreamlabsOBSCollection Create(StreamlabsOBSSceneCollectionCreateOptions options) => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("create", RESOURCE, options))?.FirstOrDefault()
-                                                                                                                                                                                                      .GetData<StreamlabsOBSCollection>()
-                                                                                                                                                                                                      .FirstOrDefault();
+        public StreamlabsOBSCollection Create(StreamlabsOBSSceneCollectionCreateOptions options) => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("create",
+                                                                                                                                                                    RESOURCE,
+                                                                                                                                                                    options))?.FirstOrDefault()
+            .GetData<StreamlabsOBSCollection>()
+            .FirstOrDefault();
 
         public StreamlabsOBSEvent DeleteCollection(StreamlabsOBSCollection collection) => DeleteCollection(collection.Id);
 
         public StreamlabsOBSEvent DeleteCollection(string id) => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("delete", RESOURCE, id))?.FirstOrDefault();
 
-        public IEnumerable<SceneCollectionSchema> FetchSchema() => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("fetchSceneCollectionsSchema", RESOURCE))?.FirstOrDefault()
-                                                                                                                                                                                 .GetData<SceneCollectionSchema>();
+        public IEnumerable<SceneCollectionSchema> FetchSchema() => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("fetchSceneCollectionsSchema",
+                                                                                                                                   RESOURCE))?.FirstOrDefault()
+            .GetData<SceneCollectionSchema>();
 
         public SceneCollectionSchema FetchSchemaForCollectionById([NotNull] string id)
         {
@@ -72,18 +98,17 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         }
 
         public StreamlabsOBSCollection GetCollectionByName(string name) => GetCollections()?.FirstOrDefault(x => x.Name
-                                                                                                                     .Equals(name, StringComparison.OrdinalIgnoreCase));
+            .Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        public IEnumerable<StreamlabsOBSCollection> GetCollections() => client.SendRequest<StreamlabsOBSCollection>(new StreamlabsOBSRequest("collections", RESOURCE));
+        public IEnumerable<StreamlabsOBSCollection> GetCollections() => client.SendRequest<StreamlabsOBSCollection>(new StreamlabsOBSRequest("collections",
+                                                                                                                                             RESOURCE));
 
         public StreamlabsOBSEvent LoadCollection(StreamlabsOBSCollection collection) => LoadCollection(collection.Id);
 
         public StreamlabsOBSEvent LoadCollection(string id)
         {
             StreamlabsOBSCollection current = ActiveCollection();
-            return (current?.Id == id)
-                ? null
-                : (client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault());
+            return (current?.Id == id) ? null : (client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault());
         }
 
         public void LoadCollectionByName(string name)
@@ -94,37 +119,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 
         public StreamlabsOBSEvent RenameCollection(StreamlabsOBSCollection collection, string newName) => RenameCollection(collection.Id, newName);
 
-        public StreamlabsOBSEvent RenameCollection(string id, string newNamem) => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("rename", RESOURCE, newNamem, id))?.FirstOrDefault();
-        #endregion
-
-        #region STATICS, CONST and FIELDS
-
-        private const string RESOURCE = "SceneCollectionsService";
-
-        private readonly StreamlabsOBSClient client;
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionAddedHandler =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionAdded", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionRemovedHandler =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionRemoved", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSCollection> CollectionSwitchedHandler =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSCollection>(new StreamlabsOBSRequest("collectionSwitched", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionUpdatedHandler =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionUpdated", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent> CollectionWillSwitchHandler =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSEvent>(new StreamlabsOBSRequest("collectionWillSwitch", RESOURCE));
-
-        #endregion
-
-        #region  CONSTRUCTORS
-
-        public SceneCollectionsService() => client = new StreamlabsOBSClient();
-
-        public SceneCollectionsService(StreamlabsOBSClient client) => this.client = client;
-    #endregion
+        public StreamlabsOBSEvent RenameCollection(string id, string newNamem) => client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("rename",
+                                                                                                                                                  RESOURCE,
+                                                                                                                                                  newNamem,
+                                                                                                                                                  id))?.FirstOrDefault();
     }
 }

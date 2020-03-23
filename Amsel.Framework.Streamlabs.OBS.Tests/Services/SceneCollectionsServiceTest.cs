@@ -10,12 +10,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
     public class SceneCollectionsServiceTest
     {
-        #region STATICS, CONST and FIELDS
+        readonly SceneCollectionsService service = new SceneCollectionsService();
 
-        private readonly SceneCollectionsService service = new SceneCollectionsService();
-        #endregion
-
-        #region PUBLIC METHODES
         [DebugOnlyFact]
         public void ActiveCollection() => _ = service.ActiveCollection();
 
@@ -98,8 +94,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
         [DebugOnlyFact]
         public void FetchSchemaCollectionByResourceId()
         {
-            StreamlabsOBSCollection collection = service.ActiveCollection() ??
-                throw new ArgumentNullException($"{nameof(service.ActiveCollection)}");
+            StreamlabsOBSCollection collection = service.ActiveCollection() ?? throw new ArgumentNullException($"{nameof(service.ActiveCollection)}");
             _ = service.FetchSchemaForCollectionById(collection.ResourceId ?? throw new InvalidOperationException());
         }
 
@@ -136,6 +131,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection.Id, $"{collection.Name}Test");
         }
-        #endregion
     }
 }

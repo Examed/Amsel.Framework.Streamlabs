@@ -9,12 +9,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
     public class SceneServiceTest
     {
-        #region STATICS, CONST and FIELDS
+        readonly ScenesService service = new ScenesService();
 
-        private readonly ScenesService service = new ScenesService();
-        #endregion
-
-        #region PUBLIC METHODES
         [DebugOnlyFact]
         public void ActiveScene() => _ = service.ActiveScene();
 
@@ -110,6 +106,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
             };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
-        #endregion
     }
 }

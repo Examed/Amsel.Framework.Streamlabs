@@ -11,43 +11,55 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 {
     public class ScenesService
     {
-        public event EventHandler<StreamlabsOBSItem> OnItemAdded
+        const string RESOURCE = "ScenesService";
+
+        [NotNull] readonly StreamlabsOBSClient client;
+        [NotNull] readonly SceneCollectionsService collectionsService;
+
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemAdded = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemAdded",
+                                                                                                                                                                         RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemRemoved = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemRemoved",
+                                                                                                                                                                           RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemUpdated = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemUpdated",
+                                                                                                                                                                           RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene> SceneAdded = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneAdded",
+                                                                                                                                                                            RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>
+            SceneRemoved = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneRemoved", RESOURCE));
+
+        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene> SceneSwitched =
+            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneSwitched", RESOURCE));
+
+
+        public ScenesService()
         {
-            add => ItemAdded.Subscribe(value);
-            remove => ItemAdded.UnSubscribe(value);
+            client = new StreamlabsOBSClient();
+            collectionsService = new SceneCollectionsService(client);
         }
 
-        public event EventHandler<StreamlabsOBSItem> OnItemRemoved
+        public ScenesService([NotNull] StreamlabsOBSClient client, [NotNull] SceneCollectionsService collectionsService)
         {
-            add => ItemRemoved.Subscribe(value);
-            remove => ItemRemoved.UnSubscribe(value);
+            this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.collectionsService = collectionsService ?? throw new ArgumentNullException(nameof(collectionsService));
         }
 
-        public event EventHandler<StreamlabsOBSItem> OnItemUpdated
-        {
-            add => ItemUpdated.Subscribe(value);
-            remove => ItemUpdated.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemAdded { add => ItemAdded.Subscribe(value); remove => ItemAdded.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneAdded
-        {
-            add => SceneAdded.Subscribe(value);
-            remove => SceneAdded.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemRemoved { add => ItemRemoved.Subscribe(value); remove => ItemRemoved.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneRemoved
-        {
-            add => SceneRemoved.Subscribe(value);
-            remove => SceneRemoved.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemUpdated { add => ItemUpdated.Subscribe(value); remove => ItemUpdated.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneSwitched
-        {
-            add => SceneSwitched.Subscribe(value);
-            remove => SceneSwitched.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSScene> OnSceneAdded { add => SceneAdded.Subscribe(value); remove => SceneAdded.UnSubscribe(value); }
 
-        #region PUBLIC METHODES
+        public event EventHandler<StreamlabsOBSScene> OnSceneRemoved { add => SceneRemoved.Subscribe(value); remove => SceneRemoved.UnSubscribe(value); }
+
+        public event EventHandler<StreamlabsOBSScene> OnSceneSwitched { add => SceneSwitched.Subscribe(value); remove => SceneSwitched.UnSubscribe(value); }
+
         public StreamlabsOBSScene ActiveScene() => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("activeScene", RESOURCE))?.FirstOrDefault();
 
         public string ActiveSceneId() => client.SendRequest<string>(new StreamlabsOBSRequest("activeSceneId", RESOURCE))?.FirstOrDefault();
@@ -56,14 +68,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 
         public StreamlabsOBSScene GetScene(string id) => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScene", RESOURCE, id))?.FirstOrDefault();
 
-        public StreamlabsOBSScene GetSceneByName(string name) => GetScenes()?.Where(x => x.Name
-                                                                                             .Equals(name, StringComparison.OrdinalIgnoreCase))
-                                                                                 .PickRandom();
+        public StreamlabsOBSScene GetSceneByName(string name) => GetScenes()?.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).PickRandom();
 
         public IEnumerable<StreamlabsOBSScene> GetScenes() => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScenes", RESOURCE));
 
-        public bool MakeSceneActive(string id) => client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ??
-            false;
+        public bool MakeSceneActive(string id) => client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ?? false;
 
         public bool MakeSceneActiveByIdAndCollectionId([NotNull] string collectionId, [NotNull] string sceneId)
         {
@@ -82,8 +91,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
             if(name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            StreamlabsOBSScene scene = GetSceneByName(name) ??
-                throw new ArgumentNullException($"{nameof(GetSceneByName)}");
+            StreamlabsOBSScene scene = GetSceneByName(name) ?? throw new ArgumentNullException($"{nameof(GetSceneByName)}");
             return MakeSceneActive(scene.Id);
         }
 
@@ -99,45 +107,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         }
 
         public StreamlabsOBSSceneBase RemoveScene(string id) => client.SendRequest<StreamlabsOBSSceneBase>(new StreamlabsOBSRequest("removeScene", RESOURCE, id))?.FirstOrDefault();
-        #endregion
-
-        #region STATICS, CONST and FIELDS
-
-        private const string RESOURCE = "ScenesService";
-
-        [NotNull] private readonly StreamlabsOBSClient client;
-        [NotNull] private readonly SceneCollectionsService collectionsService;
-
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemAdded = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemAdded", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemRemoved = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemRemoved", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem> ItemUpdated = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSItem>(new StreamlabsOBSRequest("itemUpdated", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene> SceneAdded = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneAdded", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>
-            SceneRemoved = new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneRemoved", RESOURCE));
-
-        public readonly StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene> SceneSwitched =
-            new StreamlabsOBSSubscriptionHandler<StreamlabsOBSScene>(new StreamlabsOBSRequest("sceneSwitched", RESOURCE));
-
-        #endregion
-
-        #region  CONSTRUCTORS
-
-        public ScenesService()
-        {
-            client = new StreamlabsOBSClient();
-            collectionsService = new SceneCollectionsService(client);
-        }
-
-        public ScenesService([NotNull] StreamlabsOBSClient client, [NotNull] SceneCollectionsService collectionsService)
-        {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
-            this.collectionsService = collectionsService ?? throw new ArgumentNullException(nameof(collectionsService));
-        }
-        #endregion
     }
 }

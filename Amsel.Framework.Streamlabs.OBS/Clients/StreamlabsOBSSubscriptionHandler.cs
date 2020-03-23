@@ -13,9 +13,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
     public class StreamlabsOBSSubscriptionHandler<TResponse> : IDisposable
         where TResponse : class
     {
-        #region  CONSTRUCTORS
+        readonly CancellationToken externCancellationToken;
+        [NotNull] readonly string pipeName;
+        [NotNull] readonly StreamlabsOBSRequest request;
+        [NotNull] readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
 
-        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request, CancellationToken cancellationToken = default, [NotNull] string pipeName = "slobs")
+        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request,
+                                                CancellationToken cancellationToken = default,
+                                                [NotNull] string pipeName = "slobs")
         {
             // TODO check externCancellationToken
             this.request = request ?? throw new ArgumentNullException(nameof(request));
@@ -32,14 +37,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
         public event EventHandler<string> OnUnsupported;
 
-        #region PUBLIC METHODES
-        #endregion
-
-        #region IDisposable Members
 
         /// <inheritdoc/>
         public void Dispose() => unsubscribeToken.Cancel();
-        #endregion
 
         public void Subscribe(EventHandler<TResponse> value)
         {
@@ -81,7 +81,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                         }
                     }
                 }
-            }, externCancellationToken);
+            },
+                          externCancellationToken);
         }
 
         public void UnSubscribe(EventHandler<TResponse> eventHandler)
@@ -89,14 +90,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
-        #endregion
-
-        #region STATICS, CONST and FIELDS
-
-        private readonly CancellationToken externCancellationToken;
-        [NotNull] private readonly string pipeName;
-        [NotNull] private readonly StreamlabsOBSRequest request;
-        [NotNull] private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
-    #endregion
     }
 }

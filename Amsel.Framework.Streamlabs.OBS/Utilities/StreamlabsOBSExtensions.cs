@@ -6,7 +6,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities
 {
     public static class StreamlabsOBSExtensions
     {
-        #region PUBLIC METHODES
         [NotNull]
         public static IEnumerable<TResult> GetData<TResult>(this JToken data)
         {
@@ -22,13 +21,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities
 
         public static bool IsPromise(this JToken token)
         {
-            if((token == null) ||
-                !token.HasValues ||
-                (token.Value<string>("_type") != "SUBSCRIPTION") ||
-                (token.Value<string>("emitter") != "PROMISE"))
+            if((token == null) || !token.HasValues || (token.Value<string>("_type") != "SUBSCRIPTION") || (token.Value<string>("emitter") != "PROMISE"))
                 return false;
             return true;
         }
-        #endregion
     }
 }

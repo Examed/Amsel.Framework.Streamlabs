@@ -5,19 +5,13 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSRequest
     {
-        [JsonProperty("id")] public string Id { get; internal set; }
+        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters)
+        {
+            Id = Guid.NewGuid().ToString();
+            Method = method;
+            Parameters = parameters;
+        }
 
-        [JsonProperty("jsonrpc")] public string JsonRpc => "2.0";
-
-        [JsonProperty("method")] public string Method { get; internal set; }
-
-        [JsonProperty("params")] public StreamlabsOBSParameters Parameters { get; internal set; }
-
-        #region PUBLIC METHODES
-        public string ToJson() => JsonConvert.SerializeObject(this)?.Replace("\n", string.Empty);
-        #endregion
-
-        #region  CONSTRUCTORS
 
         public StreamlabsOBSRequest(string method, string resource, params object[] args)
         {
@@ -26,12 +20,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
             Parameters = new StreamlabsOBSParameters(resource, args);
         }
 
-        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters)
-        {
-            Id = Guid.NewGuid().ToString();
-            Method = method;
-            Parameters = parameters;
-        }
-        #endregion
+        public string ToJson() => JsonConvert.SerializeObject(this)?.Replace("\n", string.Empty);
+
+        [JsonProperty("id")] public string Id { get; internal set; }
+
+        [JsonProperty("jsonrpc")] public string JsonRpc => "2.0";
+
+        [JsonProperty("method")] public string Method { get; internal set; }
+
+        [JsonProperty("params")] public StreamlabsOBSParameters Parameters { get; internal set; }
     }
 }
