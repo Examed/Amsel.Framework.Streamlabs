@@ -9,8 +9,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 {
     public class StreamlabsSoket
     {
-        readonly ILogger log;
-
+        private readonly ILogger log;
 
         public StreamlabsSoket(ILogger logger = null) => log = logger;
 
@@ -36,6 +35,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
         public event EventHandler<JToken> OnUndocumented;
 
+        #region PUBLIC METHODES
         public void Connect(string socketToken)
         {
             string url = $"https://sockets.streamlabs.com";
@@ -52,29 +52,25 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
             Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket(url, opt);
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT,
-                      () =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () =>
             {
                 log?.LogDebug("Connected");
                 OnConnected?.Invoke(this, new EventArgs());
             });
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT,
-                      data =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data =>
             {
                 log?.LogDebug($"Disonnected: {data}");
                 OnDisconnected?.Invoke(this, (string)data);
             });
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR,
-                      data =>
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data =>
             {
                 log?.LogDebug($"Error: {data}");
                 OnError?.Invoke(this, (string)data);
             });
 
-            socket.On("event",
-                      data =>
+            socket.On("event", data =>
             {
                 log?.LogTrace($"EventData: {data}");
                 Console.WriteLine(data);
@@ -169,5 +165,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
             socket.Open();
         }
+        #endregion
     }
 }
