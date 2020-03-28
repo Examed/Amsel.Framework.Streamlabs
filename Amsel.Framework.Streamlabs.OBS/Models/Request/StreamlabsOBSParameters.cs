@@ -7,13 +7,18 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 {
     public class StreamlabsOBSParameters : IEquatable<StreamlabsOBSParameters>
     {
+        [JsonProperty("args")] public List<object> Args { get; set; }
+
+        [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
+        public string Resource { get; set; }
+
         public StreamlabsOBSParameters(string resource, params object[] args)
         {
             Resource = resource;
             Args = args?.ToList();
         }
 
-
+        #region PUBLIC METHODES
         public bool Equals(StreamlabsOBSParameters other)
         {
             bool equal = (Resource == other.Resource) && (Args.Count == other.Args.Count);
@@ -23,10 +28,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request
 
             return equal;
         }
-
-        [JsonProperty("args")] public List<object> Args { get; set; }
-
-        [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
-        public string Resource { get; set; }
+        #endregion
     }
 }

@@ -9,11 +9,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSEvent
     {
-        [NotNull]
-        public IEnumerable<TResult> GetData<TResult>() => Data.GetData<TResult>();
-
-        public TResult GetDataFirstOrDefault<TResult>() => GetData<TResult>().FirstOrDefault();
-
         [JsonProperty("data")] public JToken Data { get; protected set; }
 
         [JsonProperty("emitter")] public string Emitter { get; protected set; }
@@ -23,5 +18,12 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         [JsonProperty("resourceId")] public string ResourceId { get; protected set; }
 
         [JsonProperty("_type")] public string Type { get; protected set; }
+
+        #region PUBLIC METHODES
+        [NotNull]
+        public IEnumerable<TResult> GetData<TResult>() => Data.GetData<TResult>();
+
+        public TResult GetDataFirstOrDefault<TResult>() => GetData<TResult>().FirstOrDefault();
+        #endregion
     }
 }

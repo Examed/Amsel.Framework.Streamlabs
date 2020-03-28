@@ -8,13 +8,20 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSFolder : StreamlabsOBSNode
     {
-        [JsonProperty("resourceId")] string resourceId;
+        [JsonProperty("resourceId")] private string resourceId;
 
-        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) => client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders",
-                                                                                                                                                           ResourceId));
+        [JsonProperty("childrenIds")] public List<string> ChildrenIds { get; protected set; }
 
-        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) => client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems",
-                                                                                                                                                     ResourceId));
+        public string ResourceId
+        {
+            get => string.IsNullOrEmpty(resourceId) ? ($"SceneItemFolder[\"{SceneId}\",\"{Id}\"]") : resourceId;
+            set => resourceId = value;
+        }
+
+        #region PUBLIC METHODES
+        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) => client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId));
+
+        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) => client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId));
 
         [NotNull]
         public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client)
@@ -48,14 +55,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
             return result;
         }
-
-
-        [JsonProperty("childrenIds")] public List<string> ChildrenIds { get; protected set; }
-
-        public string ResourceId
-        {
-            get => string.IsNullOrEmpty(resourceId) ? ($"SceneItemFolder[\"{SceneId}\",\"{Id}\"]") : resourceId;
-            set => resourceId = value;
-        }
+        #endregion
     }
 }

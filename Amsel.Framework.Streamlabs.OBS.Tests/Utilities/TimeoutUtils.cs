@@ -5,6 +5,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Utilities
 {
     public static class TimeoutUtils
     {
+        #region PUBLIC METHODES
         public static bool RetryUntilSuccessOrTimeout(Func<bool> task, TimeSpan timeSpan)
         {
             bool success = false;
@@ -26,5 +27,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Utilities
             {
             }
         }
+        #endregion
     }
 }
