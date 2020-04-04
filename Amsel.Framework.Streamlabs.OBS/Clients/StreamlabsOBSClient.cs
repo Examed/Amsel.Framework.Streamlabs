@@ -66,9 +66,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                         await writer.FlushAsync().ConfigureAwait(false);
                         pipe.WaitForPipeDrain();
 
-                        string responseJson = await reader.ReadLineAsync().ConfigureAwait(false);
-                        StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
-                        response.JsonResponse = responseJson;
+                        string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
+                        StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
+                        response.JsonResponse = responsJson;
 
                         if(!loadPromises)
                             return response;

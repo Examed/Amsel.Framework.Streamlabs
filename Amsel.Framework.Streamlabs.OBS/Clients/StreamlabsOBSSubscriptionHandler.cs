@@ -57,9 +57,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
                     while(!externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested)
                     {
-                        string responseJson = await reader.ReadLineAsync().ConfigureAwait(false);
-                        StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responseJson);
-                        response.JsonResponse = responseJson;
+                        string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
+                        StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
+                        response.JsonResponse = responsJson;
 
                         if(response.Results.Value<string>("_type") == "SUBSCRIPTION")
                             OnBegin?.Invoke(this, response);
@@ -75,7 +75,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                                 OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
                         } else
                         {
-                            OnUnsupported?.Invoke(this, responseJson);
+                            OnUnsupported?.Invoke(this, responsJson);
                         }
                     }
                 }
