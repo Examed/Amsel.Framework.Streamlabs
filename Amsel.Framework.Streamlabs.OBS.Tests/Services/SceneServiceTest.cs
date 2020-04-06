@@ -4,6 +4,7 @@ using Amsel.Framework.Streamlabs.OBS.Tests.Attribute;
 using Amsel.Framework.Streamlabs.OBS.Tests.Utilities;
 using System;
 using System.Diagnostics;
+using Xunit;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
@@ -70,6 +71,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
             StreamlabsOBSScene scene = service.GetSceneByName("test");
             _ = service.MakeSceneActive(scene.Id);
         }
+
+        [Fact]
+        public void PassTest() => Assert.True(true);
 
         [DebugOnlyFact]
         public void RemoveScene()

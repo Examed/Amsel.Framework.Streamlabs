@@ -5,6 +5,7 @@ using Amsel.Framework.Streamlabs.OBS.Tests.Attribute;
 using Amsel.Framework.Streamlabs.OBS.Tests.Utilities;
 using System;
 using System.Diagnostics;
+using Xunit;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
 {
@@ -119,6 +120,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services
             StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection.Id);
         }
+
+        [Fact]
+        public void PassTest() => Assert.True(true);
 
         [DebugOnlyFact]
         public void RenameCollection()
