@@ -15,11 +15,11 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
         public event EventHandler OnConnected;
 
-        public event EventHandler<string> OnDisconnected;
+        public event EventHandler<object> OnDisconnected;
 
         public event EventHandler<StreamlabsDonation> OnDonation;
 
-        public event EventHandler<string> OnError;
+        public event EventHandler<object> OnError;
 
         public event EventHandler<StreamlabsLabels> OnStreamlabels;
 
@@ -67,7 +67,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data =>
             {
                 log?.LogDebug($"Error: {data}");
-                OnError?.Invoke(this, (string)data);
+                OnError?.Invoke(this, data);
             });
 
             socket.On("event", data =>
