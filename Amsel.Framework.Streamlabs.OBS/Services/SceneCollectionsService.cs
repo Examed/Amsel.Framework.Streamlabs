@@ -98,9 +98,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
         public StreamlabsOBSEvent LoadCollection(string id)
         {
             StreamlabsOBSCollection current = ActiveCollection();
-            return (current?.Id == id)
-                ? null
-                : (client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault());
+            return (current?.Id == id) ? null : (client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault());
         }
 
         public void LoadCollectionByName(string name)

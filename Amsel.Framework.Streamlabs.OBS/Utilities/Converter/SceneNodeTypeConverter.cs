@@ -7,8 +7,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
     public class SceneNodeTypeConverter : JsonConverter
     {
         #region PUBLIC METHODES
-        public override bool CanConvert(Type objectType) => (objectType == typeof(ESceneNodeType)) ||
-            (objectType == typeof(ESceneNodeType?));
+        public override bool CanConvert(Type objectType) => (objectType == typeof(ESceneNodeType)) || (objectType == typeof(ESceneNodeType?));
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {

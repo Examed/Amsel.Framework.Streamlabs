@@ -16,8 +16,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
     {
         [NotNull] private readonly string pipeName;
 
-        public StreamlabsOBSClient(string pipe = "slobs") => pipeName =
-            pipe ?? throw new ArgumentNullException(nameof(pipe));
+        public StreamlabsOBSClient(string pipe = "slobs") => pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
 
         /// <summary>
         /// Make sure that  only get a Batch of 5 Requests at the same time
@@ -48,11 +47,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
         }
 
         #region PUBLIC METHODES
-        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request)
-                                                                                                                  .Result;
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request).Result;
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request)
-                                                                                                                          .Result
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request).Result
                                                                                                                           .GetResults<TResult>();
 
         public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true)
@@ -74,9 +71,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                             return response;
 
                         if(!response.IsEnumberabeResult() && response.Results.IsPromise())
-                            response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync()
-                                                                                                              .ConfigureAwait(false))
-                                                   .Results;
+                            response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync().ConfigureAwait(false)).Results;
 
                         return response;
                     }

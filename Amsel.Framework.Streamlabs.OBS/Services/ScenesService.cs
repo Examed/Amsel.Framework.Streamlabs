@@ -36,41 +36,17 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
             this.collectionsService = collectionsService ?? throw new ArgumentNullException(nameof(collectionsService));
         }
 
-        public event EventHandler<StreamlabsOBSItem> OnItemAdded
-        {
-            add => ItemAdded.Subscribe(value);
-            remove => ItemAdded.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemAdded { add => ItemAdded.Subscribe(value); remove => ItemAdded.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSItem> OnItemRemoved
-        {
-            add => ItemRemoved.Subscribe(value);
-            remove => ItemRemoved.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemRemoved { add => ItemRemoved.Subscribe(value); remove => ItemRemoved.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSItem> OnItemUpdated
-        {
-            add => ItemUpdated.Subscribe(value);
-            remove => ItemUpdated.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSItem> OnItemUpdated { add => ItemUpdated.Subscribe(value); remove => ItemUpdated.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneAdded
-        {
-            add => SceneAdded.Subscribe(value);
-            remove => SceneAdded.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSScene> OnSceneAdded { add => SceneAdded.Subscribe(value); remove => SceneAdded.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneRemoved
-        {
-            add => SceneRemoved.Subscribe(value);
-            remove => SceneRemoved.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSScene> OnSceneRemoved { add => SceneRemoved.Subscribe(value); remove => SceneRemoved.UnSubscribe(value); }
 
-        public event EventHandler<StreamlabsOBSScene> OnSceneSwitched
-        {
-            add => SceneSwitched.Subscribe(value);
-            remove => SceneSwitched.UnSubscribe(value);
-        }
+        public event EventHandler<StreamlabsOBSScene> OnSceneSwitched { add => SceneSwitched.Subscribe(value); remove => SceneSwitched.UnSubscribe(value); }
 
         #region PUBLIC METHODES
         public StreamlabsOBSScene ActiveScene() => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("activeScene", RESOURCE))?.FirstOrDefault();
@@ -81,14 +57,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
 
         public StreamlabsOBSScene GetScene(string id) => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScene", RESOURCE, id))?.FirstOrDefault();
 
-        public StreamlabsOBSScene GetSceneByName(string name) => GetScenes()?.Where(x => x.Name
-                                                                                             .Equals(name, StringComparison.OrdinalIgnoreCase))
-                                                                                 .PickRandom();
+        public StreamlabsOBSScene GetSceneByName(string name) => GetScenes()?.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).PickRandom();
 
         public IEnumerable<StreamlabsOBSScene> GetScenes() => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScenes", RESOURCE));
 
-        public bool MakeSceneActive(string id) => client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ??
-            false;
+        public bool MakeSceneActive(string id) => client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ?? false;
 
         public bool MakeSceneActiveByIdAndCollectionId([NotNull] string collectionId, [NotNull] string sceneId)
         {
@@ -107,8 +80,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services
             if(name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            StreamlabsOBSScene scene = GetSceneByName(name) ??
-                throw new ArgumentNullException($"{nameof(GetSceneByName)}");
+            StreamlabsOBSScene scene = GetSceneByName(name) ?? throw new ArgumentNullException($"{nameof(GetSceneByName)}");
             return MakeSceneActive(scene.Id);
         }
 
