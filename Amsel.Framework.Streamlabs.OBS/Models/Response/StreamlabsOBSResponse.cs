@@ -18,17 +18,21 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         [JsonProperty("result")]
         public JToken Results { get; set; }
 
+        #region public methods
         public TResult GetResultFirstOrDefault<TResult>() => GetResults<TResult>().FirstOrDefault();
 
         [NotNull]
         public IEnumerable<TResult> GetResults<TResult>() => Results.GetData<TResult>();
 
-        public bool IsEnumberabeResult() {
-            if(Results?.Type == JTokenType.Array) {
+        public bool IsEnumberabeResult()
+        {
+            if(Results?.Type == JTokenType.Array)
+            {
                 return true;
             }
 
             return false;
         }
+        #endregion
     }
 }

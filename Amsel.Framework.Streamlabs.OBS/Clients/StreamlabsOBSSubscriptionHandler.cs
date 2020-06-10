@@ -16,11 +16,13 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         [NotNull] private readonly StreamlabsOBSRequest request;
         [NotNull] private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
 
-        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request, CancellationToken cancellationToken = default, [NotNull] string pipeName = "slobs") {
+        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request, CancellationToken cancellationToken = default, [NotNull] string pipeName = "slobs")
+        {
             // TODO check externCancellationToken
             this.request = request ?? throw new ArgumentNullException(nameof(request));
             this.pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
-            if(cancellationToken != default) {
+            if(cancellationToken != default)
+            {
                 externCancellationToken = cancellationToken;
             }
         }
@@ -30,48 +32,59 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         public event EventHandler<StreamlabsOBSEvent> OnEvent;
         public event EventHandler<string> OnUnsupported;
 
-        public void Subscribe(EventHandler<TResponse> value) {
+        #region public methods
+        public void Subscribe(EventHandler<TResponse> value)
+        {
             OnData += value;
-            Task.Factory.StartNew(async() => { await using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
-                                      using StreamReader reader = new StreamReader(stream);
-                                      await using(StreamWriter writer = new StreamWriter(stream)) {
-                                          await stream.ConnectAsync(5000, externCancellationToken).ConfigureAwait(false);
+            Task.Factory
+                .StartNew(async() =>
+            {
+                await using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
+                using StreamReader reader = new StreamReader(stream);
+                await using(StreamWriter writer = new StreamWriter(stream)) {
+                    await stream.ConnectAsync(5000, externCancellationToken).ConfigureAwait(false);
 
-                                          await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
-                                          await writer.FlushAsync().ConfigureAwait(false);
-                                          stream.WaitForPipeDrain();
+                    await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
+                    await writer.FlushAsync().ConfigureAwait(false);
+                    stream.WaitForPipeDrain();
 
-                                          while(!externCancellationToken.IsCancellationRequested
-                                              && !unsubscribeToken.IsCancellationRequested) {
-                                              string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
-                                              StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
-                                              response.JsonResponse = responsJson;
+                    while(!externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested) {
+                        string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
+                        StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
+                        response.JsonResponse = responsJson;
 
-                                              if(response.Results.Value<string>("_type") == "SUBSCRIPTION") {
-                                                  OnBegin?.Invoke(this, response);
-                                              } else
+                        if(response.Results.Value<string>("_type") == "SUBSCRIPTION")
+                        {
+                            OnBegin?.Invoke(this, response);
+                        } else
                         if(response.Results.Value<string>("_type") == "EVENT") {
-                                                  StreamlabsOBSEvent eventData = response.GetResultFirstOrDefault<StreamlabsOBSEvent>();
+                            StreamlabsOBSEvent eventData = response.GetResultFirstOrDefault<StreamlabsOBSEvent>();
 
-                                                  OnEvent?.Invoke(this, eventData);
-                                                  if(typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent))) {
-                                                      OnData?.Invoke(this, eventData as TResponse);
-                                                  } else {
-                                                      OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
-                                                  }
-                                              } else {
-                                                  OnUnsupported?.Invoke(this, responsJson);
-                                              }
-                                          }
-                                      } }, externCancellationToken);
+                            OnEvent?.Invoke(this, eventData);
+                            if(typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent)))
+                            {
+                                OnData?.Invoke(this, eventData as TResponse);
+                            } else
+                            {
+                                OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
+                            }
+                        } else
+                        {
+                            OnUnsupported?.Invoke(this, responsJson);
+                        }
+                    }
+                }
+            }, externCancellationToken);
         }
 
-        public void UnSubscribe(EventHandler<TResponse> eventHandler) {
+        public void UnSubscribe(EventHandler<TResponse> eventHandler)
+        {
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
+        #endregion
 
-        #region IDisposable methods
+        #region public methods
         /// <inheritdoc/>
         public void Dispose() => unsubscribeToken.Cancel();
         #endregion
