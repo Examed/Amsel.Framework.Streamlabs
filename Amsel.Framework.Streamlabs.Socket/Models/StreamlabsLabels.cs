@@ -2,8 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsLabels
-    {
+    public class StreamlabsLabels {
         [JsonProperty(PropertyName = "data")]
         public JToken Data { get; set; }
         [JsonProperty("hash")]

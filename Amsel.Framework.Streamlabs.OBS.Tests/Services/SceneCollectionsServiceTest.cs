@@ -8,48 +8,41 @@ using System.Diagnostics;
 using Xunit;
 
 namespace Amsel.Framework.Streamlabs.OBS.Tests.Services {
-    public class SceneCollectionsServiceTest
-    {
+    public class SceneCollectionsServiceTest {
         private readonly SceneCollectionsService service = new SceneCollectionsService();
 
-        #region public methods
         [DebugOnlyFact]
         public void ActiveCollection() => _ = service.ActiveCollection();
 
         [DebugOnlyFact]
-        public void CollectionAdded()
-        {
+        public void CollectionAdded() {
             service.OnCollectionAdded += (s, e) => { Debug.Write(nameof(service.OnCollectionAdded)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionRemoved()
-        {
+        public void CollectionRemoved() {
             service.OnCollectionRemoved += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionSwitched()
-        {
+        public void CollectionSwitched() {
             service.OnCollectionSwitched += (s, e) => { Debug.Write(nameof(service.OnCollectionRemoved)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionUpdated()
-        {
+        public void CollectionUpdated() {
             service.OnCollectionUpdated += (s, e) => { Debug.Write(nameof(service.OnCollectionUpdated)); };
 
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
 
         [DebugOnlyFact]
-        public void CollectionWillSwitch()
-        {
+        public void CollectionWillSwitch() {
             service.OnCollectionWillSwitch += (s, e) => { Debug.Write(nameof(service.OnCollectionWillSwitch)); };
             TimeoutUtils.WhileTimeout(TimeSpan.FromMinutes(1));
         }
@@ -61,8 +54,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services {
         public void CreateWithOptions() => _ = service.Create(new StreamlabsOBSSceneCollectionCreateOptions("test"));
 
         [DebugOnlyFact]
-        public void DeleteCollection()
-        {
+        public void DeleteCollection() {
             StreamlabsOBSCollection result = service.Create("test");
             service.DeleteCollection(result.Id);
         }
@@ -71,16 +63,15 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services {
         public void FetchSchemaCollection() => _ = service.FetchSchema();
 
         [DebugOnlyFact]
-        public void FetchSchemaCollectionByName()
-        {
+        public void FetchSchemaCollectionByName() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             _ = service.FetchSchemaForCollectionByName(collection.Name);
         }
 
         [DebugOnlyFact]
-        public void FetchSchemaCollectionByResourceId()
-        {
-            StreamlabsOBSCollection collection = service.ActiveCollection() ?? throw new ArgumentNullException($"{nameof(service.ActiveCollection)}");
+        public void FetchSchemaCollectionByResourceId() {
+            StreamlabsOBSCollection collection = service.ActiveCollection() ??
+                throw new ArgumentNullException($"{nameof(service.ActiveCollection)}");
             _ = service.FetchSchemaForCollectionById(collection.ResourceId ?? throw new InvalidOperationException());
         }
 
@@ -91,15 +82,13 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services {
         public void GetCollections() => _ = service.GetCollections();
 
         [DebugOnlyFact]
-        public void LoadCollection()
-        {
+        public void LoadCollection() {
             StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection);
         }
 
         [DebugOnlyFact]
-        public void LoadCollectionById()
-        {
+        public void LoadCollectionById() {
             StreamlabsOBSCollection collection = service.GetCollectionByName("test");
             service.LoadCollection(collection.Id);
         }
@@ -108,18 +97,15 @@ namespace Amsel.Framework.Streamlabs.OBS.Tests.Services {
         public void PassTest() => Assert.True(true);
 
         [DebugOnlyFact]
-        public void RenameCollection()
-        {
+        public void RenameCollection() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection, $"{collection.Name}Test");
         }
 
         [DebugOnlyFact]
-        public void RenameCollectionById()
-        {
+        public void RenameCollectionById() {
             StreamlabsOBSCollection collection = service.ActiveCollection();
             service.RenameCollection(collection.Id, $"{collection.Name}Test");
         }
-        #endregion
     }
 }

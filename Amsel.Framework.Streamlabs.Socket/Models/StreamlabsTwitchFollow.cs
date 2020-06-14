@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsTwitchFollow : StreamlabsEventModel
-    {
+    public class StreamlabsTwitchFollow : StreamlabsEventModel {
         [JsonProperty("to")]
         public string To { get; protected set; }
         [JsonProperty("wotcCode")]

@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSEvent
-    {
+    public class StreamlabsOBSEvent {
         [JsonProperty("data")]
         public JToken Data { get; protected set; }
         [JsonProperty("emitter")]
@@ -19,11 +18,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         [JsonProperty("_type")]
         public string Type { get; protected set; }
 
-        #region public methods
         [NotNull]
         public IEnumerable<TResult> GetData<TResult>() => Data.GetData<TResult>();
 
         public TResult GetDataFirstOrDefault<TResult>() => GetData<TResult>().FirstOrDefault();
-        #endregion
     }
 }

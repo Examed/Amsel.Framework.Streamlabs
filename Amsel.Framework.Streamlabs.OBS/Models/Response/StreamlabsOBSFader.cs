@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSFader
-    {
+    public class StreamlabsOBSFader {
         [JsonProperty("db")]
         public double Db { get; protected set; }
         [JsonProperty("deflection")]

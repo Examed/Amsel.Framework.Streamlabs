@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsTwitchCheer : StreamlabsMessage
-    {
+    public class StreamlabsTwitchCheer : StreamlabsMessage {
         [JsonProperty("amount")]
         public string Amount { get; protected set; }
         [JsonProperty("facemask")]

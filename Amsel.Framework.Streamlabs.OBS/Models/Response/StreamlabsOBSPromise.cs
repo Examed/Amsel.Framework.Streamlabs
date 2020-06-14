@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSPromise
-    {
+    public class StreamlabsOBSPromise {
         [JsonProperty("emitter")]
         public string Emitter { get; protected set; }
         [JsonProperty("resourceId")]

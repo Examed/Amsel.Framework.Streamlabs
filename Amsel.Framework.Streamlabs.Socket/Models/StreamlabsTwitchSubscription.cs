@@ -2,8 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsTwitchSubscription : StreamlabsMessage
-    {
+    public class StreamlabsTwitchSubscription : StreamlabsMessage {
         [JsonProperty("benefit_end_month")]
         public string BenefitEndMonth { get; protected set; }
         [JsonProperty("massSubGiftChildAlerts")]

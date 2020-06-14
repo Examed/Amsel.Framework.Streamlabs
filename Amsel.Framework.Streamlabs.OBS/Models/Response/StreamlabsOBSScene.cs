@@ -6,8 +6,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSScene : StreamlabsOBSSceneBase
-    {
+    public class StreamlabsOBSScene : StreamlabsOBSSceneBase {
         [JsonProperty("nodes")]
         public JArray Nodes { get; protected set; }
         [JsonProperty("resourceId")]
@@ -16,19 +15,17 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         [JsonProperty("type")]
         public string ResultType { get; protected set; }
 
-        #region public methods
         [NotNull]
-        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null)
-        {
+        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null) {
             List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
-            foreach(JToken item in Nodes) {
+            foreach (JToken item in Nodes) {
                 ESceneNodeType type = item["sceneNodeType"].ToObject<ESceneNodeType>();
-                if((type == ESceneNodeType.FOLDER) && (client != null)) {
+                if ((type == ESceneNodeType.FOLDER) && (client != null)) {
                     StreamlabsOBSFolder folder = item.ToObject<StreamlabsOBSFolder>();
                     result.AddRange(folder.GetNestedItems(client));
-                } else {
-                    if(type == ESceneNodeType.ITEM)
-                    {
+                }
+                else {
+                    if (type == ESceneNodeType.ITEM) {
                         result.Add(item.ToObject<StreamlabsOBSItem>());
                     }
                 }
@@ -36,6 +33,5 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
 
             return result;
         }
-        #endregion
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSAudioSource
-    {
+    public class StreamlabsOBSAudioSource {
         [JsonProperty("audioMixers")]
         public double AudioMixers { get; protected set; }
         [JsonProperty("fader")]

@@ -2,8 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsEvent
-    {
+    public class StreamlabsEvent {
         [JsonProperty(PropertyName = "event_id")]
         public string EventId { get; protected set; }
         [JsonProperty(PropertyName = "for")]

@@ -3,8 +3,7 @@ using Newtonsoft.Json;
 using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSCollection
-    {
+    public class StreamlabsOBSCollection {
         [JsonProperty("deleted")]
         public bool Deleted { get; protected set; }
         [JsonProperty("id")]

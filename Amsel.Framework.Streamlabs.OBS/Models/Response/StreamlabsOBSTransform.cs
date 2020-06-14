@@ -3,14 +3,10 @@ using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
     [Serializable]
-    public class StreamlabsOBSTransform
-    {
-        protected StreamlabsOBSTransform()
-        {
-        }
+    public class StreamlabsOBSTransform {
+        protected StreamlabsOBSTransform() { }
 
-        public StreamlabsOBSTransform(StreamlabsOBSCrop crop, StreamlabsOBSPosition position, long rotation, StreamlabsOBSPosition scale)
-        {
+        public StreamlabsOBSTransform(StreamlabsOBSCrop crop, StreamlabsOBSPosition position, long rotation, StreamlabsOBSPosition scale) {
             Crop = crop;
             Position = position;
             Rotation = rotation;

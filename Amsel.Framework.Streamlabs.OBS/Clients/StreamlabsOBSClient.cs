@@ -11,25 +11,22 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Amsel.Framework.Streamlabs.OBS.Clients {
-    public class StreamlabsOBSClient
-    {
+    public class StreamlabsOBSClient {
         [NotNull] private readonly string pipeName;
 
         public StreamlabsOBSClient(string pipe = "slobs")
             => pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
 
-        #region public methods
         public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false)
             => SendRequestAsync(request).Result;
 
         public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false)
             => SendRequestAsync(request).Result.GetResults<TResult>();
 
-        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true)
-        {
-            await using(NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName)) {
-                using(StreamReader reader = new StreamReader(pipe)) {
-                    await using(StreamWriter writer = new StreamWriter(pipe) { NewLine = "\n" }) {
+        public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true) {
+            await using (NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName)) {
+                using (StreamReader reader = new StreamReader(pipe)) {
+                    await using (StreamWriter writer = new StreamWriter(pipe) { NewLine = "\n" }) {
                         await pipe.ConnectAsync(5000).ConfigureAwait(false);
                         await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
                         await writer.FlushAsync().ConfigureAwait(false);
@@ -39,13 +36,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
                         StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
                         response.JsonResponse = responsJson;
 
-                        if(!loadPromises)
-                        {
+                        if (!loadPromises) {
                             return response;
                         }
 
-                        if(!response.IsEnumberabeResult() && response.Results.IsPromise())
-                        {
+                        if (!response.IsEnumberabeResult() && response.Results.IsPromise()) {
                             response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync()
                                 .ConfigureAwait(false))
                                 .Results;
@@ -56,24 +51,20 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
                 }
             }
         }
-        #endregion
 
-        #region private methods
         /// <summary>
         /// Make sure that  only get a Batch of 5 Requests at the same time
         /// </summary>
         /// <param name="requests"></param>
         /// <returns></returns>
         [NotNull]
-        private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests)
-        {
+        private static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests) {
             List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
             List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
 
-            for(int i = 0; i < requests.Length; i++) {
-                if(i % 5 == 0) {
-                    if(current.Any())
-                    {
+            for (int i = 0; i < requests.Length; i++) {
+                if (i % 5 == 0) {
+                    if (current.Any()) {
                         result.Add(current);
                     }
 
@@ -83,13 +74,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
                 current.Add(requests[i]);
             }
 
-            if(current.Any())
-            {
+            if (current.Any()) {
                 result.Add(current);
             }
 
             return result;
         }
-        #endregion
     }
 }

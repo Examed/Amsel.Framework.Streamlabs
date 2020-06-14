@@ -3,8 +3,7 @@ using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
     [Serializable]
-    public class StreamlabsOBSCrop
-    {
+    public class StreamlabsOBSCrop {
         [JsonProperty("bottom")]
         public long Bottom { get; protected set; }
         [JsonProperty("left")]

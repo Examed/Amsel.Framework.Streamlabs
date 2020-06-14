@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSItem : StreamlabsOBSNode
-    {
+    public class StreamlabsOBSItem : StreamlabsOBSNode {
         [JsonProperty("locked")]
         public bool? Locked { get; protected set; }
         [JsonProperty("recordingVisible")]

@@ -3,8 +3,7 @@ using Amsel.Framework.Streamlabs.OBS.Utilities.Converter;
 using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSNode
-    {
+    public class StreamlabsOBSNode {
         [JsonProperty("id")]
         public string Id { get; protected set; }
         [JsonProperty("name")]

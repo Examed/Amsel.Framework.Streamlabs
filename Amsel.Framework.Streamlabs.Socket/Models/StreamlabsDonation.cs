@@ -2,8 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public class StreamlabsDonation : StreamlabsMessage
-    {
+    public class StreamlabsDonation : StreamlabsMessage {
         [JsonProperty("alert_status")]
         public int AlertStatus { get; protected set; }
         [JsonProperty("amount")]

@@ -4,8 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public abstract class StreamlabsEventModel
-    {
+    public abstract class StreamlabsEventModel {
         [JsonProperty("createdAt"),
         JsonConverter(typeof(StreamlabsDateTimeConverter))]
         public DateTime CreatTime { get; protected set; }

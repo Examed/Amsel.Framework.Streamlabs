@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models {
-    public abstract class StreamlabsMessage : StreamlabsEventModel
-    {
+    public abstract class StreamlabsMessage : StreamlabsEventModel {
         [JsonProperty("display_name")]
         public string DisplayName { get; protected set; }
         [JsonProperty("emotes")]

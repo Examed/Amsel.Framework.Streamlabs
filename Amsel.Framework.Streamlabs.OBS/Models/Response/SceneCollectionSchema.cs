@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class SceneCollectionSchema
-    {
+    public class SceneCollectionSchema {
         [JsonProperty("id")]
         public string Id { get; protected set; }
         [JsonProperty("name")]
