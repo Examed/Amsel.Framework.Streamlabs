@@ -31,23 +31,26 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes {
 
             Quobject.SocketIoClientDotNet.Client.Socket socket = IO.Socket(url, opt);
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () => {
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_CONNECT, () =>
+            {
                 log?.LogDebug("Connected");
                 OnConnected?.Invoke(this, new EventArgs());
             });
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data
-                => {
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data =>
+            {
                 log?.LogDebug($"Disonnected: {data}");
                 OnDisconnected?.Invoke(this, (string)data);
             });
 
-            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data => {
+            socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data =>
+            {
                 log?.LogDebug($"Error: {data}");
                 OnError?.Invoke(this, data);
             });
 
-            socket.On("event", data => {
+            socket.On("event", data =>
+            {
                 log?.LogTrace($"EventData: {data}");
                 Console.WriteLine(data);
 

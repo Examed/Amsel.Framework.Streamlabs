@@ -56,26 +56,26 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             remove => SceneSwitched.UnSubscribe(value);
         }
 
-        public StreamlabsOBSScene ActiveScene()
-            => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("activeScene", RESOURCE))?.FirstOrDefault();
+        public StreamlabsOBSScene ActiveScene() =>
+            client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("activeScene", RESOURCE))?.FirstOrDefault();
 
-        public string ActiveSceneId()
-            => client.SendRequest<string>(new StreamlabsOBSRequest("activeSceneId", RESOURCE))?.FirstOrDefault();
+        public string ActiveSceneId() =>
+            client.SendRequest<string>(new StreamlabsOBSRequest("activeSceneId", RESOURCE))?.FirstOrDefault();
 
-        public StreamlabsOBSScene CreateScene(string name)
-            => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("createScene", RESOURCE, name))?.FirstOrDefault();
+        public StreamlabsOBSScene CreateScene(string name) =>
+            client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("createScene", RESOURCE, name))?.FirstOrDefault();
 
-        public StreamlabsOBSScene GetScene(string id)
-            => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScene", RESOURCE, id))?.FirstOrDefault();
+        public StreamlabsOBSScene GetScene(string id) =>
+            client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScene", RESOURCE, id))?.FirstOrDefault();
 
-        public StreamlabsOBSScene GetSceneByName(string name)
-            => GetScenes()?.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).PickRandom();
+        public StreamlabsOBSScene GetSceneByName(string name) =>
+            GetScenes()?.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).PickRandom();
 
-        public IEnumerable<StreamlabsOBSScene> GetScenes()
-            => client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScenes", RESOURCE));
+        public IEnumerable<StreamlabsOBSScene> GetScenes() =>
+            client.SendRequest<StreamlabsOBSScene>(new StreamlabsOBSRequest("getScenes", RESOURCE));
 
-        public bool MakeSceneActive(string id)
-            => client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ?? false;
+        public bool MakeSceneActive(string id) =>
+            client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ?? false;
 
         public bool MakeSceneActiveByIdAndCollectionId([NotNull] string collectionId, [NotNull] string sceneId) {
             if (sceneId == null) {
@@ -112,7 +112,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             return MakeSceneActiveByName(sceneName);
         }
 
-        public StreamlabsOBSSceneBase RemoveScene(string id)
-            => client.SendRequest<StreamlabsOBSSceneBase>(new StreamlabsOBSRequest("removeScene", RESOURCE, id))?.FirstOrDefault();
+        public StreamlabsOBSSceneBase RemoveScene(string id) =>
+            client.SendRequest<StreamlabsOBSSceneBase>(new StreamlabsOBSRequest("removeScene", RESOURCE, id))?.FirstOrDefault();
     }
 }

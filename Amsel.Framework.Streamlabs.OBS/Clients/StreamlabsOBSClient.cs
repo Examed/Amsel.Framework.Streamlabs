@@ -14,14 +14,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
     public class StreamlabsOBSClient {
         [NotNull] private readonly string pipeName;
 
-        public StreamlabsOBSClient(string pipe = "slobs")
-            => pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
+        public StreamlabsOBSClient(string pipe = "slobs") =>
+            pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
 
-        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false)
-            => SendRequestAsync(request).Result;
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) =>
+            SendRequestAsync(request).Result;
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false)
-            => SendRequestAsync(request).Result.GetResults<TResult>();
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) =>
+            SendRequestAsync(request).Result.GetResults<TResult>();
 
         public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true) {
             await using (NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName)) {

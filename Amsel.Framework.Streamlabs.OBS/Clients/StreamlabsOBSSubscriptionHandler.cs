@@ -32,7 +32,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         public void Subscribe(EventHandler<TResponse> value) {
             OnData += value;
             Task.Factory
-                .StartNew(async() => {
+                .StartNew(async() =>
+            {
                 await using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
                 using StreamReader reader = new StreamReader(stream);
                 await using (StreamWriter writer = new StreamWriter(stream)) {

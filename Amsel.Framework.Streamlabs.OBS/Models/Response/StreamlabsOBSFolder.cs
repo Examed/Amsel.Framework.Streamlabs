@@ -15,11 +15,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
             set => resourceId = value;
         }
 
-        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client)
-            => client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId));
+        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) =>
+            client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId));
 
-        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client)
-            => client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId));
+        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) =>
+            client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId));
 
         [NotNull]
         public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client) {
