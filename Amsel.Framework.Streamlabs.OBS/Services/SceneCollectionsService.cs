@@ -65,7 +65,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("fetchSceneCollectionsSchema", RESOURCE))?.FirstOrDefault()
                 .GetData<SceneCollectionSchema>();
 
-        public SceneCollectionSchema FetchSchemaForCollectionById([NotNull] string id) {
+        public SceneCollectionSchema FetchSchemaForCollectionById([NotNull] string id)
+        {
             if (id == null) {
                 throw new ArgumentNullException(nameof(id));
             }
@@ -73,7 +74,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             return FetchSchema()?.Where(x => x.Id == id).PickRandom();
         }
 
-        public SceneCollectionSchema FetchSchemaForCollectionByName(string name) {
+        public SceneCollectionSchema FetchSchemaForCollectionByName(string name)
+        {
             if (name == null) {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -89,14 +91,16 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
 
         public StreamlabsOBSEvent LoadCollection(StreamlabsOBSCollection collection) => LoadCollection(collection.Id);
 
-        public StreamlabsOBSEvent LoadCollection(string id) {
+        public StreamlabsOBSEvent LoadCollection(string id)
+        {
             StreamlabsOBSCollection current = ActiveCollection();
             return (current?.Id == id)
                 ? null
                 : (client.SendRequest<StreamlabsOBSEvent>(new StreamlabsOBSRequest("load", RESOURCE, id))?.FirstOrDefault());
         }
 
-        public void LoadCollectionByName(string name) {
+        public void LoadCollectionByName(string name)
+        {
             StreamlabsOBSCollection collection = GetCollectionByName(name);
             LoadCollection(collection);
         }

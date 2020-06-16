@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Request {
     public class StreamlabsOBSParameters : IEquatable<StreamlabsOBSParameters> {
-        public StreamlabsOBSParameters(string resource, params object[] args) {
+        public StreamlabsOBSParameters(string resource, params object[] args)
+        {
             Resource = resource;
             Args = args?.ToList();
         }
@@ -16,7 +17,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Request {
         public string Resource { get; set; }
 
         #region IEquatable methods
-        public bool Equals(StreamlabsOBSParameters other) {
+        public bool Equals(StreamlabsOBSParameters other)
+        {
             bool equal = (Resource == other.Resource) && (Args.Count == other.Args.Count);
 
             for (int i = 0; i < Args.Count; i++) {

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace Amsel.Framework.Streamlabs.OBS.Utilities {
     public static class StreamlabsOBSExtensions {
         [NotNull]
-        public static IEnumerable<TResult> GetData<TResult>(this JToken data) {
+        public static IEnumerable<TResult> GetData<TResult>(this JToken data)
+        {
             if (data == null) {
                 return new List<TResult>();
             }
@@ -16,7 +17,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities {
                 _ => new List<TResult> { data.ToObject<TResult>() } };
         }
 
-        public static bool IsPromise(this JToken token) {
+        public static bool IsPromise(this JToken token)
+        {
             if ((token == null) || !token.HasValues || (token.Value<string>("_type") != "SUBSCRIPTION")
                 || (token.Value<string>("emitter") != "PROMISE")) {
                 return false;

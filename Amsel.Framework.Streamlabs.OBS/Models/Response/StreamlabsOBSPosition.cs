@@ -6,7 +6,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
     public class StreamlabsOBSPosition {
         public StreamlabsOBSPosition() { }
 
-        public StreamlabsOBSPosition(double x, double y) {
+        public StreamlabsOBSPosition(double x, double y)
+        {
             X = x;
             Y = y;
         }
@@ -31,7 +32,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         public double Distance() => Math.Abs(X + Y);
 
         /// <inheritdoc/>
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (ReferenceEquals(null, obj)) {
                 return false;
             }
@@ -44,7 +46,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         }
 
         // ReSharper disable NonReadonlyMemberInGetHashCode
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             unchecked {
                 return (X.GetHashCode() * 397) ^ Y.GetHashCode();
             }

@@ -3,13 +3,15 @@ using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Request {
     public class StreamlabsOBSRequest {
-        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters) {
+        public StreamlabsOBSRequest(string method, StreamlabsOBSParameters parameters)
+        {
             Id = Guid.NewGuid().ToString();
             Method = method;
             Parameters = parameters;
         }
 
-        public StreamlabsOBSRequest(string method, string resource, params object[] args) {
+        public StreamlabsOBSRequest(string method, string resource, params object[] args)
+        {
             Id = Guid.NewGuid().ToString();
             Method = method;
             Parameters = new StreamlabsOBSParameters(resource, args);

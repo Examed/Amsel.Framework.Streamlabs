@@ -22,7 +22,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         [NotNull]
         public IEnumerable<TResult> GetResults<TResult>() => Results.GetData<TResult>();
 
-        public bool IsEnumberabeResult() {
+        public bool IsEnumberabeResult()
+        {
             if (Results?.Type == JTokenType.Array) {
                 return true;
             }

@@ -16,7 +16,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
         public string ResultType { get; protected set; }
 
         [NotNull]
-        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null) {
+        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null)
+        {
             List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
             foreach (JToken item in Nodes) {
                 ESceneNodeType type = item["sceneNodeType"].ToObject<ESceneNodeType>();

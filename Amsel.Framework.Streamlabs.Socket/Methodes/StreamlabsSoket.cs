@@ -23,7 +23,8 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes {
         public event EventHandler<StreamlabsTwitchSubscription> OnTwitchSubscription;
         public event EventHandler<JToken> OnUndocumented;
 
-        public void Connect(string socketToken) {
+        public void Connect(string socketToken)
+        {
             string url = $"https://sockets.streamlabs.com";
             IO.Options opt = new IO.Options { QueryString = $"token={socketToken}", Reconnection = true,
                 ReconnectionDelay = 500, Port = 433, Secure = true, AutoConnect = false, Upgrade = true

@@ -21,12 +21,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
         [NotNull] private readonly StreamlabsOBSClient client;
         [NotNull] private readonly SceneCollectionsService collectionsService;
 
-        public ScenesService() {
+        public ScenesService()
+        {
             client = new StreamlabsOBSClient();
             collectionsService = new SceneCollectionsService(client);
         }
 
-        public ScenesService([NotNull] StreamlabsOBSClient client, [NotNull] SceneCollectionsService collectionsService) {
+        public ScenesService([NotNull] StreamlabsOBSClient client, [NotNull] SceneCollectionsService collectionsService)
+        {
             this.client = client ?? throw new ArgumentNullException(nameof(client));
             this.collectionsService = collectionsService ?? throw new ArgumentNullException(nameof(collectionsService));
         }
@@ -77,7 +79,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
         public bool MakeSceneActive(string id) =>
             client.SendRequest<bool>(new StreamlabsOBSRequest("makeSceneActive", RESOURCE, id))?.FirstOrDefault() ?? false;
 
-        public bool MakeSceneActiveByIdAndCollectionId([NotNull] string collectionId, [NotNull] string sceneId) {
+        public bool MakeSceneActiveByIdAndCollectionId([NotNull] string collectionId, [NotNull] string sceneId)
+        {
             if (sceneId == null) {
                 throw new ArgumentNullException(nameof(sceneId));
             }
@@ -90,7 +93,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             return MakeSceneActiveByName(sceneId);
         }
 
-        public bool MakeSceneActiveByName([NotNull] string name) {
+        public bool MakeSceneActiveByName([NotNull] string name)
+        {
             if (name == null) {
                 throw new ArgumentNullException(nameof(name));
             }
@@ -99,7 +103,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
             return MakeSceneActive(scene.Id);
         }
 
-        public bool MakeSceneActiveByNameAndCollectionName([NotNull] string collectionName, [NotNull] string sceneName) {
+        public bool MakeSceneActiveByNameAndCollectionName([NotNull] string collectionName, [NotNull] string sceneName)
+        {
             if (sceneName == null) {
                 throw new ArgumentNullException(nameof(sceneName));
             }

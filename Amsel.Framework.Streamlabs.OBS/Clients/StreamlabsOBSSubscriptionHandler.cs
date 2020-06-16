@@ -15,7 +15,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         [NotNull] private readonly StreamlabsOBSRequest request;
         [NotNull] private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
 
-        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request, CancellationToken cancellationToken = default, [NotNull] string pipeName = "slobs") {
+        public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request, CancellationToken cancellationToken = default, [NotNull] string pipeName = "slobs")
+        {
             // TODO check externCancellationToken
             this.request = request ?? throw new ArgumentNullException(nameof(request));
             this.pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
@@ -29,7 +30,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         public event EventHandler<StreamlabsOBSEvent> OnEvent;
         public event EventHandler<string> OnUnsupported;
 
-        public void Subscribe(EventHandler<TResponse> value) {
+        public void Subscribe(EventHandler<TResponse> value)
+        {
             OnData += value;
             Task.Factory
                 .StartNew(async() =>
@@ -71,7 +73,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
             }, externCancellationToken);
         }
 
-        public void UnSubscribe(EventHandler<TResponse> eventHandler) {
+        public void UnSubscribe(EventHandler<TResponse> eventHandler)
+        {
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
