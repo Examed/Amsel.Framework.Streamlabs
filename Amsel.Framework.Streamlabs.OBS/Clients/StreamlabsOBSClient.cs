@@ -18,10 +18,10 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
             pipeName = pipe ?? throw new ArgumentNullException(nameof(pipe));
 
         public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) =>
-            SendRequestAsync(request).Result;
+            SendRequestAsync(request).GetAwaiter().GetResult();
 
         public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) =>
-            SendRequestAsync(request).Result.GetResults<TResult>();
+            SendRequestAsync(request).GetAwaiter().GetResult().GetResults<TResult>();
 
         public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request, bool loadPromises = true)
         {
