@@ -23,6 +23,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Services {
         private readonly StreamlabsOBSClient client;
 
         public SceneCollectionsService() => client = new StreamlabsOBSClient();
+
         public SceneCollectionsService(StreamlabsOBSClient client) => this.client = client;
 
         public event EventHandler<StreamlabsOBSEvent> OnCollectionAdded {
