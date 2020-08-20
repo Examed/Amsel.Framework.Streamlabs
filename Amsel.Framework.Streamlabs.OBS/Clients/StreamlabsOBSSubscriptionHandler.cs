@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Amsel.Framework.Streamlabs.OBS.Clients {
     public class StreamlabsOBSSubscriptionHandler<TResponse> : IDisposable where TResponse : class {
-        private readonly CancellationToken externCancellationToken;
+        private readonly CancellationToken _externCancellationToken;
         [NotNull] private readonly string pipeName;
         [NotNull] private readonly StreamlabsOBSRequest request;
         [NotNull] private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
@@ -21,7 +21,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
             this.request = request ?? throw new ArgumentNullException(nameof(request));
             this.pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
             if (cancellationToken != default) {
-                externCancellationToken = cancellationToken;
+                _externCancellationToken = cancellationToken;
             }
         }
 
@@ -33,44 +33,43 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients {
         public void Subscribe(EventHandler<TResponse> value)
         {
             OnData += value;
-            Task.Factory
-                .StartNew(async() =>
+            Task.Run(async() =>
             {
                 await using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
                 using StreamReader reader = new StreamReader(stream);
                 await using (StreamWriter writer = new StreamWriter(stream)) {
-                    await stream.ConnectAsync(5000, externCancellationToken).ConfigureAwait(false);
+                    await stream.ConnectAsync(5000, _externCancellationToken).ConfigureAwait(false);
 
                     await writer.WriteLineAsync(request.ToJson()).ConfigureAwait(false);
                     await writer.FlushAsync().ConfigureAwait(false);
                     stream.WaitForPipeDrain();
 
-                    while (!externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested) {
+                    while (!_externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested) {
                         string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
                         StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
                         response.JsonResponse = responsJson;
 
-                        if (response.Results.Value<string>("_type") == "SUBSCRIPTION") {
+                        if (response.Results.Value<string>("_type").Equals("SUBSCRIPTION")) {
                             OnBegin?.Invoke(this, response);
-                            }
+                        }
                         else
-                        if (response.Results.Value<string>("_type") == "EVENT") {
+                        if (response.Results.Value<string>("_type").Equals("EVENT")) {
                             StreamlabsOBSEvent eventData = response.GetResultFirstOrDefault<StreamlabsOBSEvent>();
 
                             OnEvent?.Invoke(this, eventData);
                             if (typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent))) {
                                 OnData?.Invoke(this, eventData as TResponse);
-                                }
+                            }
                             else {
                                 OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
-                                }
+                            }
                         }
                         else {
                             OnUnsupported?.Invoke(this, responsJson);
-                            }
+                        }
                     }
                 }
-            }, externCancellationToken);
+            }, _externCancellationToken);
         }
 
         public void UnSubscribe(EventHandler<TResponse> eventHandler)
