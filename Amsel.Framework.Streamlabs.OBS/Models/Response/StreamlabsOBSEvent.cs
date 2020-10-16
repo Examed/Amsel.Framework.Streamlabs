@@ -5,22 +5,28 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Amsel.Framework.Streamlabs.OBS.Models.Response {
-    public class StreamlabsOBSEvent {
+namespace Amsel.Framework.Streamlabs.OBS.Models.Response
+{
+    public class StreamlabsOBSEvent
+    {
+        [NotNull]
+        public IEnumerable<TResult> GetData<TResult>() { return Data.GetData<TResult>(); }
+
+        public TResult GetDataFirstOrDefault<TResult>() { return GetData<TResult>().FirstOrDefault(); }
+
         [JsonProperty("data")]
         public JToken Data { get; protected set; }
+
         [JsonProperty("emitter")]
         public string Emitter { get; protected set; }
+
         [JsonProperty("isRejected")]
         public bool IsRejected { get; protected set; }
+
         [JsonProperty("resourceId")]
         public string ResourceId { get; protected set; }
+
         [JsonProperty("_type")]
         public string Type { get; protected set; }
-
-        [NotNull]
-        public IEnumerable<TResult> GetData<TResult>() => Data.GetData<TResult>();
-
-        public TResult GetDataFirstOrDefault<TResult>() => GetData<TResult>().FirstOrDefault();
     }
 }

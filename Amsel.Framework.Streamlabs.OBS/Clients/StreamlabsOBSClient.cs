@@ -16,23 +16,50 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
     {
         [NotNull] readonly string pipeName;
 
-        public StreamlabsOBSClient(string pipe = "slobs") => pipeName =
-            pipe ?? throw new ArgumentNullException(nameof(pipe));
+        public StreamlabsOBSClient(string pipe = "slobs")
+        {
+            pipeName =
+                        pipe ?? throw new ArgumentNullException(nameof(pipe));
+        }
 
-        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request)
-            .ConfigureAwait(false)
-            .GetAwaiter()
-            .GetResult();
 
-        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false) => SendRequestAsync(request)
-            .ConfigureAwait(false)
-            .GetAwaiter()
-            .GetResult()
-            .GetResults<TResult>();
+        /// <summary>
+        /// Make sure that  only get a Batch of 5 Requests at the same time
+        /// </summary>
+        /// <param name="requests"></param>
+        /// <returns></returns>
+        [NotNull]
+        static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests) {
+            List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
+            List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
+
+            for(int i = 0; i < requests.Length; i++) {
+                if(i % 5 == 0) {
+                    if(current.Any()) {
+                        result.Add(current);
+                    }
+
+                    current = new List<StreamlabsOBSRequest>();
+                }
+
+                current.Add(requests[i]);
+            }
+
+            if(current.Any()) {
+                result.Add(current);
+            }
+
+            return result;
+        }
+
+        public StreamlabsOBSResponse SendRequest(StreamlabsOBSRequest request, bool servePromises = false)
+        { return SendRequestAsync(request).ConfigureAwait(false).GetAwaiter().GetResult(); }
+
+        public IEnumerable<TResult> SendRequest<TResult>(StreamlabsOBSRequest request, bool servePromises = false)
+        { return SendRequestAsync(request).ConfigureAwait(false).GetAwaiter().GetResult().GetResults<TResult>(); }
 
         public async Task<StreamlabsOBSResponse> SendRequestAsync(StreamlabsOBSRequest request,
-                                                                  bool loadPromises = true)
-        {
+                                                                  bool loadPromises = true) {
             using NamedPipeClientStream pipe = new NamedPipeClientStream(pipeName);
             using StreamReader reader = new StreamReader(pipe);
             using StreamWriter writer = new StreamWriter(pipe) { NewLine = "\n" };
@@ -46,53 +73,15 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
             StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
             response.JsonResponse = responsJson;
 
-            if(!loadPromises)
-            {
+            if(!loadPromises) {
                 return response;
             }
 
-            if(!response.IsEnumberabeResult() && response.Results.IsPromise())
-            {
-                response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync()
-                    .ConfigureAwait(false))
-                    .Results;
+            if(!response.IsEnumberabeResult() && response.Results.IsPromise()) {
+                response.Results = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(await reader.ReadLineAsync().ConfigureAwait(false)).Results;
             }
 
             return response;
-        }
-
-        /// <summary>
-        /// Make sure that  only get a Batch of 5 Requests at the same time
-        /// </summary>
-        /// <param name="requests"></param>
-        /// <returns></returns>
-        [NotNull]
-        static List<List<StreamlabsOBSRequest>> GetBatch(StreamlabsOBSRequest[] requests)
-        {
-            List<List<StreamlabsOBSRequest>> result = new List<List<StreamlabsOBSRequest>>();
-            List<StreamlabsOBSRequest> current = new List<StreamlabsOBSRequest>();
-
-            for(int i = 0; i < requests.Length; i++)
-            {
-                if(i % 5 == 0)
-                {
-                    if(current.Any())
-                    {
-                        result.Add(current);
-                    }
-
-                    current = new List<StreamlabsOBSRequest>();
-                }
-
-                current.Add(requests[i]);
-            }
-
-            if(current.Any())
-            {
-                result.Add(current);
-            }
-
-            return result;
         }
     }
 }

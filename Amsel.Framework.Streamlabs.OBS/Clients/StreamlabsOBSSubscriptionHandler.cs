@@ -20,13 +20,11 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
         public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request,
                                                 CancellationToken cancellationToken = default,
-                                                [NotNull] string pipeName = "slobs")
-        {
+                                                [NotNull] string pipeName = "slobs") {
             // TODO check externCancellationToken
             this.request = request ?? throw new ArgumentNullException(nameof(request));
             this.pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
-            if(cancellationToken != default)
-            {
+            if(cancellationToken != default) {
                 _externCancellationToken = cancellationToken;
             }
         }
@@ -39,11 +37,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
 
         public event EventHandler<string> OnUnsupported;
 
-        public void Subscribe(EventHandler<TResponse> value)
-        {
+        #region IDisposable methods
+        /// <inheritdoc/>
+        public void Dispose() { unsubscribeToken.Cancel(); }
+        #endregion
+
+        public void Subscribe(EventHandler<TResponse> value) {
             OnData += value;
-            Task.Run(async() =>
-            {
+            Task.Run(async() => {
                 using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
                 using StreamReader reader = new StreamReader(stream);
                 using StreamWriter writer = new StreamWriter(stream);
@@ -54,30 +55,24 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                 await writer.FlushAsync().ConfigureAwait(false);
                 stream.WaitForPipeDrain();
 
-                while(!_externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested)
-                {
+                while(!_externCancellationToken.IsCancellationRequested && !unsubscribeToken.IsCancellationRequested) {
                     string responsJson = await reader.ReadLineAsync().ConfigureAwait(false);
                     StreamlabsOBSResponse response = JsonConvert.DeserializeObject<StreamlabsOBSResponse>(responsJson);
                     response.JsonResponse = responsJson;
 
-                    if(response.Results.Value<string>("_type").Equals("SUBSCRIPTION"))
-                    {
+                    if(response.Results.Value<string>("_type").Equals("SUBSCRIPTION")) {
                         OnBegin?.Invoke(this, response);
                     } else
-                    if(response.Results.Value<string>("_type").Equals("EVENT"))
-                    {
+                    if(response.Results.Value<string>("_type").Equals("EVENT")) {
                         StreamlabsOBSEvent eventData = response.GetResultFirstOrDefault<StreamlabsOBSEvent>();
 
                         OnEvent?.Invoke(this, eventData);
-                        if(typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent)))
-                        {
+                        if(typeof(TResponse).IsAssignableFrom(typeof(StreamlabsOBSEvent))) {
                             OnData?.Invoke(this, eventData as TResponse);
-                        } else
-                        {
+                        } else {
                             OnData?.Invoke(this, eventData.GetDataFirstOrDefault<TResponse>());
                         }
-                    } else
-                    {
+                    } else {
                         OnUnsupported?.Invoke(this, responsJson);
                     }
                 }
@@ -85,15 +80,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                      _externCancellationToken);
         }
 
-        public void UnSubscribe(EventHandler<TResponse> eventHandler)
-        {
+        public void UnSubscribe(EventHandler<TResponse> eventHandler) {
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
-
-        #region IDisposable methods
-        /// <inheritdoc/>
-        public void Dispose() => unsubscribeToken.Cancel();
-        #endregion
     }
 }
