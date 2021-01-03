@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsSource : StreamlabsSourceBase
     {
+        #region Properties
         [JsonProperty("async")]
         public bool Async { get; protected set; }
 
@@ -30,5 +31,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("width")]
         public double Width { get; protected set; }
+        #endregion
     }
 }

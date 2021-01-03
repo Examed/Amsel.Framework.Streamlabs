@@ -1,23 +1,35 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Clients;
+﻿using System.Collections.Generic;
+using Amsel.Framework.Streamlabs.OBS.Clients;
 using Amsel.Framework.Streamlabs.OBS.Models.Request;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSFolder : StreamlabsOBSNode
     {
-        [JsonProperty("resourceId")] string resourceId;
+        #region Fields
+        [JsonProperty("resourceId")] private string resourceId;
+        #endregion
 
-        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client)
-        { return client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId)); }
+        #region Properties
+        [JsonProperty("childrenIds")]
+        public List<string> ChildrenIds { get; protected set; }
 
-        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client)
-        { return client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId)); }
+        public string ResourceId {
+            get => string.IsNullOrEmpty(resourceId) ? ($"SceneItemFolder[\"{SceneId}\",\"{Id}\"]") : resourceId;
+            set => resourceId = value;
+        }
+        #endregion
 
+        #region Methods
+        public IEnumerable<StreamlabsOBSFolder> GetFolders(StreamlabsOBSClient client) {
+            return client.SendRequest<StreamlabsOBSFolder>(new StreamlabsOBSRequest("getFolders", ResourceId)); }
+        public IEnumerable<StreamlabsOBSItem> GetItems(StreamlabsOBSClient client) {
+            return client.SendRequest<StreamlabsOBSItem>(new StreamlabsOBSRequest("getItems", ResourceId)); }
         [NotNull]
-        public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client) {
+        public IEnumerable<StreamlabsOBSFolder> GetNestedFolders(StreamlabsOBSClient client)
+        {
             List<StreamlabsOBSFolder> result = new List<StreamlabsOBSFolder>();
             IEnumerable<StreamlabsOBSFolder> folders = GetFolders(client);
             foreach(StreamlabsOBSFolder node in folders) {
@@ -29,7 +41,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         }
 
         [NotNull]
-        public IEnumerable<StreamlabsOBSItem> GetNestedItems(StreamlabsOBSClient client) {
+        public IEnumerable<StreamlabsOBSItem> GetNestedItems(StreamlabsOBSClient client)
+        {
             List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
             IEnumerable<StreamlabsOBSItem> currentItems = GetItems(client);
             if(currentItems != null) {
@@ -46,14 +59,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
             return result;
         }
-
-        [JsonProperty("childrenIds")]
-        public List<string> ChildrenIds { get; protected set; }
-
-        public string ResourceId
-        {
-            get => string.IsNullOrEmpty(resourceId) ? ($"SceneItemFolder[\"{SceneId}\",\"{Id}\"]") : resourceId;
-            set => resourceId = value;
-        }
+        #endregion
     }
 }

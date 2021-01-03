@@ -1,16 +1,30 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Clients;
+﻿using System.Collections.Generic;
+using Amsel.Framework.Streamlabs.OBS.Clients;
 using Amsel.Framework.Streamlabs.OBS.Enums;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSScene : StreamlabsOBSSceneBase
     {
+        #region Properties
+        [JsonProperty("nodes")]
+        public JArray Nodes { get; protected set; }
+
+        [JsonProperty("resourceId")]
+        public string ResourceId { get; protected set; }
+
+        // TODO _type or type
+        [JsonProperty("type")]
+        public string ResultType { get; protected set; }
+        #endregion
+
+        #region Methods
         [NotNull]
-        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null) {
+        public IEnumerable<StreamlabsOBSItem> GetSceneItems(StreamlabsOBSClient client = null)
+        {
             List<StreamlabsOBSItem> result = new List<StreamlabsOBSItem>();
             foreach(JToken item in Nodes) {
                 ESceneNodeType type = item["sceneNodeType"].ToObject<ESceneNodeType>();
@@ -26,15 +40,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
             return result;
         }
-
-        [JsonProperty("nodes")]
-        public JArray Nodes { get; protected set; }
-
-        [JsonProperty("resourceId")]
-        public string ResourceId { get; protected set; }
-
-        // TODO _type or type
-        [JsonProperty("type")]
-        public string ResultType { get; protected set; }
+        #endregion
     }
 }

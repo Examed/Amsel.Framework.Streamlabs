@@ -1,26 +1,33 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Models.Request;
-using Amsel.Framework.Streamlabs.OBS.Models.Response;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
+using Amsel.Framework.Streamlabs.OBS.Models.Request;
+using Amsel.Framework.Streamlabs.OBS.Models.Response;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Clients
 {
     public class StreamlabsOBSSubscriptionHandler<TResponse> : IDisposable
         where TResponse : class
     {
-        readonly CancellationToken _externCancellationToken;
-        [NotNull] readonly string pipeName;
-        [NotNull] readonly StreamlabsOBSRequest request;
-        [NotNull] readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
+        #region Fields
+        private readonly CancellationToken _externCancellationToken;
 
+        [NotNull] private readonly string pipeName;
+
+        [NotNull] private readonly StreamlabsOBSRequest request;
+
+        [NotNull] private readonly CancellationTokenSource unsubscribeToken = new CancellationTokenSource();
+        #endregion
+
+        #region Constructors
         public StreamlabsOBSSubscriptionHandler([NotNull] StreamlabsOBSRequest request,
-                                                CancellationToken cancellationToken = default,
-                                                [NotNull] string pipeName = "slobs") {
+            CancellationToken cancellationToken = default,
+            [NotNull] string pipeName = "slobs")
+        {
             // TODO check externCancellationToken
             this.request = request ?? throw new ArgumentNullException(nameof(request));
             this.pipeName = pipeName ?? throw new ArgumentNullException(nameof(pipeName));
@@ -28,7 +35,9 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                 _externCancellationToken = cancellationToken;
             }
         }
+        #endregion
 
+        #region Events
         public event EventHandler<StreamlabsOBSResponse> OnBegin;
 
         public event EventHandler<TResponse> OnData;
@@ -36,13 +45,19 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
         public event EventHandler<StreamlabsOBSEvent> OnEvent;
 
         public event EventHandler<string> OnUnsupported;
-
-        #region IDisposable methods
-        /// <inheritdoc/>
-        public void Dispose() { unsubscribeToken.Cancel(); }
         #endregion
 
-        public void Subscribe(EventHandler<TResponse> value) {
+        #region Methods
+        #region IDisposable methods
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            unsubscribeToken.Cancel();
+        }
+        #endregion
+
+        public void Subscribe(EventHandler<TResponse> value)
+        {
             OnData += value;
             Task.Run(async() => {
                 using NamedPipeClientStream stream = new NamedPipeClientStream(pipeName);
@@ -77,12 +92,14 @@ namespace Amsel.Framework.Streamlabs.OBS.Clients
                     }
                 }
             },
-                     _externCancellationToken);
+                _externCancellationToken);
         }
 
-        public void UnSubscribe(EventHandler<TResponse> eventHandler) {
+        public void UnSubscribe(EventHandler<TResponse> eventHandler)
+        {
             OnData -= eventHandler;
             unsubscribeToken.Cancel();
         }
+        #endregion
     }
 }

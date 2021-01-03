@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSItem : StreamlabsOBSNode
     {
+        #region Properties
         [JsonProperty("locked")]
         public bool? Locked { get; protected set; }
 
@@ -26,5 +27,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("visible")]
         public bool? Visible { get; protected set; }
+        #endregion
     }
 }

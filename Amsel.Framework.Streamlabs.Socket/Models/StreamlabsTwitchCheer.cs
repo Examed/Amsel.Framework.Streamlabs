@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsTwitchCheer : StreamlabsMessage
     {
+        #region Properties
         [JsonProperty("amount")]
         public string Amount { get; protected set; }
 
@@ -12,5 +13,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("style")]
         public string Style { get; protected set; }
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public abstract class StreamlabsMessage : StreamlabsEventModel
     {
+        #region Properties
         [JsonProperty("display_name")]
         public string DisplayName { get; protected set; }
 
@@ -15,5 +16,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("message")]
         public string Message { get; protected set; }
+        #endregion
     }
 }

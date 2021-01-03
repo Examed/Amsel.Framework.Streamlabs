@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class SceneCollectionSchema
     {
+        #region Properties
         [JsonProperty("id")]
         public string Id { get; protected set; }
 
@@ -16,5 +17,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("sources")]
         public IEnumerable<StreamlabsSourceBase> Sources { get; protected set; }
+        #endregion
     }
 }

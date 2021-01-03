@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     [Serializable]
     public class StreamlabsOBSCrop
     {
+        #region Properties
         [JsonProperty("bottom")]
         public long Bottom { get; protected set; }
 
@@ -17,5 +18,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("top")]
         public long Top { get; protected set; }
+        #endregion
     }
 }

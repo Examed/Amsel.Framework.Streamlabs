@@ -1,12 +1,13 @@
-﻿using Amsel.Framework.Streamlabs.Socket.Converter;
+﻿using System;
+using Amsel.Framework.Streamlabs.Socket.Converter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public abstract class StreamlabsEventModel
     {
+        #region Properties
         [JsonProperty("createdAt")]
         [JsonConverter(typeof(StreamlabsDateTimeConverter))]
         public DateTime CreatTime { get; protected set; }
@@ -55,5 +56,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("type")]
         public string Type { get; protected set; }
+        #endregion
     }
 }

@@ -1,19 +1,15 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Amsel.Framework.Streamlabs.OBS.Utilities;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSEvent
     {
-        [NotNull]
-        public IEnumerable<TResult> GetData<TResult>() { return Data.GetData<TResult>(); }
-
-        public TResult GetDataFirstOrDefault<TResult>() { return GetData<TResult>().FirstOrDefault(); }
-
+        #region Properties
         [JsonProperty("data")]
         public JToken Data { get; protected set; }
 
@@ -28,5 +24,12 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("_type")]
         public string Type { get; protected set; }
+        #endregion
+
+        #region Methods
+        [NotNull]
+        public IEnumerable<TResult> GetData<TResult>() { return Data.GetData<TResult>(); }
+        public TResult GetDataFirstOrDefault<TResult>() { return GetData<TResult>().FirstOrDefault(); }
+        #endregion
     }
 }

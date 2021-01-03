@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSAudioSource
     {
+        #region Properties
         [JsonProperty("audioMixers")]
         public double AudioMixers { get; protected set; }
 
@@ -31,5 +32,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("syncOffset")]
         public bool SyncOffset { get; protected set; }
+        #endregion
     }
 }

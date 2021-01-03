@@ -5,6 +5,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsDonation : StreamlabsMessage
     {
+        #region Properties
         [JsonProperty("alert_status")]
         public int AlertStatus { get; protected set; }
 
@@ -58,5 +59,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("wishListItem")]
         public string WishListItem { get; protected set; }
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsSourceBase
     {
+        #region Properties
         [JsonProperty("id")]
         public string Id { get; protected set; }
 
@@ -13,5 +14,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         // TODO Enum
         [JsonProperty("type")]
         public string Type { get; protected set; }
+        #endregion
     }
 }

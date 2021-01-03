@@ -5,6 +5,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsEvent
     {
+        #region Properties
         [JsonProperty(PropertyName = "event_id")]
         public string EventId { get; protected set; }
 
@@ -16,5 +17,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }
+        #endregion
     }
 }

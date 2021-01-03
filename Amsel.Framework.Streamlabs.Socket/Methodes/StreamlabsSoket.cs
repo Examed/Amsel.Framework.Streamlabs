@@ -1,18 +1,23 @@
-﻿using Amsel.Framework.Streamlabs.Socket.Models;
+﻿using System;
+using Amsel.Framework.Streamlabs.Socket.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
-using System;
 
 namespace Amsel.Framework.Streamlabs.Socket.Methodes
 {
     public class StreamlabsSoket
     {
-        readonly ILogger log;
+        #region Fields
+        private readonly ILogger log;
+        #endregion
 
+        #region Constructors
         public StreamlabsSoket(ILogger logger = null) { log = logger; }
+        #endregion
 
+        #region Events
         public event EventHandler OnConnected;
 
         public event EventHandler<object> OnDisconnected;
@@ -34,8 +39,11 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
         public event EventHandler<StreamlabsTwitchSubscription> OnTwitchSubscription;
 
         public event EventHandler<JToken> OnUndocumented;
+        #endregion
 
-        public void Connect(string socketToken) {
+        #region Methods
+        public void Connect(string socketToken)
+        {
             string url = $"https://sockets.streamlabs.com";
             IO.Options opt = new IO.Options
             {
@@ -56,82 +64,82 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
             });
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_DISCONNECT, data => {
-                log?.LogDebug($"Disonnected: {data}");
-                OnDisconnected?.Invoke(this, (string)data);
-            });
+                    log?.LogDebug($"Disonnected: {data}");
+                    OnDisconnected?.Invoke(this, (string)data);
+                });
 
             socket.On(Quobject.SocketIoClientDotNet.Client.Socket.EVENT_ERROR, data => {
-                log?.LogDebug($"Error: {data}");
-                OnError?.Invoke(this, data);
-            });
+                    log?.LogDebug($"Error: {data}");
+                    OnError?.Invoke(this, data);
+                });
 
             socket.On("event", data => {
-                log?.LogTrace($"EventData: {data}");
-                Console.WriteLine(data);
+                    log?.LogTrace($"EventData: {data}");
+                    Console.WriteLine(data);
 
-                StreamlabsEvent streamlabsEvent = JsonConvert.DeserializeObject<StreamlabsEvent>(data.ToString());
-                Console.WriteLine(data);
+                    StreamlabsEvent streamlabsEvent = JsonConvert.DeserializeObject<StreamlabsEvent>(data.ToString());
+                    Console.WriteLine(data);
 
-                JToken token = streamlabsEvent.Message;
-                if(token.Type == JTokenType.Array) {
+                    JToken token = streamlabsEvent.Message;
+                    if(token.Type == JTokenType.Array) {
                     token = token.First;
                 }
 
-                switch(streamlabsEvent.Type) {
-                    case "streamlabels.underlying":
-                        OnStreamlabels?.Invoke(this, token.ToObject<StreamlabsLabels>());
-                        return;
-                    case "donation":
-                        OnDonation?.Invoke(this, token.ToObject<StreamlabsDonation>());
-                        break;
-                    case "redemption":
-                        break;
-                    case "subscription":
-                        switch(token["platform"].Value<string>()) {
-                            case "twitch_account":
-                                OnTwitchSubscription?.Invoke(this, token.ToObject<StreamlabsTwitchSubscription>());
-                                break;
-                        }
+                    switch(streamlabsEvent.Type) {
+                        case "streamlabels.underlying":
+                            OnStreamlabels?.Invoke(this, token.ToObject<StreamlabsLabels>());
+                            return;
+                        case "donation":
+                            OnDonation?.Invoke(this, token.ToObject<StreamlabsDonation>());
+                            break;
+                        case "redemption":
+                            break;
+                        case "subscription":
+                            switch(token["platform"].Value<string>()) {
+                                case "twitch_account":
+                                    OnTwitchSubscription?.Invoke(this, token.ToObject<StreamlabsTwitchSubscription>());
+                                    break;
+                            }
 
-                        break;
-                    case "follow":
-                        switch(token["platform"].Value<string>()) {
-                            case "twitch_account":
-                                OnTwitchFollow?.Invoke(this, token.ToObject<StreamlabsTwitchFollow>());
-                                break;
-                        }
+                            break;
+                        case "follow":
+                            switch(token["platform"].Value<string>()) {
+                                case "twitch_account":
+                                    OnTwitchFollow?.Invoke(this, token.ToObject<StreamlabsTwitchFollow>());
+                                    break;
+                            }
 
-                        break;
-                    case "host":
-                        switch(token["platform"].Value<string>()) {
-                            case "twitch_account":
-                                OnTwitchHost?.Invoke(this, token.ToObject<StreamlabsTwitchHost>());
-                                break;
-                        }
+                            break;
+                        case "host":
+                            switch(token["platform"].Value<string>()) {
+                                case "twitch_account":
+                                    OnTwitchHost?.Invoke(this, token.ToObject<StreamlabsTwitchHost>());
+                                    break;
+                            }
 
-                        break;
-                    case "bits":
-                        switch(token["platform"].Value<string>()) {
-                            case "twitch_account":
-                                OnTwitchCheer?.Invoke(this, token.ToObject<StreamlabsTwitchCheer>());
-                                break;
-                        }
+                            break;
+                        case "bits":
+                            switch(token["platform"].Value<string>()) {
+                                case "twitch_account":
+                                    OnTwitchCheer?.Invoke(this, token.ToObject<StreamlabsTwitchCheer>());
+                                    break;
+                            }
 
-                        break;
-                    case "raid":
-                        switch(token["platform"].Value<string>()) {
-                            case "twitch_account":
-                                OnTwitchRaid?.Invoke(this, token.ToObject<StreamlabsTwitchRaid>());
-                                break;
-                        }
+                            break;
+                        case "raid":
+                            switch(token["platform"].Value<string>()) {
+                                case "twitch_account":
+                                    OnTwitchRaid?.Invoke(this, token.ToObject<StreamlabsTwitchRaid>());
+                                    break;
+                            }
 
-                        break;
-                    default:
-                        OnUndocumented?.Invoke(this, token);
-                        break;
-                }
+                            break;
+                        default:
+                            OnUndocumented?.Invoke(this, token);
+                            break;
+                    }
 
-                // else if (streamlabsEvent.Message.GetType() is "redemption")
+                    // else if (streamlabsEvent.Message.GetType() is "redemption")
                 // {
                 // }
                 // else if (streamlabsEvent.Message.GetType() is "pausequeue")
@@ -153,5 +161,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Methodes
 
             socket.Open();
         }
+        #endregion
     }
 }

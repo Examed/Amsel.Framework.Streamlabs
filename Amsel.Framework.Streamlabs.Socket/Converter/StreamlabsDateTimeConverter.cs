@@ -2,8 +2,10 @@
 
 namespace Amsel.Framework.Streamlabs.Socket.Converter
 {
-    class StreamlabsDateTimeConverter : IsoDateTimeConverter
+    internal class StreamlabsDateTimeConverter : IsoDateTimeConverter
     {
+        #region Constructors
         public StreamlabsDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd HH:mm:ss"; }
+        #endregion
     }
 }

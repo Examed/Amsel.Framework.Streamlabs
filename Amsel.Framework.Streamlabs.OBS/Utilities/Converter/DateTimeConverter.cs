@@ -2,8 +2,10 @@
 
 namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
 {
-    class DateTimeConverter : IsoDateTimeConverter
+    internal class DateTimeConverter : IsoDateTimeConverter
     {
+        #region Constructors
         public DateTimeConverter() { DateTimeFormat = "yyyy-MM-ddTHH:mm:ss.fffZ"; }
+        #endregion
     }
 }

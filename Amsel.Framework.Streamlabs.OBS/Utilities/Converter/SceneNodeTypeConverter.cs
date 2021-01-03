@@ -1,14 +1,17 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Enums;
+﻿using System;
+using Amsel.Framework.Streamlabs.OBS.Enums;
 using Newtonsoft.Json;
-using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
 {
     public class SceneNodeTypeConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType) { return (objectType == typeof(ESceneNodeType)) || (objectType == typeof(ESceneNodeType?)); }
+        #region Methods
+        public override bool CanConvert(Type objectType) { return (objectType == typeof(ESceneNodeType)) || (objectType == typeof(ESceneNodeType?));
+        }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
             if(reader.TokenType == JsonToken.Null) {
                 return null;
             }
@@ -24,7 +27,8 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
             throw new Exception("Cannot unmarshal type SceneNodeType");
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
             if(value == null) {
                 serializer.Serialize(writer, null);
             }
@@ -41,5 +45,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Utilities.Converter
 
             throw new Exception("Cannot marshal type SceneNodeType");
         }
+        #endregion
     }
 }

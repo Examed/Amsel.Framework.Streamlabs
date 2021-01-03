@@ -6,6 +6,7 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSNode
     {
+        #region Properties
         [JsonProperty("id")]
         public string Id { get; protected set; }
 
@@ -21,5 +22,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
         [JsonProperty("sceneNodeType")]
         [JsonConverter(typeof(SceneNodeTypeConverter))]
         public ESceneNodeType SceneNodeType { get; protected set; }
+        #endregion
     }
 }

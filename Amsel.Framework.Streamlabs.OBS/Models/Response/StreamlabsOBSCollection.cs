@@ -1,11 +1,12 @@
-﻿using Amsel.Framework.Streamlabs.OBS.Utilities.Converter;
+﻿using System;
+using Amsel.Framework.Streamlabs.OBS.Utilities.Converter;
 using Newtonsoft.Json;
-using System;
 
 namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 {
     public class StreamlabsOBSCollection
     {
+        #region Properties
         [JsonProperty("deleted")]
         public bool Deleted { get; protected set; }
 
@@ -26,5 +27,6 @@ namespace Amsel.Framework.Streamlabs.OBS.Models.Response
 
         [JsonProperty("serverId")]
         public bool ServerId { get; protected set; }
+        #endregion
     }
 }

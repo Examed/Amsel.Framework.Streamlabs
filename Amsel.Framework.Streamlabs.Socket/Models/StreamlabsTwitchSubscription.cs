@@ -5,6 +5,7 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 {
     public class StreamlabsTwitchSubscription : StreamlabsMessage
     {
+        #region Properties
         [JsonProperty("benefit_end_month")]
         public string BenefitEndMonth { get; protected set; }
 
@@ -37,5 +38,6 @@ namespace Amsel.Framework.Streamlabs.Socket.Models
 
         [JsonProperty("subscriber_twitch_id")]
         public string TwitchId { get; protected set; }
+        #endregion
     }
 }
